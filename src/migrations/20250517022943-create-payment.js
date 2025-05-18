@@ -9,35 +9,47 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
       id_pedido: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references:{
+          model:"pedidos",
+          key:"id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      transaccion_id: {
-        type: Sequelize.STRING,
+
+      user_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references:{
+          model:"User",
+          key:"id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
+
       proveedor_pago: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      monto: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
+
       estado_pago: {
         type: Sequelize.ENUM('Aprobado', 'Rechazado', 'En procesamiento')
       },
-      fecha_pago: {
-        type: Sequelize.DATE
-      },
+
       detalles_pago: {
         type: Sequelize.JSONB
       },
+      
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE

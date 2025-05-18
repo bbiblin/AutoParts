@@ -10,7 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasOne(models.address, {
+        foreignKey: "id",
+        as: "address"
+      });
+
+      this.hasOne(models.cart, {
+        foreignKey: "id",
+        as: "cart"
+      });
+
+      this.hasMany(models.payment,{
+        foreignKey:"id",
+        as:"payments"
+      });
+
+      this.hasMany(models.pedidos,{
+        foreignKey:"id",
+        as:"pedidos"
+      });
     }
   }
   User.init({
@@ -51,11 +69,14 @@ module.exports = (sequelize, DataTypes) => {
     isDistribuitor: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-    }
+    },
   },
     {
       sequelize,
       modelName: 'User',
-    });
+    },
+  {
+    tableName: "users"
+  });
   return User;
 };

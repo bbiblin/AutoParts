@@ -10,12 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+       this.belongsTo(models.pedidos,{
+        foreignKey:"id_pedido",
+        as:"pedido"
+      });
+
+      this.belongsTo(models.User,{
+        foreignKey:"user_id",
+        as:"user"
+      });
     }
   }
   payment.init({
     id_pedido: DataTypes.INTEGER,
-    transaccion_id: DataTypes.STRING,
+    user_id: DataTypes.INTEGER,
     proveedor_pago: DataTypes.STRING,
     monto: DataTypes.INTEGER,
     estado_pago: DataTypes.ENUM('Aprobado', 'Rechazado', 'En procesamiento'),
@@ -24,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'payment',
+  },
+  {
+    tableName: "payments"
   });
   return payment;
 };

@@ -10,7 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+       this.belongsTo(models.category,{
+        foreignKey:"category_id",
+        as:"category"
+      });
+       this.belongsTo(models.brand,{
+        foreignKey:"brand_id",
+        as:"brand"
+      });
+
+      this.hasMany(models.detalle_pedido, {
+        foreignKey: "id",
+        as: "detalles_pedido"
+      });
     }
   }
   producto.init({
@@ -20,10 +32,14 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
 
-    brand_code: {
-      type: DataTypes.STRING,
+    minorist_price:{
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
+    },
+
+    mayorist_price:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
 
     product_name: {
@@ -77,6 +93,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'producto',
+  },
+  {
+    tableName: "productos"
   });
   return producto;
 };

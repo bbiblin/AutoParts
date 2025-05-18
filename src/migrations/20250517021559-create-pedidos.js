@@ -8,43 +8,68 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+
       },
       cod_pedido: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      address_id: {
+
+      user_id: {
         type: Sequelize.STRING,
         allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
+
       fecha_pedido: {
         type: Sequelize.DATE,
         allowNull: false,
       },
+
       state: {
         type: Sequelize.STRING,
         allowNull: false,
       },
+
       subtotal: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+
+      precio_total: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+
       shipping_cost: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+
       metodo_pago: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+
       origen: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      is_pickup: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE

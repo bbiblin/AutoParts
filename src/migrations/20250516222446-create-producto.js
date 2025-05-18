@@ -14,10 +14,19 @@ module.exports = {
         allowNull: false,
 
       },
-      brand_code: {
-        type: Sequelize.STRING,
+      minorist_price: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
+      mayorist_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+
       product_name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -33,10 +42,22 @@ module.exports = {
       category_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "category",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       brand_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "brand",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       image_url: {
         type: Sequelize.STRING,

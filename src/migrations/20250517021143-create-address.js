@@ -12,6 +12,12 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       street: {
         type: Sequelize.STRING,

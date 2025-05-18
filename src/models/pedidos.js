@@ -10,13 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+       this.belongsTo(models.User,{
+        foreignKey:"user_id",
+        as:"user"
+      });
+
+      this.hasMany(models.detalle_pedido, {
+        foreignKey: "id",
+        as: "detalles_pedido"
+      });
     }
   }
   pedidos.init({
     cod_pedido: DataTypes.STRING,
-    address_id: DataTypes.STRING,
-    fecha_pedido: DataTypes.DATE,
+    user_id: DataTypes.STRING,
     state: DataTypes.STRING,
     subtotal: DataTypes.INTEGER,
     shipping_cost: DataTypes.INTEGER,
@@ -25,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'pedidos',
+  },
+  {
+    tableName: "pedidos"
   });
   return pedidos;
 };

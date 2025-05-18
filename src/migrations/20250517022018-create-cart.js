@@ -9,19 +9,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      session_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         allowNull: false,
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
