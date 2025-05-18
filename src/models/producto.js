@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class producto extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,49 +13,70 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  User.init({
-    email: {
+  producto.init({
+    product_cod: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
 
-    password: {
+    brand_code: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-
-    username: {
-      type: DataTypes.STRING,
       unique: true,
-      allowNull: false,
     },
 
-    name: {
+    product_name: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-
-    admin: {
-      type: DataTypes.BOOLEAN
-    },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
       unique: true,
-      allowNull: false,
     },
-    isDistribuitor: {
+
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
+
+    category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
+
+    brand_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
+
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+
+    state: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      unique: true,
+    },
+
+    featured: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      unique: true,
     }
-  },
-    {
-      sequelize,
-      modelName: 'User',
-    });
-  return User;
+
+  }, {
+    sequelize,
+    modelName: 'producto',
+  });
+  return producto;
 };

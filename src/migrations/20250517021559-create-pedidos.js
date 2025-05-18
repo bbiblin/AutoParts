@@ -2,54 +2,45 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('pedidos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-
-      },
-
-      password: {
+      cod_pedido: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      username: {
+      address_id: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      name: {
+      fecha_pedido: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      state: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      admin: {
-        type: Sequelize.BOOLEAN,
+      subtotal: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-
       },
-      address: {
+      shipping_cost: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      metodo_pago: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      origen: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      phone: {
-        type: Sequelize.STRING
-      },
-
-      isDistribuitor: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -61,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('pedidos');
   }
 };

@@ -2,54 +2,54 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('productos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
-      email: {
+      product_cod: {
         type: Sequelize.STRING,
         allowNull: false,
 
       },
-
-      password: {
+      brand_code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      username: {
+      product_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      name: {
+      description: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      admin: {
-        type: Sequelize.BOOLEAN,
+      stock: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-
       },
-      address: {
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      brand_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      image_url: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
-      phone: {
-        type: Sequelize.STRING
-      },
-
-      isDistribuitor: {
+      state: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-
+      featured: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -61,6 +61,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('productos');
   }
 };

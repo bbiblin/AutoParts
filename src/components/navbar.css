@@ -1,0 +1,80 @@
+/* src/components/navbar.css */
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 15px 5%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.nav-links {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0 15px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #007bff;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background-color: #242424;
+  padding: 8px 12px;
+  border-radius: 30px;
+}
+
+.searchBox input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  padding: 5px 8px;
+  width: 180px;
+}
+
+.searchBox input::placeholder {
+  color: #ccc;
+}
+
+.searchBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.searchBtn:hover {
+  color: #007bff;
+}

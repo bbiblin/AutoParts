@@ -1,21 +1,15 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar"; // Cambiamos la ruta de importación
-import Catalogo from "./components/catalogo"; // Añadimos la importación del Catalogo
+import React from 'react'
+import Navbar from './components/navbar'
+import Home from './pages/home';
 
-function App() {
+
+const App = () => {
+
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Navbar />
-        <main className="container mx-auto mt-16 p-4">
-          <Routes>
-            <Route path="/" element={<Catalogo />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
-  );
+    <div className='container'>
+      <Navbar />
+    </div>
+  )
 }
 
-export default App;
+export default App

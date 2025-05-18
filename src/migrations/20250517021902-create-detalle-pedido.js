@@ -2,54 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('detalle_pedidos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-
-      },
-
-      password: {
-        type: Sequelize.STRING,
+      pedido_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
-      username: {
-        type: Sequelize.STRING,
+      product_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
-      name: {
-        type: Sequelize.STRING,
+      cantidad: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
-      admin: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-
-      },
-      address: {
-        type: Sequelize.STRING,
+      precio_unitario: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
-      phone: {
-        type: Sequelize.STRING
-      },
-
-      isDistribuitor: {
-        type: Sequelize.BOOLEAN,
+      subtotal: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
+      descuento_linea: {
+        type: Sequelize.FLOAT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -61,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('detalle_pedidos');
   }
 };
