@@ -1,15 +1,15 @@
-import React from 'react'
-import Navbar from './components/navbar'
-import Home from './pages/home';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/home'
+import Productos from './pages/productos'
 
-
-const App = () => {
-
+export default function App() {
   return (
-    <div className='container'>
-      <Navbar />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/productos" element={<Productos/>} />
+
+      </Routes>
+    </Router>
   )
 }
-
-export default App

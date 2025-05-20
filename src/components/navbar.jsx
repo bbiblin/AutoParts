@@ -3,14 +3,15 @@ import React from 'react';
 import './navbar.css';
 import Logo from '../assets/autopartslogo.jpg';
 
-const Navbar = () => {
-    return (
-        <div className="navbar">
+export default function Navbar() {
+
+  return (
+    <div className="navbar">
             <img src={Logo} alt="AutoParts Logo" className="logo" />
 
             <ul className="nav-links">
                 <li><a href="/">Inicio</a></li>
-                <li><a href="/catalogo">Catálogo</a></li>
+                <li><a href="/productos">Catálogo</a></li>
                 <li><a href="/nosotros">Nosotros</a></li>
                 <li><a href="/contacto">Contacto</a></li>
             </ul>
@@ -20,7 +21,5 @@ const Navbar = () => {
                 <button className="searchBtn"><i className="fas fa-search"></i></button>
             </div>
         </div>
-    );
+  );
 };
-
-export default Navbar;

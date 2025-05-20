@@ -16,10 +16,10 @@ module.exports = {
       },
 
       user_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "user",
+          model: "Users",
           key: "id",
         },
         onUpdate: 'CASCADE',

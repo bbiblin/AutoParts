@@ -62,14 +62,12 @@ module.exports = (sequelize, DataTypes) => {
 
     category_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
+      allowNull: false
     },
 
     brand_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
     },
 
     image_url: {

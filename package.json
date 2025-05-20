@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@koa/cors": "^5.0.0",
     "@koa/router": "^13.1.0",
+    "axios": "^1.9.0",
     "bootstrap": "^5.3.6",
     "dotenv": "^16.5.0",
     "koa": "^3.0.0",

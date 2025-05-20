@@ -3,13 +3,11 @@ import React from 'react';
 import { Container, Carousel, Button } from 'react-bootstrap';
 import Navbar from '../components/navbar'
 
-
-export default function LandingPage() {
+export default function Home() {
     return (
         <>
-            <Navbar />
 
-
+            <h1>OLA</h1>
         </>
     );
 }
