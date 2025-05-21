@@ -20,14 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         as: "cart"
       });
 
-      this.hasMany(models.payment,{
-        foreignKey:"id",
-        as:"payments"
+      this.hasMany(models.payment, {
+        foreignKey: "id",
+        as: "payments"
       });
 
-      this.hasMany(models.pedidos,{
-        foreignKey:"id",
-        as:"pedidos"
+      this.hasMany(models.pedidos, {
+        foreignKey: "id",
+        as: "pedidos"
       });
     }
   }
@@ -75,8 +75,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'User',
     },
-  {
-    tableName: "users"
-  });
+    {
+      tableName: "users"
+    });
   return User;
 };

@@ -14,11 +14,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   price.init({
-    product_id: DataTypes.INTEGER,
-    date: DataTypes.DATE,
-    minorist_price: DataTypes.INTEGER,
-    mayorist_price: DataTypes.INTEGER,
-    isActive: DataTypes.BOOLEAN
+    product_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+
+    minorist_price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    mayorist_price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'price',

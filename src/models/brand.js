@@ -17,15 +17,26 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   brand.init({
-    brand_name: DataTypes.STRING,
-    brand_code: DataTypes.STRING,
-    origin_country: DataTypes.STRING
+    brand_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    brand_code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+
+    origin_country: {
+      type: DataTypes.STRING,
+    },
   }, {
     sequelize,
     modelName: 'brand',
   },
-  {
-    tableName: "brands"
-  });
+    {
+      tableName: "brands"
+    });
   return brand;
 };

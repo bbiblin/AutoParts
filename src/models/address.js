@@ -17,20 +17,53 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   address.init({
-    user_id: DataTypes.INTEGER,
-    street: DataTypes.STRING,
-    number: DataTypes.STRING,
-    complement: DataTypes.STRING,
-    city: DataTypes.STRING,
-    region: DataTypes.STRING,
-    codigo_postal: DataTypes.STRING,
-    is_main: DataTypes.BOOLEAN
+
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    street: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    number: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    complement: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    region: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    codigo_postal: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    is_main: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+
   }, {
     sequelize,
     modelName: 'address',
   },
-  {
-    tableName: "addresses"
-  });
+    {
+      tableName: "addresses"
+    });
   return address;
 };
