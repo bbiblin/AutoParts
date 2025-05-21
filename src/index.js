@@ -1,26 +1,14 @@
-const app = require('./app');
-const db = require('./models');
-const dotenv = require('dotenv');
+// src/index.js
+const Koa = require('koa');
+const cors = require('@koa/cors');
+const Logger = require('koa-logger');
+const router = require('./routes');
 
-dotenv.config();
+const app = new Koa();
+app.use(cors());
 
-app.listen(PORT, () => {
-  console.log(`Servidor en puerto ${PORT}`);
-});
+app.use(Logger());
 
+app.use(router.routes());
 
-const PORT = process.env.PORT || 4000;
-
-db.sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection to the database has been established successfully.');
-        app.listen(PORT, (error) => {
-            if (error) {
-                return console.error("Error: ", error);
-            }
-            console.log(`Listening on port ${PORT}`);
-            return app;
-        })
-    })
-    .catch((error) => { console.log('Unable to connect to the database:', error); });
+app.listen(3000);

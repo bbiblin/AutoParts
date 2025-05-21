@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-       this.belongsTo(models.category,{
-        foreignKey:"category_id",
-        as:"category"
+      this.belongsTo(models.category, {
+        foreignKey: "category_id",
+        as: "category"
       });
-       this.belongsTo(models.brand,{
-        foreignKey:"brand_id",
-        as:"brand"
+      this.belongsTo(models.brand, {
+        foreignKey: "brand_id",
+        as: "brand"
       });
 
       this.hasMany(models.detalle_pedido, {
@@ -32,13 +32,18 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
 
-    minorist_price:{
+    minorist_price: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
 
-    mayorist_price:{
+    mayorist_price: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    isActive: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
 
@@ -51,18 +56,16 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
 
     stock: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
     },
 
     category_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
 
     brand_id: {
@@ -79,20 +82,16 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      unique: true,
     },
 
     featured: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      unique: true,
     }
 
   }, {
     sequelize,
     modelName: 'producto',
-  },
-  {
     tableName: "productos"
   });
   return producto;
