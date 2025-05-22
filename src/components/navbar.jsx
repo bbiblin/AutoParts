@@ -1,25 +1,31 @@
 // src/components/Navbar.jsx
-import React from 'react';
-import './navbar.css';
-import Logo from '../assets/autopartslogo.jpg';
+import React from "react";
+import "./navbar.css";
+import Logo from "../assets/autopartslogo.jpg";
 
 export default function Navbar() {
-
   return (
-    <div className="navbar">
-            <img src={Logo} alt="AutoParts Logo" className="logo" />
+    <header className="navbar">
+      <div className="navbar-left">
+        <button className="icon-button" aria-label="Menu" />
+        <button className="icon-button" aria-label="Search" />
+        <img className="logo" src={Logo} alt="AutoParts logo" />
+      </div>
 
-            <ul className="nav-links">
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/productos">Catálogo</a></li>
-                <li><a href="/nosotros">Nosotros</a></li>
-                <li><a href="/contacto">Contacto</a></li>
-            </ul>
+      <h1 className="brand-name">AutoParts</h1>
 
-            <div className="searchBox">
-                <input type="text" placeholder="Buscar repuesto..." />
-                <button className="searchBtn"><i className="fas fa-search"></i></button>
-            </div>
-        </div>
+      <nav className="nav-links">
+        {["Inicio", "Catálogo", "Nosotros", "Contacto"].map((text) => (
+          <a key={text} href="#" className="nav-pill">
+            {text}
+          </a>
+        ))}
+      </nav>
+
+      <div className="auth-buttons">
+        <button className="btn btn-secondary">Sign in</button>
+        <button className="btn btn-primary">Register</button>
+      </div>
+    </header>
   );
-};
+}
