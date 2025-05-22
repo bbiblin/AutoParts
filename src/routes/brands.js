@@ -1,17 +1,17 @@
 const Router = require('koa-router');
 const router = new Router();
-const { category } = require('../models');
+const { brand } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
 
 // GET para todas las categorias
 
 router.get('/', async (ctx) => {
     try {
-        const allCategories = await category.findAll();
+        const allBrands = await brand.findAll();
 
-        if (allCategories) {
+        if (allBrands) {
             ctx.status = 200;
-            ctx.body = allCategories;
+            ctx.body = allBrands;
         }
         else {
             ctx.status = 404;

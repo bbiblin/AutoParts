@@ -13,15 +13,15 @@ module.exports = {
       product_name: 'Filtro de aceite Toyota',
       description: 'Filtro de aceite compatible con Toyota Corolla y Yaris.',
       stock: 50,
-      category_id: 4,
-      brand_id: 5,
+      category_id: 19,
+      brand_id: 16,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,
       createdAt: new Date(),
       updatedAt: new Date()
     },
-  
+
     {
       product_cod: 'P002',
       minorist_price: 12000,
@@ -30,8 +30,8 @@ module.exports = {
       product_name: 'Motor toyota',
       description: 'Motor loko',
       stock: 50,
-      category_id: 5,
-      brand_id: 5,
+      category_id: 20,
+      brand_id: 15,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,

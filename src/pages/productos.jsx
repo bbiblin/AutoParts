@@ -5,18 +5,24 @@ import CategoriesList from '../components/categoriesList';
 export default function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
 
   const getProducts = async () => {
     try {
       let url = '';
-      if (category != ''){
+      if (category != '' && brand == '') {
         url = `http://localhost:3000/productos?category_id=${category}`
+      } else if (category == '' && brand != '') {
+        url = `http://localhost:3000/productos?brand_id=${brand}`
+
+      } else if (category != '' && brand != '') {
+        url = `http://localhost:3000/productos?brand_id=${brand}&category_id=${category}`
       }
       else {
         url = "http://localhost:3000/productos"
       }
-      const res = await axios.get(url); // Pon el puerto correcto
-      setAllProducts(res.data);  // Aquí va res.data, no res.data.allProducts
+      const res = await axios.get(url);
+      setAllProducts(res.data);
     } catch (error) {
       console.error('Error al obtener productos:', error);
     }
@@ -35,10 +41,11 @@ export default function Productos() {
     <div>
       <div>
         <form onSubmit={handleSubmit}>
-          <CategoriesList  value={category} onChange={(e) => setCategory(e.target.value)}/>
+          <CategoriesList valueCategory={category} valueBrand={brand} onChangeCategory={(e) => setCategory(e.target.value)}
+            onChangeBrand={(e) => setBrand(e.target.value)} />
           <button type="submit">Buscar</button>
         </form>
-        
+
       </div>
       <h2>Productos</h2>
       <div>
