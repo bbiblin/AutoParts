@@ -1,31 +1,35 @@
 // src/components/Navbar.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
-import Logo from "../assets/autopartslogo.jpg";
+const navItems = [
+  { title: "Inicio", to: "/" },
+  { title: "Catálogo", to: "/productos" },
+
+];
 
 export default function Navbar() {
   return (
-    <header className="navbar">
-      <div className="navbar-left">
-        <button className="icon-button" aria-label="Menu" />
-        <button className="icon-button" aria-label="Search" />
-        <img className="logo" src={Logo} alt="AutoParts logo" />
-      </div>
+     <div className="header">
 
-      <h1 className="brand-name">AutoParts</h1>
+      <div className="autoparts">AutoParts</div>
 
-      <nav className="nav-links">
-        {["Inicio", "Catálogo", "Nosotros", "Contacto"].map((text) => (
-          <a key={text} href="#" className="nav-pill">
-            {text}
-          </a>
+    <div className="navigation-pill-list">
+        {navItems.map((item) => (
+          <Link to={item.to} key={item.title} className="navigation-pill">
+            <div className="title">{item.title}</div>
+          </Link>
         ))}
-      </nav>
-
-      <div className="auth-buttons">
-        <button className="btn btn-secondary">Sign in</button>
-        <button className="btn btn-primary">Register</button>
       </div>
-    </header>
+
+      <div className="header-auth">
+        <div className="button">
+          <div className="title">Inicia sesión</div>
+        </div>
+        <div className="button2">
+          <div className="title">Registrate</div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
