@@ -30,7 +30,7 @@ module.exports = {
       product_name: 'Motor toyota',
       description: 'Motor loko',
       stock: 50,
-      category_id: 20,
+      category_id: 4,
       brand_id: 15,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
