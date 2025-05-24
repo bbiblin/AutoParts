@@ -11,7 +11,7 @@ export default function CategoriesList({ valueCategory, valueBrand, onChangeCate
 
   const getBrands = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/brands");
+      const res = await axios.get("https://autoparts-i2gt.onrender.com/brands");
       setAllBrands(res.data);
     } catch (error) {
       console.error('Error al obtener marcas:', error);
@@ -21,7 +21,7 @@ export default function CategoriesList({ valueCategory, valueBrand, onChangeCate
 
   const getCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/categories"); // Pon el puerto correcto
+      const res = await axios.get("https://autoparts-i2gt.onrender.com/categories"); // Pon el puerto correcto
 
       setAllCategories(res.data);  // Aquí va res.data, no res.data.allProducts
     } catch (error) {
