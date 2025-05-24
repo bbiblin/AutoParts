@@ -1,7 +1,7 @@
 const Router = require('koa-router');
-const productos_routes = require('../routes/productos');
-const categories_routes = require('../routes/category');
-const brands_routes = require('../routes/brands');
+const productos_routes = require('./routes/productos');
+const categories_routes = require('./routes/category');
+const brands_routes = require('./routes/brands');
 
 
 
