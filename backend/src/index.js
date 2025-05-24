@@ -6,6 +6,8 @@ const router = require('./routes');
 const PORT = process.env.PORT || 3000;
 
 const app = new Koa();
+app.use(require('koa-static')(__dirname + '/public'));
+
 app.use(cors());
 
 app.use(Logger());
