@@ -18,11 +18,17 @@ module.exports = {
     port: '5432'
   },
   production: {
-    username: 'bbiblin',
-    password: '12345678',
-    database: 'AutoParts',
-    host: 'localhost',
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
     dialect: 'postgres',
-    port: '5432'
+    port: process.env.DB_PORT || '5432',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   }
 };
