@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import Navbar from './components/navbar.jsx'
-import './components/navbar.css'
+import '../src/index.css'
+
 
 
 createRoot(document.getElementById('root')).render(
