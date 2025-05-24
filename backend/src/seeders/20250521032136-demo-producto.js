@@ -14,7 +14,7 @@ module.exports = {
       description: 'Filtro de aceite compatible con Toyota Corolla y Yaris.',
       stock: 50,
       category_id: 19,
-      brand_id: 16,
+      brand_id: 1,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,
