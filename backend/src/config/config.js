@@ -19,6 +19,7 @@ module.exports = {
   },
   production: {
     username: process.env.DB_USER,
+    db_url: process.env.DB_URL,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
