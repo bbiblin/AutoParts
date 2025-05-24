@@ -2,6 +2,8 @@
 import React from "react";
 import { useState } from 'react';
 import '../index.css';
+import { Link } from 'react-router-dom';
+
 
 const navItems = [
   { title: "Inicio", to: "/" },
@@ -34,17 +36,18 @@ export default function Navbar() {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.title}
-                  href={item.to}
+                  to={item.to}
                   className="relative text-[#F5F5F5] hover:text-blue-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-blue-800 group"
                 >
                   <span className="relative z-10">{item.title}</span>
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#BB2F3D] group-hover:w-full transition-all duration-300"></span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
+
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
