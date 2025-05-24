@@ -1,6 +1,10 @@
 "use client";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Bosch from "../img/Bosch_logo.png";
+import Monroe from "../img/monroe.svg";
+import NGK from "../img/NGK_logo.png";
+import Mobil from "../img/Mobil_logo.png";
 
 export default function MarcasSection() {
     const ref = useRef(null);
@@ -22,10 +26,10 @@ export default function MarcasSection() {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 w-full max-w-6xl px-4">
                 {[
-                    { name: "BOSCH", src: "public/logos/Bosch_logo.png" },
-                    { name: "MOBIL", src: "public/logos/Mobil_logo.png" },
-                    { name: "MONROE", src: "public/logos/monroe.svg" },
-                    { name: "NGK", src: "public/logos/NGK_logo.png" },
+                    { name: "BOSCH", src: Bosch },
+                    { name: "MOBIL", src: Mobil },
+                    { name: "MONROE", src: Monroe },
+                    { name: "NGK", src: NGK },
                 ].map((marca) => (
                     <div key={marca.name} className="flex justify-center items-center">
                         <img
