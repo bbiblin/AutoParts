@@ -1,9 +1,8 @@
 // src/components/Navbar.jsx
 import React from "react";
-import { useState } from 'react';
-import '../index.css';
-import { Link } from 'react-router-dom';
-
+import { useState } from "react";
+import "../index.css";
+import { Link } from "react-router-dom";
 
 const navItems = [
   { title: "Inicio", to: "/" },
@@ -21,7 +20,6 @@ export default function Navbar() {
     <nav className="bg-[#1F3A93] shadow-lg border-b border-[#F5F5F5] sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-
           {/* Logo */}
           <div className="flex-shrink-0">
             <a
@@ -48,15 +46,19 @@ export default function Navbar() {
             </div>
           </div>
 
-
-          {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="bg-[#F5F5F5] text-[#3a3a3a] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#aaaaaa] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <Link
+              to="/login"
+              className="bg-[#F5F5F5] text-[#3a3a3a] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#aaaaaa] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
+            >
               Inicia sesión
-            </button>
-            <button className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            </Link>
+
+            <Link
+            to='/register'
+            className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
               Regístrate
-            </button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -67,15 +69,27 @@ export default function Navbar() {
               aria-label="Toggle menu"
             >
               <svg
-                className={`h-6 w-6 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`}
+                className={`h-6 w-6 transform transition-transform duration-300 ${
+                  isMenuOpen ? "rotate-180" : ""
+                }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
                 {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
@@ -84,10 +98,13 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden transform transition-all duration-300 ease-in-out ${isMenuOpen
-        ? 'max-h-96 opacity-100 translate-y-0'
-        : 'max-h-0 opacity-0 -translate-y-2 overflow-hidden'
-        }`}>
+      <div
+        className={`md:hidden transform transition-all duration-300 ease-in-out ${
+          isMenuOpen
+            ? "max-h-96 opacity-100 translate-y-0"
+            : "max-h-0 opacity-0 -translate-y-2 overflow-hidden"
+        }`}
+      >
         <div className="px-2 pt-2 pb-3 space-y-1 bg-[#1F3A93] border-t border-[#F5F5F5] shadow-lg">
           {navItems.map((item) => (
             <a
