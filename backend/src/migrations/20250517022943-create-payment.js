@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('payments', {
       id: {
         allowNull: false,
@@ -9,54 +9,60 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
       id_pedido: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references:{
-          model:"pedidos",
-          key:"id",
+        references: {
+          model: 'pedidos',
+          key: 'id'
         },
+        allowNull: false,
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references:{
-          model:"Users",
-          key:"id",
+        references: {
+          model: 'Users',
+          key: 'id'
         },
+        allowNull: false,
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-
       proveedor_pago: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-
+      monto: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       estado_pago: {
-        type: Sequelize.ENUM('Aprobado', 'Rechazado', 'En procesamiento')
+        type: Sequelize.ENUM('Aprobado', 'Rechazado', 'En procesamiento'),
+        allowNull: false
       },
-
+      fecha_pago: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
       detalles_pago: {
-        type: Sequelize.JSONB
+        type: Sequelize.JSONB,
+        allowNull: false
       },
-      
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
-
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('payments');
   }
 };

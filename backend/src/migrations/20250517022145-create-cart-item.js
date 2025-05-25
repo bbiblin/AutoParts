@@ -1,7 +1,7 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('cart_items', {
       id: {
         allowNull: false,
@@ -9,46 +9,44 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-
       cart_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references:{
-          model: "carts",
-          key: "id",
+        references: {
+          model: 'carts',
+          key: 'id'
         },
+        allowNull: false,
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-
       product_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references:{
-          model: "productos",
-          key: "id",
+        references: {
+          model: 'productos', // revisa el nombre exacto de esta tabla
+          key: 'id'
         },
+        allowNull: false,
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-
       precio_unitario: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: false
       },
-
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
-
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('cart_items');
   }
 };
