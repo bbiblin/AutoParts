@@ -48,14 +48,14 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             <Link
-              to="/login"
+              to="/users/login"
               className="bg-[#F5F5F5] text-[#3a3a3a] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#aaaaaa] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
             >
               Inicia sesión
             </Link>
 
             <Link
-            to='/register'
+            to='/users/register'
             className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
               Regístrate
             </Link>

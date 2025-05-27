@@ -16,7 +16,7 @@ export default function Register() {
     confirmPassword: "",
     username: "",
     name: "",
-    addressDetail: "",
+    address: "",
     phone: "",
     isDistribuitor: false,
   });
@@ -108,11 +108,11 @@ export default function Register() {
             // Preparar datos para enviar (sin confirmPassword)
             const { confirmPassword, ...userData } = formData;
             console.log("Registro exitoso:", userData);
-            const response = await axios.post('http://localhost:3000/users/register', userData);
+            const response = await axios.post('http://localhost:5374/users/register', userData);
 
             if (response) {
                 console.log("El usuario ha sido registrado correctamente");
-                navigate("/login");
+                navigate("/users/login");
             } else {
                 console.log("Registro fallido");
             }
@@ -247,9 +247,9 @@ export default function Register() {
               Dirección *
             </label>
             <textarea
-              id="addressDetail"
-              name="addressDetail"
-              value={formData.addressDetail}
+              id="address"
+              name="address"
+              value={formData.address}
               onChange={handleInputChange}
               rows="3"
               className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all resize-none ${
@@ -257,8 +257,8 @@ export default function Register() {
               }`}
               placeholder="Calle 123, Ciudad, País"
             />
-            {errors.addressDetail && (
-              <p className="mt-1 text-sm text-red-500">{errors.addressDetail}</p>
+            {errors.address && (
+              <p className="mt-1 text-sm text-red-500">{errors.address}</p>
             )}
           </div>
 
