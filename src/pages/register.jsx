@@ -108,7 +108,7 @@ export default function Register() {
         // Preparar datos para enviar (sin confirmPassword)
         const { confirmPassword, ...userData } = formData;
         console.log("Registro exitoso:", userData);
-        const response = await axios.post('https://autoparts-frontend.onrender.com/users/register', userData);
+        const response = await axios.post('https://autoparts-i2gt.onrender.com/users/register', userData);
 
         if (response) {
           console.log("El usuario ha sido registrado correctamente");
@@ -339,15 +339,7 @@ export default function Register() {
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
-
-
-
-
-
-
-
-        {/* R
-        edirige a Login*/}
+        {/* Redirige a Login*/}
         <div className="text-center">
           <p className="text-sm text-[#555555]">
             ¿Ya tienes una cuenta?

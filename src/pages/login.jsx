@@ -35,7 +35,7 @@ export default function Login() {
         password: formData.password,
       };
       console.log("Data: ", userData);
-      const response = await axios.post("https://autoparts-frontend.onrender.com/users/login", userData);
+      const response = await axios.post("https://autoparts-i2gt.onrender.com/users/login", userData);
       if (response) {
         console.log("Response:", response.data.user);
         navigate("/");
