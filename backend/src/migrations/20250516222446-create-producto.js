@@ -14,11 +14,11 @@ module.exports = {
         allowNull: false,
 
       },
-      minorist_price: {
+      retail_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      mayorist_price: {
+      wholesale_price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -63,6 +63,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+
+      discount_percentage: {
+        type: DataTypes.DECIMAL(5, 2), // puede ser 0 a 100.00
+        allowNull: false,
+        defaultValue: 0, // sin descuento
+        validate: {
+          min: 0,
+          max: 100
+        }
+      },
+
       state: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

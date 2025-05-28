@@ -32,15 +32,16 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
 
-    minorist_price: {
+    retail_price: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
 
-    mayorist_price: {
+    wholesale_price: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
 
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -78,6 +79,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+
+    discount_percentage: {
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: true,
+      defaultValue: 0.00,
+      validate: {
+        min: 0,
+        max: 100
+      }
+    },
+
 
     state: {
       type: DataTypes.BOOLEAN,

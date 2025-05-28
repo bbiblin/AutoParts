@@ -76,7 +76,7 @@ export default function Productos() {
 
               <div className="mb-2">
                 <span className="text-gray-700 font-medium">Precio mayorista: </span>
-                <span className="text-green-700 font-semibold">${product.mayorist_price}</span>
+                <span className="text-green-700 font-semibold">${product.wholesale_price}</span>
               </div>
 
               <div className="mb-2">
@@ -84,10 +84,10 @@ export default function Productos() {
                 {product.discount_price ? (
                   <>
                     <span className="text-red-600 font-bold">${product.discount_price}</span>
-                    <span className="line-through text-gray-500 ml-2">${product.minorist_price}</span>
+                    <span className="line-through text-gray-500 ml-2">${product.retail_price}</span>
                   </>
                 ) : (
-                  <span className="text-gray-900 font-bold">${product.minorist_price}</span>
+                  <span className="text-gray-900 font-bold">${product.retail_price}</span>
                 )}
               </div>
 
