@@ -7,10 +7,10 @@ import '../src/index.css'
 
 
 
+// main.jsx
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Navbar />
       <App />
     </BrowserRouter>
   </StrictMode>
