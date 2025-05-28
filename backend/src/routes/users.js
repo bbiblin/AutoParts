@@ -53,7 +53,7 @@ router.post('/register', async (ctx) => {
 
 //GET de Users
 
-router.get('/', async (ctx) => {
+router.get('/users', async (ctx) => {
   try {
     const allUsers = await User.findAll();
     if (allUsers) {
