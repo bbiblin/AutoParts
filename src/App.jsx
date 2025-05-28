@@ -23,7 +23,7 @@ export default function App() {
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Register />} />
           <Route path="/productos_destacados" element={<Destacados />} />
-          <Route path="/carrito" element={<Cart />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         <Footer />
       </CartProvider>
