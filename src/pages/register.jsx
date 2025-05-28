@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
 
@@ -102,32 +102,31 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     try {
-        e.preventDefault();
+      e.preventDefault();
 
-        if (validateForm()) {
-            // Preparar datos para enviar (sin confirmPassword)
-            const { confirmPassword, ...userData } = formData;
-            console.log("Registro exitoso:", userData);
-            const response = await axios.post('http://localhost:5374/users/register', userData);
+      if (validateForm()) {
+        // Preparar datos para enviar (sin confirmPassword)
+        const { confirmPassword, ...userData } = formData;
+        console.log("Registro exitoso:", userData);
+        const response = await axios.post('https://autoparts-frontend.onrender.com/users/register', userData);
 
-            if (response) {
-                console.log("El usuario ha sido registrado correctamente");
-                navigate("/users/login");
-            } else {
-                console.log("Registro fallido");
-            }
+        if (response) {
+          console.log("El usuario ha sido registrado correctamente");
+          navigate("/users/login");
+        } else {
+          console.log("Registro fallido");
         }
+      }
     } catch (error) {
-        console.error("Ha ocurrido un error al registrarse", error);
+      console.error("Ha ocurrido un error al registrarse", error);
     }
-    
+
   };
 
   return (
     <div
-      className={`w-full min-h-screen px-6 py-12 bg-gray-100 flex flex-col items-center justify-center transition-all duration-700 ease-out ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
+      className={`w-full min-h-screen px-6 py-12 bg-gray-100 flex flex-col items-center justify-center transition-all duration-700 ease-out ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}
     >
       <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
         {/* Header */}
@@ -156,9 +155,8 @@ export default function Register() {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.name ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.name ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="Juan Pérez"
             />
             {errors.name && (
@@ -180,9 +178,8 @@ export default function Register() {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.username ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.username ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="juanperez123"
             />
             {errors.username && (
@@ -204,9 +201,8 @@ export default function Register() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.email ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="juan@email.com"
             />
             {errors.email && (
@@ -228,9 +224,8 @@ export default function Register() {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.phone ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.phone ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="+1 234 567 8900"
             />
             {errors.phone && (
@@ -252,9 +247,8 @@ export default function Register() {
               value={formData.address}
               onChange={handleInputChange}
               rows="3"
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all resize-none ${
-                errors.address ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all resize-none ${errors.address ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="Calle 123, Ciudad, País"
             />
             {errors.address && (
@@ -276,9 +270,8 @@ export default function Register() {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.password ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="••••••••"
             />
             {errors.password && (
@@ -300,9 +293,8 @@ export default function Register() {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${
-                errors.confirmPassword ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="••••••••"
             />
             {errors.confirmPassword && (

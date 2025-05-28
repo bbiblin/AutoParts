@@ -54,33 +54,35 @@ router.post('/register', async (ctx) => {
 //GET de Users
 
 router.get('/', async (ctx) => {
-    try {
-        const allUsers = await User.findAll();
-        if (allUsers) {
-            ctx.status = 200;
-            ctx.body = allUsers;
-        } else {
-            ctx.status = 404;
-            ctx.body = { error: 'No se encontraron usuarios.' }
-        }
-    } catch (error) {
-        console.error("Ha ocurrido un error en kakis", error);
+  try {
+    const allUsers = await User.findAll();
+    if (allUsers) {
+      ctx.status = 200;
+      ctx.body = allUsers;
+    } else {
+      ctx.status = 404;
+      ctx.body = { error: 'No se encontraron usuarios.' }
     }
+  } catch (error) {
+    console.error("Ha ocurrido un error en el servidor", error);
+  }
 });
 
 //Login de users
-router.post('/login', async (ctx) =>{
+router.post('/login', async (ctx) => {
   console.log("Login");
-  try{
-    const {email, password} = ctx.request.body;
-    const user = await User.findOne({where:{
-      email:email,
-    }});
+  try {
+    const { email, password } = ctx.request.body;
+    const user = await User.findOne({
+      where: {
+        email: email,
+      }
+    });
     const validPass = bcrypt.compare(password, user.password)
     console.log("Body:", ctx.request.body);
     console.log("User: ", user);
 
-    if (user){
+    if (user) {
       if (validPass) {
         console.log("Iniciaste sesión correctamente");
         const token = jwt.sign(
@@ -91,19 +93,19 @@ router.post('/login', async (ctx) =>{
             isDistribuitor: user.isDistribuitor,
           },
           'clave',
-          { expiresIn: '2h'}
+          { expiresIn: '2h' }
         );
-        ctx.body = {user, token};
+        ctx.body = { user, token };
       } else {
         console.log("Contraseña inválida");
       }
-      
-    }else{
+
+    } else {
       console.log("Datos incorrectos");
     }
-     
-      
-  }catch (error){
+
+
+  } catch (error) {
     console.error("ha ocurrido un error", error);
 
   }

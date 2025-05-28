@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
@@ -35,24 +35,23 @@ export default function Login() {
         password: formData.password,
       };
       console.log("Data: ", userData);
-      const response = await axios.post("http://localhost:5374/users/login", userData);
-      if (response){
+      const response = await axios.post("https://autoparts-frontend.onrender.com/users/login", userData);
+      if (response) {
         console.log("Response:", response.data.user);
         navigate("/");
-      }else{
+      } else {
         console.log("Datos incorrectos");
       }
     } catch (error) {
-        console.error("Ha ocurrido un error", error);
+      console.error("Ha ocurrido un error", error);
 
     }
   };
 
   return (
     <div
-      className={`w-full h-screen px-6 bg-gray-100 flex flex-col items-center justify-center transition-all duration-700 ease-out ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
+      className={`w-full h-screen px-6 bg-gray-100 flex flex-col items-center justify-center transition-all duration-700 ease-out ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}
     >
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
         {/* Header */}
