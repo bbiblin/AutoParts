@@ -1,6 +1,6 @@
 export default function CategoriesList() {
     return (
-        <footer className="bg-gray-900 text-gray-300 py-10 px-6 mt-10">
+        <footer className="bg-[#1F3A93] text-gray-300 py-10 px-6 mt-10">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
 
                 {/* Marca */}
