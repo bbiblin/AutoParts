@@ -18,6 +18,8 @@ router.post('/register', async (ctx) => {
       return;
     }
 
+    isDistribuitor = !!ctx.request.body.isDistribuitor;
+
     // Verifica si ya existe un usuario con el mismo email
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
@@ -73,7 +75,7 @@ router.get('/', async (ctx) => {
   }
 });
 
-// Login de users - CORREGIDO
+// Login de users 
 router.post('/login', async (ctx) => {
   console.log("Intento de login");
   try {

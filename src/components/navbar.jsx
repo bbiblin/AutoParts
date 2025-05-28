@@ -3,13 +3,13 @@ import React from "react";
 import { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu estructura
+import { useAuth } from "../contexts/authContext";
+import CartIcon from "./cartIcon";
 
 const navItems = [
   { title: "Inicio", to: "/" },
   { title: "Catálogo", to: "/productos" },
   { title: "Productos destacados", to: "/productos_destacados" },
-
 ];
 
 export default function Navbar() {
@@ -55,8 +55,11 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Auth Section */}
+          {/* Desktop Auth Section + Cart */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Icono del carrito */}
+            <CartIcon />
+
             {isLoggedIn ? (
               // Usuario logueado
               <>
@@ -91,7 +94,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Carrito móvil */}
+            <CartIcon />
+
             <button
               onClick={toggleMenu}
               className="text-[#F5F5F5] hover:text-blue-300 focus:outline-none focus:text-blue-300 p-2 rounded-lg transition-colors duration-300"
