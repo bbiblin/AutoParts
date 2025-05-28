@@ -75,18 +75,22 @@ export default function Productos() {
               <p className="text-sm text-gray-600 mb-2">{product.description}</p>
 
               <div className="mb-2">
-                <span className="text-gray-700 font-medium">Precio: </span>
+                <span className="text-gray-700 font-medium">Precio mayorista: </span>
+                <span className="text-green-700 font-semibold">${product.mayorist_price}</span>
+              </div>
+
+              <div className="mb-2">
+                <span className="text-gray-700 font-medium">Precio minorista: </span>
                 {product.discount_price ? (
                   <>
                     <span className="text-red-600 font-bold">${product.discount_price}</span>
-                    <span className="line-through text-gray-500 ml-2">Precio Minorista:${product.minorist_price}</span>
-                    <span className="line-through text-gray-500 ml-2">Precio Mayorista:${product.mayorist_price}</span>
-
+                    <span className="line-through text-gray-500 ml-2">${product.minorist_price}</span>
                   </>
                 ) : (
-                  <span className="text-gray-900 font-bold">${product.price}</span>
+                  <span className="text-gray-900 font-bold">${product.minorist_price}</span>
                 )}
               </div>
+
 
               <p className="text-sm text-gray-700">Stock: {product.stock}</p>
             </div>
