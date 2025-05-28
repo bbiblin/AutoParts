@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // Ajusta la ruta según tu estructura
+import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu estructura
 
 const navItems = [
   { title: "Inicio", to: "/" },
