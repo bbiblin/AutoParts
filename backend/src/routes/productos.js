@@ -2,7 +2,6 @@ const Router = require('koa-router');
 const router = new Router();
 const { producto } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
-const { default: Productos } = require('../../../src/pages/productos');
 
 //POST para producto
 router.post('/', async (ctx) => {
@@ -100,38 +99,30 @@ router.delete('/:id', async (ctx) => {
 //UPDATE para producto...
 router.patch('/:id', async (ctx) => {
     try {
-        const producto = await producto.findByPk(ctx.params.id);
+        const prod = await producto.findByPk(ctx.params.id);
 
-        if (producto) {
-            const [updated_producto] = await producto.update(ctx.request.body, { where: { id: ctx.params.id } });
-            if (updated_producto > 0) {
-                const producto_var = await producto.findByPk(ctx.params.id)
-                ctx.status = 200;
-                ctx.body = producto_var;
-            }
-            else {
-                ctx.status = 400;
-                ctx.body = { error: 'No se han recibido todos los datos necesarios' };
-            }
-        }
-        else {
+        if (prod) {
+            await prod.update(ctx.request.body);
+            ctx.status = 200;
+            ctx.body = prod;
+        } else {
             ctx.status = 404;
             ctx.body = { error: 'Producto no encontrado' };
         }
 
-    }
-    catch (error) {
+    } catch (error) {
         console.error(error);
         ctx.status = 500;
         ctx.body = { error: error.message };
     }
 });
 
+
 //GET para los productos destacados... 
-router.get('/producto', async (ctx) => {
+router.get('/destacados', async (ctx) => {
     try {
-        const featuredProduct = await Productos.findAll({ where: { featured: true } });
-        ctx.body = featuredProduct;
+        const featuredProducts = await producto.findAll({ where: { featured: true } });
+        ctx.body = featuredProducts;
     }
     catch (error) {
         console.error('Error al obtener productos', error);
