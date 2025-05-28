@@ -8,7 +8,7 @@ const CartIcon = ({ className = "" }) => {
 
     return (
         <Link
-            to="/carrito"
+            to="/cart"
             className={`relative p-2 text-[#F5F5F5] hover:text-blue-300 transition-colors duration-300 ${className}`}
             aria-label="Ver carrito de compras"
         >
