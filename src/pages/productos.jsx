@@ -48,7 +48,7 @@ export default function Productos() {
           />
           <button
             type="submit"
-            className="bg-[#BB2F3D] text-white px-6 py-2 rounded-lg shadow hover:bg-shadow-lg transition"
+            className="bg-[#BB2F3D] text-white px-6 py-2 rounded-lg shadow-lg border-2 border-white hover:shadow-xl hover:border-gray-200 transition"
           >
             Buscar
           </button>
