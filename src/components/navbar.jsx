@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext"; // Ajusta la ruta según tu estructura
 
 const navItems = [
   { title: "Inicio", to: "/" },
@@ -11,9 +12,15 @@ const navItems = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isLoggedIn, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
   };
 
   return (
@@ -22,12 +29,12 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="text-2xl font-bold text-[#F5F5F5] hover:text-[#D72638]-300 transition-colors duration-300"
             >
               AutoParts
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -46,32 +53,51 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/users/login"
-              className="bg-[#F5F5F5] text-[#3a3a3a] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#aaaaaa] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
-            >
-              Inicia sesión
-            </Link>
+            {isLoggedIn ? (
+              // Usuario logueado
+              <>
+                <span className="text-[#F5F5F5] text-sm font-medium">
+                  ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              // Usuario no logueado
+              <>
+                <Link
+                  to="/users/login"
+                  className="bg-[#F5F5F5] text-[#3a3a3a] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#aaaaaa] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl inline-block"
+                >
+                  Inicia sesión
+                </Link>
 
-            <Link
-            to='/users/register'
-            className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-              Regístrate
-            </Link>
+                <Link
+                  to='/users/register'
+                  className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Regístrate
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-[#000000] hover:text-blue-300 focus:outline-none focus:text-blue-300 p-2 rounded-lg transition-colors duration-300"
+              className="text-[#F5F5F5] hover:text-blue-300 focus:outline-none focus:text-blue-300 p-2 rounded-lg transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <svg
-                className={`h-6 w-6 transform transition-transform duration-300 ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}
+                className={`h-6 w-6 transform transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -99,38 +125,57 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden transform transition-all duration-300 ease-in-out ${
-          isMenuOpen
-            ? "max-h-96 opacity-100 translate-y-0"
-            : "max-h-0 opacity-0 -translate-y-2 overflow-hidden"
-        }`}
+        className={`md:hidden transform transition-all duration-300 ease-in-out ${isMenuOpen
+          ? "max-h-96 opacity-100 translate-y-0"
+          : "max-h-0 opacity-0 -translate-y-2 overflow-hidden"
+          }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 bg-[#1F3A93] border-t border-[#F5F5F5] shadow-lg">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.title}
-              href={item.to}
+              to={item.to}
               onClick={() => setIsMenuOpen(false)}
               className="text-[#F5F5F5] hover:text-blue-300 hover:bg-blue-800 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300"
             >
               {item.title}
-            </a>
+            </Link>
           ))}
 
-          {/* Mobile Auth Buttons */}
+          {/* Mobile Auth Section */}
           <div className="pt-4 space-y-3 border-t border-[#F5F5F5] mt-4">
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="w-full bg-[#F5F5F5] text-[#333333] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#929292] transition-all duration-300 shadow-lg"
-            >
-              Inicia sesión
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(false)}
-              className="w-full bg-[#D72638] text-[#F5F5F5] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#BB2F3D] transition-all duration-300 shadow-lg"
-            >
-              Regístrate
-            </button>
+            {isLoggedIn ? (
+              // Usuario logueado - versión móvil
+              <>
+                <div className="text-[#F5F5F5] px-4 py-2 text-center font-medium">
+                  ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-[#D72638] text-[#F5F5F5] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#BB2F3D] transition-all duration-300 shadow-lg"
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              // Usuario no logueado - versión móvil
+              <>
+                <Link
+                  to="/users/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full bg-[#F5F5F5] text-[#333333] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#929292] transition-all duration-300 shadow-lg block text-center"
+                >
+                  Inicia sesión
+                </Link>
+                <Link
+                  to="/users/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full bg-[#D72638] text-[#F5F5F5] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#BB2F3D] transition-all duration-300 shadow-lg block text-center"
+                >
+                  Regístrate
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

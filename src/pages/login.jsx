@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu estructura
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -11,8 +11,18 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { login, isLoggedIn } = useAuth();
+
+  // Redirigir si ya está logueado
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const timeout = setTimeout(() => setShow(true), 100);
@@ -25,26 +35,48 @@ export default function Login() {
       ...prev,
       [name]: value,
     }));
+    // Limpiar error cuando el usuario empiece a escribir
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
     try {
-      e.preventDefault();
       const userData = {
         email: formData.email,
         password: formData.password,
       };
+
       console.log("Data: ", userData);
       const response = await axios.post("https://autoparts-i2gt.onrender.com/users/login", userData);
-      if (response) {
-        console.log("Response:", response.data.user);
+
+      if (response.data) {
+        console.log("Response:", response.data);
+
+        // Usar la función login del contexto
+        login(
+          response.data.user,
+          response.data.token || 'dummy-token' // Ajusta según tu API
+        );
+
         navigate("/");
-      } else {
-        console.log("Datos incorrectos");
       }
     } catch (error) {
       console.error("Ha ocurrido un error", error);
 
+      // Mostrar mensaje de error más específico
+      if (error.response) {
+        setError(error.response.data.message || "Credenciales incorrectas");
+      } else if (error.request) {
+        setError("Error de conexión. Inténtalo de nuevo.");
+      } else {
+        setError("Ha ocurrido un error inesperado");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,8 +96,15 @@ export default function Login() {
           </p>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
         {/* Form */}
-        <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="email"
@@ -80,7 +119,8 @@ export default function Login() {
               value={formData.email}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="tu@email.com"
             />
           </div>
@@ -99,7 +139,8 @@ export default function Login() {
               value={formData.password}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all"
+              disabled={isLoading}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#1E1E1E] placeholder-[#555555] focus:outline-none focus:ring-2 focus:ring-[#D72638] focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="••••••••"
             />
           </div>
@@ -109,6 +150,7 @@ export default function Login() {
               <input
                 type="checkbox"
                 className="h-4 w-4 text-[#D72638] focus:ring-[#D72638] border-gray-300 rounded"
+                disabled={isLoading}
               />
               <span className="ml-2 text-sm text-[#555555]">Recordarme</span>
             </label>
@@ -122,12 +164,22 @@ export default function Login() {
 
           <button
             type="submit"
-            onClick={handleSubmit}
-            className="w-full py-3 px-4 bg-[#D72638] border border-[#BB2F3D] rounded-lg text-[#F5F5F5] text-base font-medium hover:scale-105 active:scale-95 transition-transform"
+            disabled={isLoading}
+            className="w-full py-3 px-4 bg-[#D72638] border border-[#BB2F3D] rounded-lg text-[#F5F5F5] text-base font-medium hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center"
           >
-            Iniciar Sesión
+            {isLoading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Iniciando sesión...
+              </>
+            ) : (
+              "Iniciar Sesión"
+            )}
           </button>
-        </div>
+        </form>
 
         {/* Divider */}
         <div className="my-6 flex items-center">
@@ -141,7 +193,7 @@ export default function Login() {
           <p className="text-sm text-[#555555]">
             ¿No tienes una cuenta?{" "}
             <Link
-              to="/register"
+              to="/users/register"
               className="text-[#D72638] hover:text-[#BB2F3D] font-medium transition-colors bg-transparent border-none cursor-pointer"
             >
               Regístrate aquí

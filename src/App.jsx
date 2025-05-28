@@ -4,17 +4,19 @@ import Productos from './pages/productos'
 import '../src/index.css'
 import Login from './pages/login'
 import Register from './pages/register'
+import { AuthProvider } from './contexts/authContext'
 
 
 
 export default function App() {
   return (
-
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/productos" element={<Productos />} />
-      <Route path="/users/login" element={<Login />} />
-      <Route path="/users/register" element={<Register />} />
-    </Routes>
-  )
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/productos" element={<Productos />} />
+        <Route path="/users/login" element={<Login />} />
+        <Route path="/users/register" element={<Register />} />
+      </Routes>
+    </AuthProvider>
+  );
 }
