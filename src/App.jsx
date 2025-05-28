@@ -6,6 +6,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import Cart from './pages/cart';
 import Destacados from './pages/productosDestacados';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
