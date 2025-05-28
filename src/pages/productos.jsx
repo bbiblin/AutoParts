@@ -193,22 +193,28 @@ export default function Productos() {
                     </div>
                   </div>
 
-                  {/* Stock Info */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-sm font-medium text-gray-700">Stock disponible:</span>
-                    <div className="flex items-center">
-                      <div className={`w-2 h-2 rounded-full mr-2 ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
-                      <span className={`font-semibold ${product.stock > 10 ? 'text-green-600' : product.stock > 0 ? 'text-yellow-600' : 'text-red-600'}`}>
-                        {product.stock} unidades
-                      </span>
+                  <div className="space-y-2">
+                    <AddToCartButton
+                      product={product}
+                      className="w-full"
+                    />
+
+                    {/* Stock Info */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <span className="text-sm font-medium text-gray-700">Stock disponible:</span>
+                      <div className="flex items-center">
+                        <div className={`w-2 h-2 rounded-full mr-2 ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+                        <span className={`font-semibold ${product.stock > 10 ? 'text-green-600' : product.stock > 0 ? 'text-yellow-600' : 'text-red-600'}`}>
+                          {product.stock} unidades
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
             ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
     </div>
-  );
+      );
 }
