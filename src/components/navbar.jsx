@@ -8,6 +8,8 @@ import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu e
 const navItems = [
   { title: "Inicio", to: "/" },
   { title: "Catálogo", to: "/productos" },
+  { title: "Destacados", to: "/productos_destacados" },
+
 ];
 
 export default function Navbar() {

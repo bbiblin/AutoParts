@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const router = new Router();
 const { producto } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
+const { default: Productos } = require('../../../src/pages/productos');
 
 //POST para producto
 router.post('/', async (ctx) => {
@@ -121,6 +122,19 @@ router.patch('/:id', async (ctx) => {
     }
     catch (error) {
         console.error(error);
+        ctx.status = 500;
+        ctx.body = { error: error.message };
+    }
+});
+
+//GET para los productos destacados... 
+router.get('/producto', async (ctx) => {
+    try {
+        const featuredProduct = await Productos.findAll({ where: { featured: true } });
+        ctx.body = featuredProduct;
+    }
+    catch (error) {
+        console.error('Error al obtener productos', error);
         ctx.status = 500;
         ctx.body = { error: error.message };
     }
