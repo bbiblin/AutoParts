@@ -72,7 +72,7 @@ export const CartProvider = ({ children }) => {
         try {
             if (isLoggedIn) {
                 // Usuario logueado - guardar en servidor
-                const response = await fetch('/api/cart/add', {
+                const response = await fetch('/cart/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
