@@ -11,6 +11,8 @@ import Destacados from './pages/productosDestacados';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import '../src/index.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 export default function App() {
   return (
