@@ -48,8 +48,25 @@ router.get('/', authenticateToken, async (ctx) => {
 // Agregar producto al carrito
 router.post('/add', authenticateToken, async (ctx) => {
     try {
+        console.log('=== DEBUG CARRITO ===');
+        console.log('ctx.state.user:', ctx.state.user);
+        console.log('ctx.request.body:', ctx.request.body);
+        console.log('Headers:', ctx.headers);
+        
         const { product_id, quantity = 1 } = ctx.request.body;
+        
+        if (!ctx.state.user) {
+            console.log('❌ No hay usuario en ctx.state');
+            ctx.status = 401;
+            ctx.body = { success: false, message: 'Usuario no autenticado' };
+            return;
+        }
+        
         const userId = ctx.state.user.id;
+        
+        console.log('userId:', userId);
+        console.log('product_id:', product_id);
+        console.log('quantity:', quantity);
 
         // Verificar que el producto existe
         const product = await Product.findByPk(product_id);
