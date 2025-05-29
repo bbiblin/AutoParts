@@ -72,7 +72,7 @@ export const CartProvider = ({ children }) => {
         try {
             if (isLoggedIn) {
                 // Usuario logueado - guardar en servidor
-                const response = await fetch('/cart/add', {
+                const response = await fetch('https://autoparts-i2gt.onrender.com/cart/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
