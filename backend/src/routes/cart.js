@@ -1,46 +1,51 @@
 // routes/cartRoutes.js
 const Router = require('@koa/router');
 const router = new Router();
-const { Cart, CartItem, Product, User } = require('../models');
-const authenticateToken = require('../middleware/auth'); // Middleware de autenticación
+const { cart, cart_item, producto, User } = require('../models');
+const authenticateToken = require('../middleware/auth');
 
 // Obtener carrito del usuario
 router.get('/', authenticateToken, async (ctx) => {
     try {
-        const userId = ctx.state.user.id;
+        const user = ctx.state.user;
+        console.log('user id:', user.id);
 
-        let cart = await Cart.findOne({
-            where: { user_id: userId },
+        let carrito = await cart.findOne({
+            where: { user_id: user.id},
             include: [
                 {
-                    model: CartItem,
+                    model: cart_item,
                     as: 'cart_items',
                     include: [
                         {
-                            model: Product,
+                            model: producto,
                             as: 'product'
                         }
                     ]
                 }
             ]
         });
-
+        
         // Si no existe carrito, crearlo
-        if (!cart) {
-            cart = await Cart.create({ user_id: userId });
-            cart.cart_items = [];
+        if (!carrito) {
+            carrito = await cart.create({ user_id: user.id });
+            carrito.cart_items = [];
         }
+
+        console.log('Carrito encontrado:', carrito.id);
+        console.log('Items del carrito:', carrito.cart_items?.length || 0);
 
         ctx.body = {
             success: true,
-            cart
+            cart: carrito
         };
     } catch (error) {
         console.error('Error al obtener carrito:', error);
         ctx.status = 500;
         ctx.body = {
             success: false,
-            message: 'Error interno del servidor'
+            message: 'Error interno del servidor',
+            error: error.message
         };
     }
 });
@@ -51,7 +56,6 @@ router.post('/add', authenticateToken, async (ctx) => {
         console.log('=== DEBUG CARRITO ===');
         console.log('ctx.state.user:', ctx.state.user);
         console.log('ctx.request.body:', ctx.request.body);
-        console.log('Headers:', ctx.headers);
         
         const { product_id, quantity = 1 } = ctx.request.body;
         
@@ -68,9 +72,19 @@ router.post('/add', authenticateToken, async (ctx) => {
         console.log('product_id:', product_id);
         console.log('quantity:', quantity);
 
+        // Validar datos de entrada
+        if (!product_id || quantity <= 0) {
+            ctx.status = 400;
+            ctx.body = {
+                success: false,
+                message: 'Datos inválidos: product_id y quantity son requeridos'
+            };
+            return;
+        }
+
         // Verificar que el producto existe
-        const product = await Product.findByPk(product_id);
-        if (!product) {
+        const productFound = await producto.findByPk(product_id);
+        if (!productFound) {
             ctx.status = 404;
             ctx.body = {
                 success: false,
@@ -79,31 +93,41 @@ router.post('/add', authenticateToken, async (ctx) => {
             return;
         }
 
+        console.log('Producto encontrado:', productFound.product_name);
+
         // Obtener o crear carrito
-        let cart = await Cart.findOne({ where: { user_id: userId } });
-        if (!cart) {
-            cart = await Cart.create({ user_id: userId });
+        let carrito = await cart.findOne({ where: { user_id: userId } });
+        if (!carrito) {
+            console.log('Creando nuevo carrito para usuario:', userId);
+            carrito = await cart.create({ user_id: userId });
         }
 
+        console.log('Carrito ID:', carrito.id);
+
         // Verificar si el producto ya está en el carrito
-        let cartItem = await CartItem.findOne({
+        let cartItem = await cart_item.findOne({
             where: {
-                cart_id: cart.id,
+                cart_id: carrito.id,
                 product_id: product_id
             }
         });
 
         if (cartItem) {
             // Si existe, actualizar cantidad
+            console.log('Actualizando item existente. Cantidad anterior:', cartItem.quantity);
             cartItem.quantity += quantity;
             await cartItem.save();
+            console.log('Nueva cantidad:', cartItem.quantity);
         } else {
             // Si no existe, crear nuevo item
-            cartItem = await CartItem.create({
-                cart_id: cart.id,
+            console.log('Creando nuevo item en el carrito');
+            cartItem = await cart_item.create({
+                cart_id: carrito.id,
                 product_id: product_id,
-                quantity: quantity
+                quantity: quantity,
+                precio_unitario: productFound.retail_price
             });
+            console.log('Item creado con ID:', cartItem.id);
         }
 
         ctx.body = {
@@ -116,7 +140,8 @@ router.post('/add', authenticateToken, async (ctx) => {
         ctx.status = 500;
         ctx.body = {
             success: false,
-            message: 'Error interno del servidor'
+            message: 'Error interno del servidor',
+            error: error.message
         };
     }
 });
@@ -128,12 +153,24 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
         const { quantity } = ctx.request.body;
         const userId = ctx.state.user.id;
 
+        console.log('Actualizando item:', itemId, 'nueva cantidad:', quantity);
+
+        // Validar cantidad
+        if (!quantity || quantity < 0) {
+            ctx.status = 400;
+            ctx.body = {
+                success: false,
+                message: 'Cantidad inválida'
+            };
+            return;
+        }
+
         // Verificar que el item pertenece al usuario
-        const cartItem = await CartItem.findOne({
+        const cartItem = await cart_item.findOne({
             where: { id: itemId },
             include: [
                 {
-                    model: Cart,
+                    model: cart,
                     as: 'cart',
                     where: { user_id: userId }
                 }
@@ -149,7 +186,7 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
             return;
         }
 
-        if (quantity <= 0) {
+        if (quantity === 0) {
             await cartItem.destroy();
             ctx.body = {
                 success: true,
@@ -171,7 +208,8 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
         ctx.status = 500;
         ctx.body = {
             success: false,
-            message: 'Error interno del servidor'
+            message: 'Error interno del servidor',
+            error: error.message
         };
     }
 });
@@ -182,11 +220,14 @@ router.delete('/remove/:itemId', authenticateToken, async (ctx) => {
         const { itemId } = ctx.params;
         const userId = ctx.state.user.id;
 
-        const cartItem = await CartItem.findOne({
+        console.log('Eliminando item:', itemId, 'para usuario:', userId);
+
+        // Verificar que el item pertenece al usuario
+        const cartItem = await cart_item.findOne({
             where: { id: itemId },
             include: [
                 {
-                    model: Cart,
+                    model: cart,
                     as: 'cart',
                     where: { user_id: userId }
                 }
@@ -213,18 +254,21 @@ router.delete('/remove/:itemId', authenticateToken, async (ctx) => {
         ctx.status = 500;
         ctx.body = {
             success: false,
-            message: 'Error interno del servidor'
+            message: 'Error interno del servidor',
+            error: error.message
         };
     }
 });
 
-// Limpiar carrito
+// Limpiar carrito completo
 router.delete('/clear', authenticateToken, async (ctx) => {
     try {
         const userId = ctx.state.user.id;
 
-        const cart = await Cart.findOne({ where: { user_id: userId } });
-        if (!cart) {
+        console.log('Limpiando carrito para usuario:', userId);
+
+        const carrito = await cart.findOne({ where: { user_id: userId } });
+        if (!carrito) {
             ctx.status = 404;
             ctx.body = {
                 success: false,
@@ -233,7 +277,8 @@ router.delete('/clear', authenticateToken, async (ctx) => {
             return;
         }
 
-        await CartItem.destroy({ where: { cart_id: cart.id } });
+        // Eliminar todos los items del carrito
+        await cart_item.destroy({ where: { cart_id: carrito.id } });
 
         ctx.body = {
             success: true,
@@ -244,7 +289,8 @@ router.delete('/clear', authenticateToken, async (ctx) => {
         ctx.status = 500;
         ctx.body = {
             success: false,
-            message: 'Error interno del servidor'
+            message: 'Error interno del servidor',
+            error: error.message
         };
     }
 });

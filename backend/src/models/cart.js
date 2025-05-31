@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const detalle_pedido = require('./detalle_pedido');
 module.exports = (sequelize, DataTypes) => {
   class cart extends Model {
     /**
@@ -24,14 +25,15 @@ module.exports = (sequelize, DataTypes) => {
   cart.init({
     user_id: {
       type: DataTypes.INTEGER,
+      field: 'user_id'
     },
 
   }, {
     sequelize,
     modelName: 'cart',
-  },
-    {
-      tableName: "carts"
-    });
+    tableName: 'carts',
+    createdAt: 'createdAt', // o el nombre real de tu columna
+    updatedAt: 'updatedAt', // o el nombre real de tu columna
+  });
   return cart;
 };

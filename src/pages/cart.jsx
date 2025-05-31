@@ -1,6 +1,7 @@
 // src/pages/CartPage.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { useCart } from '../contexts/cartContext';
 import { useAuth } from '../contexts/authContext';
 
@@ -16,6 +17,11 @@ export default function CartPage() {
 
     const { isLoggedIn } = useAuth();
     const [isProcessing, setIsProcessing] = useState(false);
+
+    useEffect(() => {
+        console.log('token:' + Cookies.get('authToken'));
+        console.log('userId: ' + Cookies.get('user_id'));
+    }, []);
 
     const formatPrice = (price) => {
         return new Intl.NumberFormat('es-CL', {

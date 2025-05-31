@@ -67,11 +67,13 @@ module.exports = (sequelize, DataTypes) => {
     category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'category_id'
     },
 
     brand_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'brand_id'
     },
 
     image_url: {

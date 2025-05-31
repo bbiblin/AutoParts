@@ -16,7 +16,8 @@ module.exports = async (ctx, next) => {
     }
     
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const SECRET = process.env.JWT_SECRET || 'clave'
+        const decoded = jwt.verify(token, SECRET);
         console.log('✅ Token decodificado:', decoded);
         
         ctx.state.user = decoded; // Guardamos el usuario decodificado

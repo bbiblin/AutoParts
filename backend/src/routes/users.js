@@ -1,7 +1,9 @@
 const Router = require('koa-router');
 const router = new Router();
 const bcrypt = require('bcryptjs');
+const jwtDecode = require('jwt-decode'); 
 const jwt = require('jsonwebtoken');
+
 const { User } = require('../models');
 const authMiddleware = require('../middleware/auth');
 
@@ -17,8 +19,6 @@ router.post('/register', async (ctx) => {
       ctx.body = { error: 'Faltan campos obligatorios' };
       return;
     }
-
-    isDistribuitor = !!ctx.request.body.isDistribuitor;
 
     // Verifica si ya existe un usuario con el mismo email
     const existingUser = await User.findOne({ where: { email } });
@@ -116,6 +116,7 @@ router.post('/login', async (ctx) => {
         { expiresIn: '2h' }
       );
 
+      
       // No retornar la contraseña
       const { password: _, ...userResponse } = user.toJSON();
 

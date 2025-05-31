@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu estructura
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -13,6 +14,7 @@ export default function Login() {
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState(null);
 
   const navigate = useNavigate();
   const { login, isLoggedIn } = useAuth();
@@ -51,7 +53,7 @@ export default function Login() {
       };
 
       console.log("Data: ", userData);
-      const response = await axios.post("https://autoparts-i2gt.onrender.com/users/login", userData);
+      const response = await axios.post("http://localhost:5374/users/login", userData);
 
       if (response.data) {
         console.log("Response:", response.data);
@@ -59,9 +61,13 @@ export default function Login() {
         // Usar la función login del contexto
         login(
           response.data.user,
-          response.data.token || 'dummy-token' // Ajusta según tu API
+          response.data.token // Ajusta según tu API
         );
 
+        const tokensito = localStorage.getItem("authToken");
+
+        setToken(tokensito);
+        
         navigate("/");
       }
     } catch (error) {

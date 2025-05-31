@@ -24,13 +24,21 @@ module.exports = (sequelize, DataTypes) => {
     cart_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'cart_id'
     },
 
     product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'product_id'
     },
 
+    quantity: {  // ← AGREGAR ESTE CAMPO
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
+    
     precio_unitario: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -39,9 +47,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'cart_item',
-  },
-    {
-      tableName: "cart_items"
-    });
+    tableName: 'cart_items'
+  });
   return cart_item;
 };
