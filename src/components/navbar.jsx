@@ -23,6 +23,8 @@ export default function Navbar() {
       to: user?.isDistribuitor ? "/catalogo_mayorista" : "/productos"
     },
     { title: "Productos destacados", to: "/productos_destacados" },
+    { title: "Sobre nosotros", to: "/aboutUs" },
+
   ];
 
   return (
