@@ -22,12 +22,13 @@ export const AuthProvider = ({ children }) => {
 
     // Verificar si hay un usuario logueado al cargar la app
     useEffect(() => {
-        setToken(Cookies.get('authToken'));
+        const storedToken = Cookies.get('authToken');
         const userData = Cookies.get('userData');
 
-        if (token && userData) {
+        if (storedToken && userData) {
             try {
                 const parsedUser = JSON.parse(userData);
+                setToken(storedToken);
                 setUser(parsedUser);
                 setIsLoggedIn(true);
             } catch (error) {
@@ -36,6 +37,7 @@ export const AuthProvider = ({ children }) => {
                 Cookies.remove('userData');
             }
         }
+
         setLoading(false);
     }, []);
 
@@ -51,8 +53,8 @@ export const AuthProvider = ({ children }) => {
             console.log((decoded_token.exp - decoded_token.iat) / 60, 'minutos'); // Duración del token
         }
 
-        // Ola belén te amo aquí se guarda el token en la Cookie 'authToken' y expira en 1 día :3
-        Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'strict'});
+        // aquí se guarda el token en la Cookie 'authToken' y expira en 1 día
+        Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'strict' });
 
         // Guardar id de usuario en Cookie 'user_id'
         Cookies.set('user_id', decoded_token.id);

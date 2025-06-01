@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CategoriesList from '../components/categoriesList';
 import AddToCartButton from '../components/addToCartButton';
+import { useAuth } from '../contexts/authContext';
+import { Link } from "react-router-dom";
+
+
 
 export default function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { isLoggedIn } = useAuth();
 
   const getProducts = async () => {
     try {
@@ -51,7 +57,7 @@ export default function Productos() {
               Catálogo de Productos
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Encuentra las mejores autopartes con precios competitivos
+              Encuentra los mejores repuestos con los mejores precios
             </p>
           </div>
         </div>
@@ -208,13 +214,24 @@ export default function Productos() {
                   </div>
                   {/* Botones */}
                   <div className="space-y-2">
-                    <AddToCartButton
-                      product={product}
-                      className="w-full"
-                    />
-                    <button className="w-full px-4 py-2 border border-[#1F3A93] text-[#1F3A93] rounded-lg hover:bg-[#1F3A93] hover:text-white transition-colors duration-300">
-                      Ver detalles
-                    </button>
+
+                    {isLoggedIn ? (
+                      <AddToCartButton
+                        product={product}
+                        className="w-full"
+                      />
+                    ) : (
+                      <p>Debes iniciar sesión para armar tu carrito</p>
+                    )}
+
+                    <Link
+                      to={`/detalles_producto/${product.id}`}
+                      className="px-6 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105 shadow-lg hover:shadow-xl"
+
+                    >
+                      Detalles
+                    </Link>
+
                   </div>
                 </div>
               </div>

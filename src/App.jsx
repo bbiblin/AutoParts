@@ -8,6 +8,8 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Cart from './pages/cart';
 import Destacados from './pages/productosDestacados';
+import DetallesProducto from './pages/detalleProducto';
+import CatalogoMayorista from './pages/catalogoMayorista';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import '../src/index.css';
@@ -26,6 +28,15 @@ export default function App() {
           <Route path="/users/register" element={<Register />} />
           <Route path="/productos_destacados" element={<Destacados />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/detalles_producto/:id" element={<DetallesProducto />} />
+          <Route path="/catalogo_mayorista"
+            element={
+
+              <CatalogoMayorista />
+
+            }
+          />
+
         </Routes>
         <Footer />
       </CartProvider>

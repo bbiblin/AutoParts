@@ -11,7 +11,7 @@ router.get('/', authenticateToken, async (ctx) => {
         console.log('user id:', user.id);
 
         let carrito = await cart.findOne({
-            where: { user_id: user.id},
+            where: { user_id: user.id },
             include: [
                 {
                     model: cart_item,
@@ -25,7 +25,7 @@ router.get('/', authenticateToken, async (ctx) => {
                 }
             ]
         });
-        
+
         // Si no existe carrito, crearlo
         if (!carrito) {
             carrito = await cart.create({ user_id: user.id });
@@ -56,18 +56,18 @@ router.post('/add', authenticateToken, async (ctx) => {
         console.log('=== DEBUG CARRITO ===');
         console.log('ctx.state.user:', ctx.state.user);
         console.log('ctx.request.body:', ctx.request.body);
-        
+
         const { product_id, quantity = 1 } = ctx.request.body;
-        
+
         if (!ctx.state.user) {
             console.log('❌ No hay usuario en ctx.state');
             ctx.status = 401;
             ctx.body = { success: false, message: 'Usuario no autenticado' };
             return;
         }
-        
+
         const userId = ctx.state.user.id;
-        
+
         console.log('userId:', userId);
         console.log('product_id:', product_id);
         console.log('quantity:', quantity);

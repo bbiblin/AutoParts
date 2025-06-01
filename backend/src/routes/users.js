@@ -1,11 +1,25 @@
 const Router = require('koa-router');
 const router = new Router();
 const bcrypt = require('bcryptjs');
-const jwtDecode = require('jwt-decode'); 
+const jwtDecode = require('jwt-decode');
 const jwt = require('jsonwebtoken');
 
 const { User } = require('../models');
 const authMiddleware = require('../middleware/auth');
+
+//GET para los usuarios distribuidores... 
+router.get('/distribuitor', async (ctx) => {
+  try {
+    const distribuitorUsers = await User.findAll({ where: { isDistribuitor: true } });
+    ctx.body = distribuitorUsers;
+  }
+  catch (error) {
+    console.error('Error al obtener productos', error);
+    ctx.status = 500;
+    ctx.body = { error: error.message };
+  }
+});
+
 
 // Registro de usuario
 router.post('/register', async (ctx) => {
@@ -21,7 +35,7 @@ router.post('/register', async (ctx) => {
     }
 
     // Verifica si ya existe un usuario con el mismo email
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ where: { email: email } });
     if (existingUser) {
       ctx.status = 409;
       ctx.body = { error: 'El email ya está registrado' };
@@ -116,7 +130,7 @@ router.post('/login', async (ctx) => {
         { expiresIn: '2h' }
       );
 
-      
+
       // No retornar la contraseña
       const { password: _, ...userResponse } = user.toJSON();
 

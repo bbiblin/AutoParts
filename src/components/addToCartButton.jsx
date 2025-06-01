@@ -37,7 +37,7 @@ const AddToCartButton = ({ product, quantity = 1, className = "", variant = "pri
         }
 
         // Primary variant (default)
-        return `${baseStyles} bg-[#1F3A93] text-white hover:bg-blue-800 ${className}`;
+        return `${baseStyles} bg-[#1F3A93] text-[#FFFF] hover:bg-blue-800 ${className}`;
     };
 
     const getButtonContent = () => {

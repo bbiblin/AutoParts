@@ -7,8 +7,8 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('productos', [{
       product_cod: 'P001',
-      minorist_price: 10000,
-      mayorist_price: 8000,
+      retail_price: 10000,
+      wholesale_price: 8000,
       isActive: true,
       product_name: 'Filtro de aceite Toyota',
       description: 'Filtro de aceite compatible con Toyota Corolla y Yaris.',
@@ -24,8 +24,8 @@ module.exports = {
 
     {
       product_cod: 'P002',
-      minorist_price: 12000,
-      mayorist_price: 10000,
+      retail_price: 12000,
+      wholesale_price: 10000,
       isActive: true,
       product_name: 'Motor toyota',
       description: 'Motor loko',

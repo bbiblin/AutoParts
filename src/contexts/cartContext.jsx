@@ -22,8 +22,6 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         if (isLoggedIn && user) {
             loadCart();
-        } else {
-            loadCartFromCookies();
         }
     }, [isLoggedIn, user]);
 
@@ -46,20 +44,9 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    const loadCartFromCookies = () => {
-        try {
-            const savedCart = Cookies.get('cart');
-            if (savedCart) {
-                setCartItems(JSON.parse(savedCart));
-            }
-        } catch (error) {
-            console.error('Error al cargar carrito desde cookies:', error);
-        }
-    };
 
-    const saveCartToCookies = (items) => {
-        Cookies.set('cart', JSON.stringify(items));
-    };
+
+
 
     const addToCart = async (product, quantity = 1) => {
         try {
@@ -75,26 +62,6 @@ export const CartProvider = ({ children }) => {
                 });
 
                 await loadCart();
-            } else {
-                const existingItem = cartItems.find(item => item.product_id === product.id);
-                let updatedItems;
-
-                if (existingItem) {
-                    updatedItems = cartItems.map(item =>
-                        item.product_id === product.id
-                            ? { ...item, quantity: item.quantity + quantity }
-                            : item
-                    );
-                } else {
-                    updatedItems = [...cartItems, {
-                        product_id: product.id,
-                        quantity: quantity,
-                        product: product
-                    }];
-                }
-
-                setCartItems(updatedItems);
-                saveCartToCookies(updatedItems);
             }
         } catch (error) {
             console.error('Error al agregar producto:', error);
@@ -109,6 +76,15 @@ export const CartProvider = ({ children }) => {
 
         try {
             if (isLoggedIn) {
+                // Actualizar el estado local PRIMERO (actualización optimista)
+                const updatedItems = cartItems.map(item =>
+                    item.id === itemId
+                        ? { ...item, quantity: newQuantity }
+                        : item
+                );
+                setCartItems(updatedItems);
+
+                // Luego hacer la petición al servidor
                 await axios.put(`http://localhost:5374/cart/update/${itemId}`, {
                     quantity: newQuantity
                 }, {
@@ -117,20 +93,14 @@ export const CartProvider = ({ children }) => {
                         'Authorization': `Bearer ${Cookies.get('authToken')}`
                     }
                 });
-
-                await loadCart();
-            } else {
-                const updatedItems = cartItems.map(item =>
-                    item.id === itemId
-                        ? { ...item, quantity: newQuantity }
-                        : item
-                );
-                setCartItems(updatedItems);
-                saveCartToCookies(updatedItems);
             }
         } catch (error) {
             console.error('Error al actualizar cantidad:', error);
-        }
+
+            // Si hay error, recargar el carrito para sincronizar
+            await loadCart();
+
+        };
     };
 
     const removeFromCart = async (itemId) => {
@@ -143,10 +113,6 @@ export const CartProvider = ({ children }) => {
                 });
 
                 await loadCart();
-            } else {
-                const updatedItems = cartItems.filter(item => item.id !== itemId);
-                setCartItems(updatedItems);
-                saveCartToCookies(updatedItems);
             }
         } catch (error) {
             console.error('Error al eliminar producto:', error);
@@ -162,9 +128,6 @@ export const CartProvider = ({ children }) => {
                     }
                 });
 
-                setCartItems([]);
-            } else {
-                Cookies.remove('cart');
                 setCartItems([]);
             }
         } catch (error) {

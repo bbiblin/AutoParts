@@ -1,29 +1,29 @@
-// src/components/Navbar.jsx
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import CartIcon from "./cartIcon";
 
-const navItems = [
-  { title: "Inicio", to: "/" },
-  { title: "Catálogo", to: "/productos" },
-  { title: "Productos destacados", to: "/productos_destacados" },
-];
-
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isLoggedIn, logout } = useAuth();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
   };
+
+  // Generar items dinámicamente según tipo de usuario
+  const navItems = [
+    { title: "Inicio", to: "/" },
+    {
+      title: user?.isDistribuitor ? "Catálogo Mayorista" : "Catálogo",
+      to: user?.isDistribuitor ? "/catalogo_mayorista" : "/productos"
+    },
+    { title: "Productos destacados", to: "/productos_destacados" },
+  ];
 
   return (
     <nav className="bg-[#1F3A93] shadow-lg border-b border-[#F5F5F5] sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
@@ -31,10 +31,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link
-              to="/"
-              className="text-2xl font-bold text-[#F5F5F5] hover:text-[#D72638]-300 transition-colors duration-300"
-            >
+            <Link to="/" className="text-2xl font-bold text-[#F5F5F5] hover:text-[#D72638]-300 transition-colors duration-300">
               AutoParts
             </Link>
           </div>
@@ -57,11 +54,9 @@ export default function Navbar() {
 
           {/* Desktop Auth Section + Cart */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Icono del carrito */}
             <CartIcon />
 
             {isLoggedIn ? (
-              // Usuario logueado
               <>
                 <span className="text-[#F5F5F5] text-sm font-medium">
                   ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
@@ -74,7 +69,6 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              // Usuario no logueado
               <>
                 <Link
                   to="/users/login"
@@ -82,9 +76,8 @@ export default function Navbar() {
                 >
                   Inicia sesión
                 </Link>
-
                 <Link
-                  to='/users/register'
+                  to="/users/register"
                   className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   Regístrate
@@ -95,35 +88,22 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* Carrito móvil */}
             <CartIcon />
-
             <button
               onClick={toggleMenu}
               className="text-[#F5F5F5] hover:text-blue-300 focus:outline-none focus:text-blue-300 p-2 rounded-lg transition-colors duration-300"
               aria-label="Toggle menu"
             >
               <svg
-                className={`h-6 w-6 transform transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""
-                  }`}
+                className={`h-6 w-6 transform transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
                 {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
               </svg>
             </button>
@@ -153,7 +133,6 @@ export default function Navbar() {
           {/* Mobile Auth Section */}
           <div className="pt-4 space-y-3 border-t border-[#F5F5F5] mt-4">
             {isLoggedIn ? (
-              // Usuario logueado - versión móvil
               <>
                 <div className="text-[#F5F5F5] px-4 py-2 text-center font-medium">
                   ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
@@ -166,7 +145,6 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              // Usuario no logueado - versión móvil
               <>
                 <Link
                   to="/users/login"

@@ -3,6 +3,21 @@ const router = new Router();
 const { producto } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
 
+
+//GET para los productos destacados... 
+router.get('/destacados', async (ctx) => {
+    try {
+        const featuredProducts = await producto.findAll({ where: { featured: true } });
+        ctx.body = featuredProducts;
+    }
+    catch (error) {
+        console.error('Error al obtener productos', error);
+        ctx.status = 500;
+        ctx.body = { error: error.message };
+    }
+});
+
+
 //POST para producto
 router.post('/', async (ctx) => {
     try {
@@ -15,6 +30,8 @@ router.post('/', async (ctx) => {
         ctx.body = { error: error.message };
     }
 });
+
+
 
 // GET para productos
 router.get('/', async (ctx) => {
@@ -96,6 +113,8 @@ router.delete('/:id', async (ctx) => {
     }
 });
 
+
+
 //UPDATE para producto...
 router.patch('/:id', async (ctx) => {
     try {
@@ -117,19 +136,6 @@ router.patch('/:id', async (ctx) => {
     }
 });
 
-
-//GET para los productos destacados... 
-router.get('/destacados', async (ctx) => {
-    try {
-        const featuredProducts = await producto.findAll({ where: { featured: true } });
-        ctx.body = featuredProducts;
-    }
-    catch (error) {
-        console.error('Error al obtener productos', error);
-        ctx.status = 500;
-        ctx.body = { error: error.message };
-    }
-});
 
 
 module.exports = router;
