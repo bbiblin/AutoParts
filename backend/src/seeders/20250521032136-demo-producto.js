@@ -18,6 +18,9 @@ module.exports = {
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,
+      discount_percentage: 0,
+      retail_price_sale: 10000,
+      wholesale_price_sale: 8000,
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -35,6 +38,9 @@ module.exports = {
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,
+      discount_percentage: 0,
+      retail_price_sale: 10000,
+      wholesale_price_sale: 8000,
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

@@ -31,7 +31,13 @@ export default function CartPage() {
     };
 
     const subtotal = cartItems.reduce((acc, item) => {
+        if (item.product.discount_percentage > 0 ){
+            return acc + (item.product?.retail_price_sale || 0) * item.quantity;
+
+        }else{
         return acc + (item.product?.retail_price || 0) * item.quantity;
+
+        }
     }, 0);
 
     const handleQuantityChange = (itemId, newQuantity) => {
@@ -174,9 +180,24 @@ export default function CartPage() {
                                                     <h3 className="text-sm font-medium text-gray-900 truncate">
                                                         {item.product?.product_name || 'Producto'}
                                                     </h3>
-                                                    <p className="text-sm text-gray-500 mt-1">
-                                                        {formatPrice(item.product?.retail_price || 0)}
-                                                    </p>
+                                                    
+                                                  <div className="text-right">
+  {item.product.discount_percentage > 0 ? (
+    <>
+      <p className="text-sm text-red-600 mt-1">
+        {formatPrice(item.product?.retail_price_sale || 0)}
+      </p>
+      <p className="text-sm text-gray-500 mt-1 line-through">
+        {formatPrice(item.product?.retail_price || 0)}
+      </p>
+    </>
+  ) : (
+    <p className="text-sm text-gray-500 mt-1">
+      {formatPrice(item.product?.retail_price || 0)}
+    </p>
+  )}
+</div>
+
                                                 </div>
 
                                                 {/* Controles de cantidad */}
@@ -207,9 +228,23 @@ export default function CartPage() {
 
                                                 {/* Subtotal */}
                                                 <div className="text-right">
-                                                    <p className="text-sm font-medium text-gray-900">
-                                                        {formatPrice((item.product?.retail_price || 0) * item.quantity)}
-                                                    </p>
+                                                    <div className="text-right">
+                                                    {item.product.discount_percentage > 0 ? (
+                                                        <>
+                                                        <p className="text-sm text-red-600 mt-1">
+                                                            {formatPrice(item.product?.retail_price_sale || 0)}
+                                                        </p>
+                                                        <p className="text-sm text-gray-500 mt-1 line-through">
+                                                            {formatPrice(item.product?.retail_price || 0)}
+                                                        </p>
+                                                        </>
+                                                    ) : (
+                                                        <p className="text-sm text-gray-500 mt-1">
+                                                        {formatPrice(item.product?.retail_price || 0)}
+                                                        </p>
+                                                    )}
+                                                    </div>
+
                                                 </div>
 
                                                 {/* Botón eliminar */}
@@ -248,7 +283,7 @@ export default function CartPage() {
                                         <div className="border-t border-gray-200 pt-4">
                                             <div className="flex justify-between text-lg font-semibold">
                                                 <span className="text-gray-900">Total</span>
-                                                <span className="text-gray-900">{formatPrice(getCartTotal())}</span>
+                                                <span className="text-gray-900">{formatPrice(subtotal)}</span>
                                             </div>
                                         </div>
                                     </div>

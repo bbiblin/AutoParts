@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 1
     },
-    
+
     precio_unitario: {
       type: DataTypes.FLOAT,
       allowNull: false,

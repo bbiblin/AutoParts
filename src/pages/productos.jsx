@@ -149,7 +149,7 @@ export default function Productos() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {allProducts.map((product) => (
+            {allProducts.map((product) => ( 
               <div
                 key={product.id}
                 className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group hover:scale-105"
@@ -160,12 +160,7 @@ export default function Productos() {
                     src={product.image_url}
                     alt={product.product_name}
                     className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  {product.discount_price && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                      ¡Oferta!
-                    </div>
-                  )}
+                  />                  
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
@@ -179,18 +174,13 @@ export default function Productos() {
                   </p>
 
                   {/* Pricing Section */}
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Precio Mayorista:</span>
-                      <span className="text-green-600 font-bold text-lg">${product.wholesale_price}</span>
-                    </div>
-
+                  <div className="space-y-3 mb-4">               
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-700">Precio Minorista:</span>
                       <div className="text-right">
-                        {product.discount_price ? (
+                        {product.discount_percentage > 0 ? (
                           <div className="space-y-1">
-                            <span className="text-red-600 font-bold text-lg block">${product.discount_price}</span>
+                            <span className="text-red-600 font-bold text-lg block">${product.retail_price_sale}</span>
                             <span className="line-through text-gray-400 text-sm">${product.retail_price}</span>
                           </div>
                         ) : (

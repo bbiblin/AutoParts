@@ -21,7 +21,19 @@ router.get('/destacados', async (ctx) => {
 //POST para producto
 router.post('/', async (ctx) => {
     try {
+        console.log(ctx.request.body);
         const nuevoProducto = await producto.create(ctx.request.body);
+        if (nuevoProducto.discount_percentage > 0) {
+            let precio_retail = nuevoProducto.retail_price;
+            let precio_wholesale = nuevoProducto.wholesale_price;
+            let porcentaje_descuento = nuevoProducto.discount_percentage;
+            let porcentaje_restante = (100 - porcentaje_descuento);
+            let precio_final_retail = Math.floor((precio_retail * (porcentaje_restante/100)));
+            let precio_final_wholesale = Math.floor((precio_wholesale * (porcentaje_restante/100)));
+
+            await nuevoProducto.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
+        }
+
         ctx.status = 201;
         ctx.body = nuevoProducto;
     } catch (error) {
@@ -122,6 +134,46 @@ router.patch('/:id', async (ctx) => {
 
         if (prod) {
             await prod.update(ctx.request.body);
+
+             if (prod.discount_percentage > 0) {
+                let precio_retail = prod.retail_price;
+                let precio_wholesale = prod.wholesale_price;
+                let porcentaje_descuento = prod.discount_percentage;
+                let porcentaje_restante = (100 - porcentaje_descuento);
+                let precio_final_retail = Math.floor((precio_retail * (porcentaje_restante/100)));
+                let precio_final_wholesale = Math.floor((precio_wholesale * (porcentaje_restante/100)));
+
+                await prod.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
+            }
+            ctx.status = 200;
+            ctx.body = prod;
+        } else {
+            ctx.status = 404;
+            ctx.body = { error: 'Producto no encontrado' };
+        }
+
+    } catch (error) {
+        console.error(error);
+        ctx.status = 500;
+        ctx.body = { error: error.message };
+    }
+});
+
+
+// Aplicar descuento
+router.patch('/:id/descuento', async (ctx) => {
+    try {
+        const prod = await producto.findByPk(ctx.params.id);
+
+        if (prod.discount_percentage > 0) {
+            let precio_retail = prod.retail_price;
+            let precio_wholesale = prod.wholesale_price;
+            let porcentaje_descuento = prod.discount_percentage;
+            let porcentaje_restante = (100 - porcentaje_descuento);
+            let precio_final_retail = Math.floor((precio_retail * (porcentaje_restante/100)));
+            let precio_final_wholesale = Math.floor((precio_wholesale * (porcentaje_restante/100)));
+
+            await prod.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
             ctx.status = 200;
             ctx.body = prod;
         } else {

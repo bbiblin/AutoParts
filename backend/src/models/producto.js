@@ -92,6 +92,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
 
+    retail_price_sale: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
+    wholesale_price_sale: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
 
     state: {
       type: DataTypes.BOOLEAN,
