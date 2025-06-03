@@ -73,22 +73,55 @@ export default function DetalleProducto() {
                         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">{product.product_name}</h2>
                         <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
 
-                        <div className="space-y-5 mb-8">
-                            <div className="flex justify-between text-lg font-medium">
-                                <span>Precio Mayorista:</span>
-                                <span className="text-green-600 font-bold">${product.wholesale_price}</span>
-                            </div>
-
-                            <div className="flex justify-between items-center text-lg font-medium">
-                                <span>Precio Minorista:</span>
-                                {product.discount_price ? (
+                        <div className="space-y-6 mb-8">
+                            <div className="space-y-6 mb-8">
+                                {/* Precio Mayorista */}
+                                <div className="flex justify-between items-start">
+                                    <span className="text-lg font-bold text-gray-700">Precio Mayorista:</span>
                                     <div className="text-right">
-                                        <span className="text-red-600 font-bold text-xl block">${product.discount_price}</span>
-                                        <span className="line-through text-gray-400 text-sm">${product.retail_price}</span>
+                                        {product.discount_percentage > 0 ? (
+                                            <>
+                                                <div className="text-[#BB2F3D] font-bold text-xl">
+                                                    ${product.wholesale_price_sale}
+                                                </div>
+                                                <div className="text-gray-400 text-sm">
+                                                    Precio normal: ${product.wholesale_price}
+                                                </div>
+                                                <div className="text-[#3f9b28] text-xs font-medium mt-1">
+                                                    -{product.discount_percentage}% descuento
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="text-gray-900 font-bold text-xl">
+                                                ${product.wholesale_price}
+                                            </div>
+                                        )}
                                     </div>
-                                ) : (
-                                    <span className="text-gray-900 font-bold text-xl">${product.retail_price}</span>
-                                )}
+                                </div>
+
+                                {/* Precio Minorista */}
+                                <div className="flex justify-between items-start">
+                                    <span className="text-lg font-bold text-gray-700">Precio Minorista:</span>
+                                    <div className="text-right">
+                                        {product.discount_percentage > 0 ? (
+                                            <>
+                                                <div className="text-[#BB2F3D] font-bold text-xl">
+                                                    ${product.retail_price_sale}
+                                                </div>
+                                                <div className="text-gray-400 text-sm">
+                                                    Precio normal: ${product.retail_price}
+                                                </div>
+                                                <div className="text-[#3f9b28] text-xs font-medium mt-1">
+                                                    -{product.discount_percentage}% descuento
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="text-gray-900 font-bold text-xl">
+                                                ${product.retail_price}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="flex justify-between items-center">

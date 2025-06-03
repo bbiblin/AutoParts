@@ -5,9 +5,7 @@ import AddToCartButton from '../components/addToCartButton';
 import { useAuth } from '../contexts/authContext';
 import { Link } from "react-router-dom";
 
-
-
-export default function catalogoMayorista() {
+export default function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
@@ -54,10 +52,10 @@ export default function catalogoMayorista() {
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Catálogo de Mayorista
+              Catálogo Mayorista
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Explora nuestros precios exclusivos para distribuidores
+              Cotiza tus productos
             </p>
           </div>
         </div>
@@ -88,7 +86,7 @@ export default function catalogoMayorista() {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-gradient-to-r from-[#BB2F3D] to-red-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="bg-[#BB2F3D] text-[#FFFF] px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {loading ? (
                   <>
@@ -161,9 +159,9 @@ export default function catalogoMayorista() {
                     alt={product.product_name}
                     className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  {product.discount_price && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                      ¡Oferta!
+                  {product.discount_percentage > 0 && (
+                    <div className="absolute top-3 right-3 bg-brand-redDark text-[#F5F5F5] px-2 py-1 rounded-full text-sm font-bold shadow-lg">
+                      -{product.discount_percentage}%
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -178,60 +176,62 @@ export default function catalogoMayorista() {
                     {product.description}
                   </p>
 
-                  {/* Pricing Section */}
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Precio Mayorista:</span>
-                      <span className="text-green-600 font-bold text-lg">${product.wholesale_price}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Precio Minorista:</span>
-                      <div className="text-right">
-                        {product.discount_price ? (
-                          <div className="space-y-1">
-                            <span className="text-red-600 font-bold text-lg block">${product.discount_price}</span>
-                            <span className="line-through text-gray-400 text-sm">${product.retail_price}</span>
-                          </div>
-                        ) : (
-                          <span className="text-gray-900 font-bold text-lg">${product.retail_price}</span>
-                        )}
+                  {/* Pricing Section - Mejorada */}
+                  <div className="bg-gray-50 rounded-xl p-4 mb-4 space-y-4">
+                    {product.wholesale_price && (
+                      <div className="flex justify-between items-start">
+                        <span className="text-lg font-bold text-gray-600">Mayorista:</span>
+                        <div className="text-right">
+                          {product.discount_percentage > 0 ? (
+                            <>
+                              <div className="text-red-600 font-bold text-lg">
+                                ${product.wholesale_price_sale}
+                              </div>
+                              <div className="text-gray-400 text-xs line-through">
+                                ${product.wholesale_price}
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-gray-900 font-bold text-lg">
+                              ${product.wholesale_price}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
+
                   </div>
 
-
-
                   {/* Stock Info */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-sm font-medium text-gray-700">Stock disponible:</span>
+                  <div className="flex items-center justify-between py-3 border-t border-gray-100">
+                    <span className="text-sm font-medium text-gray-700">Stock:</span>
                     <div className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-2 ${product.stock > 10 ? 'bg-green-500' : product.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
-                      <span className={`font-semibold ${product.stock > 10 ? 'text-green-600' : product.stock > 0 ? 'text-yellow-600' : 'text-red-600'}`}>
+                      <span className={`font-semibold text-sm ${product.stock > 10 ? 'text-green-600' : product.stock > 0 ? 'text-yellow-600' : 'text-red-600'}`}>
                         {product.stock} unidades
                       </span>
                     </div>
                   </div>
-                  {/* Botones */}
-                  <div className="space-y-2">
 
+                  {/* Botones */}
+                  <div className="space-y-3 pt-4">
                     {isLoggedIn ? (
                       <AddToCartButton
                         product={product}
                         className="w-full"
                       />
                     ) : (
-                      <p>Debes iniciar sesión para armar tu carrito</p>
+                      <div className="text-center py-3 bg-gray-100 rounded-lg">
+                        <p className="text-sm text-gray-600">Inicia sesión para agregar al carrito</p>
+                      </div>
                     )}
 
                     <Link
                       to={`/detalles_producto/${product.id}`}
-                      className="px-6 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105 shadow-lg hover:shadow-xl"
-
+                      className="block w-full bg-brand-redDark hover:from-gray-200 hover:to-gray-300 text-gray-800 px-4 py-3 rounded-lg font-medium transition-all duration-300 text-center text-[#F5F5F5] hover:scale-105 shadow-sm hover:shadow-md"
                     >
-                      Detalles
+                      Ver Detalles
                     </Link>
-
                   </div>
                 </div>
               </div>

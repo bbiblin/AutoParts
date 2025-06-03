@@ -31,11 +31,11 @@ export default function CartPage() {
     };
 
     const subtotal = cartItems.reduce((acc, item) => {
-        if (item.product.discount_percentage > 0 ){
+        if (item.product.discount_percentage > 0) {
             return acc + (item.product?.retail_price_sale || 0) * item.quantity;
 
-        }else{
-        return acc + (item.product?.retail_price || 0) * item.quantity;
+        } else {
+            return acc + (item.product?.retail_price || 0) * item.quantity;
 
         }
     }, 0);
@@ -180,23 +180,23 @@ export default function CartPage() {
                                                     <h3 className="text-sm font-medium text-gray-900 truncate">
                                                         {item.product?.product_name || 'Producto'}
                                                     </h3>
-                                                    
-                                                  <div className="text-right">
-  {item.product.discount_percentage > 0 ? (
-    <>
-      <p className="text-sm text-red-600 mt-1">
-        {formatPrice(item.product?.retail_price_sale || 0)}
-      </p>
-      <p className="text-sm text-gray-500 mt-1 line-through">
-        {formatPrice(item.product?.retail_price || 0)}
-      </p>
-    </>
-  ) : (
-    <p className="text-sm text-gray-500 mt-1">
-      {formatPrice(item.product?.retail_price || 0)}
-    </p>
-  )}
-</div>
+
+                                                    <div className="text-right">
+                                                        {item.product.discount_percentage > 0 ? (
+                                                            <>
+                                                                <p className="text-sm text-red-600 mt-1">
+                                                                    {formatPrice(item.product?.retail_price_sale || 0)}
+                                                                </p>
+                                                                <p className="text-sm text-gray-500 mt-1 line-through">
+                                                                    {formatPrice(item.product?.retail_price || 0)}
+                                                                </p>
+                                                            </>
+                                                        ) : (
+                                                            <p className="text-sm text-gray-500 mt-1">
+                                                                {formatPrice(item.product?.retail_price || 0)}
+                                                            </p>
+                                                        )}
+                                                    </div>
 
                                                 </div>
 
@@ -229,20 +229,20 @@ export default function CartPage() {
                                                 {/* Subtotal */}
                                                 <div className="text-right">
                                                     <div className="text-right">
-                                                    {item.product.discount_percentage > 0 ? (
-                                                        <>
-                                                        <p className="text-sm text-red-600 mt-1">
-                                                            {formatPrice(item.product?.retail_price_sale || 0)}
-                                                        </p>
-                                                        <p className="text-sm text-gray-500 mt-1 line-through">
-                                                            {formatPrice(item.product?.retail_price || 0)}
-                                                        </p>
-                                                        </>
-                                                    ) : (
-                                                        <p className="text-sm text-gray-500 mt-1">
-                                                        {formatPrice(item.product?.retail_price || 0)}
-                                                        </p>
-                                                    )}
+                                                        {item.product.discount_percentage > 0 ? (
+                                                            <>
+                                                                <p className="text-sm text-red-600 mt-1">
+                                                                    {formatPrice(item.product?.retail_price_sale || 0)}
+                                                                </p>
+                                                                <p className="text-sm text-gray-500 mt-1 line-through">
+                                                                    {formatPrice(item.product?.retail_price || 0)}
+                                                                </p>
+                                                            </>
+                                                        ) : (
+                                                            <p className="text-sm text-gray-500 mt-1">
+                                                                {formatPrice(item.product?.retail_price || 0)}
+                                                            </p>
+                                                        )}
                                                     </div>
 
                                                 </div>

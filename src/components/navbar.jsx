@@ -15,26 +15,42 @@ export default function Navbar() {
     setIsMenuOpen(false);
   };
 
+  // Determinar si es distribuidor
+  const isDistributor = user?.isDistribuitor;
+
+  // Colores dinámicos basados en tipo de usuario
+  const navbarBg = isDistributor ? 'bg-[#D72638]' : 'bg-[#1F3A93]';
+  const hoverBg = isDistributor ? 'hover:bg-red-700' : 'hover:bg-blue-800';
+  const hoverText = isDistributor ? 'hover:text-red-200' : 'hover:text-blue-300';
+  const underlineColor = isDistributor ? 'bg-white' : 'bg-[#BB2F3D]';
+
   // Generar items dinámicamente según tipo de usuario
   const navItems = [
     { title: "Inicio", to: "/" },
     {
-      title: user?.isDistribuitor ? "Catálogo Mayorista" : "Catálogo",
-      to: user?.isDistribuitor ? "/catalogo_mayorista" : "/productos"
+      title: isDistributor ? "Catálogo Mayorista" : "Catálogo",
+      to: isDistributor ? "/catalogo_mayorista" : "/productos"
     },
     { title: "Productos destacados", to: "/productos_destacados" },
     { title: "Sobre nosotros", to: "/aboutUs" },
-
   ];
 
   return (
-    <nav className="bg-[#1F3A93] shadow-lg border-b border-[#F5F5F5] sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+    <nav className={`${navbarBg} shadow-lg border-b border-[#F5F5F5] sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 transition-colors duration-500`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-[#F5F5F5] hover:text-[#D72638]-300 transition-colors duration-300">
-              AutoParts
+            <Link
+              to="/"
+              className={`text-2xl font-bold text-[#F5F5F5] ${hoverText} transition-all duration-300 flex items-center space-x-2`}
+            >
+              <span>AutoParts</span>
+              {isDistributor && (
+                <span className="text-lg bg-white text-red-600 px-2 py-1 rounded-md font-semibold animate-pulse">
+                  Mayoristas
+                </span>
+              )}
             </Link>
           </div>
 
@@ -45,10 +61,10 @@ export default function Navbar() {
                 <Link
                   key={item.title}
                   to={item.to}
-                  className="relative text-[#F5F5F5] hover:text-blue-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-blue-800 group"
+                  className={`relative text-[#F5F5F5] ${hoverText} px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 ${hoverBg} group`}
                 >
                   <span className="relative z-10">{item.title}</span>
-                  <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#BB2F3D] group-hover:w-full transition-all duration-300"></span>
+                  <span className={`absolute bottom-0 left-0 h-0.5 w-0 ${underlineColor} group-hover:w-full transition-all duration-300`}></span>
                 </Link>
               ))}
             </div>
@@ -60,12 +76,14 @@ export default function Navbar() {
 
             {isLoggedIn ? (
               <>
-                <span className="text-[#F5F5F5] text-sm font-medium">
-                  ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
-                </span>
+                <div className="flex items-center space-x-2">
+                  <span className="text-[#F5F5F5] text-sm font-medium">
+                    ¡Hola, {user.username}!
+                  </span>
+                </div>
                 <button
                   onClick={handleLogout}
-                  className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className={`${isDistributor ? 'bg-brand-darBlue text-[#F5F5F5]' : 'bg-[#D72638] text-[#F5F5F5] hover:bg-[#BB2F3D]'} px-6 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
                 >
                   Cerrar sesión
                 </button>
@@ -80,7 +98,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/users/register"
-                  className="bg-[#D72638] text-[#F5F5F5] px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#BB2F3D] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className={`${isDistributor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-[#D72638] text-[#F5F5F5] hover:bg-[#BB2F3D]'} px-6 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
                 >
                   Regístrate
                 </Link>
@@ -93,7 +111,7 @@ export default function Navbar() {
             <CartIcon />
             <button
               onClick={toggleMenu}
-              className="text-[#F5F5F5] hover:text-blue-300 focus:outline-none focus:text-blue-300 p-2 rounded-lg transition-colors duration-300"
+              className={`text-[#F5F5F5] ${hoverText} focus:outline-none p-2 rounded-lg transition-colors duration-300`}
               aria-label="Toggle menu"
             >
               <svg
@@ -120,13 +138,13 @@ export default function Navbar() {
           : "max-h-0 opacity-0 -translate-y-2 overflow-hidden"
           }`}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-[#1F3A93] border-t border-[#F5F5F5] shadow-lg">
+        <div className={`px-2 pt-2 pb-3 space-y-1 ${navbarBg} border-t border-[#F5F5F5] shadow-lg`}>
           {navItems.map((item) => (
             <Link
               key={item.title}
               to={item.to}
               onClick={() => setIsMenuOpen(false)}
-              className="text-[#F5F5F5] hover:text-blue-300 hover:bg-blue-800 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300"
+              className={`text-[#F5F5F5] ${hoverText} ${hoverBg} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300`}
             >
               {item.title}
             </Link>
@@ -137,11 +155,11 @@ export default function Navbar() {
             {isLoggedIn ? (
               <>
                 <div className="text-[#F5F5F5] px-4 py-2 text-center font-medium">
-                  ¡Hola, {user?.name || user?.email?.split('@')[0] || 'Usuario'}!
+                  <div>¡Hola, {user.username}!</div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full bg-[#D72638] text-[#F5F5F5] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#BB2F3D] transition-all duration-300 shadow-lg"
+                  className={`w-full ${isDistributor ? 'bg-brand-darBlue text-[#F5F5F5]' : 'bg-[#D72638] text-[#F5F5F5] hover:bg-[#BB2F3D]'} px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 shadow-lg`}
                 >
                   Cerrar sesión
                 </button>
@@ -158,7 +176,7 @@ export default function Navbar() {
                 <Link
                   to="/users/register"
                   onClick={() => setIsMenuOpen(false)}
-                  className="w-full bg-[#D72638] text-[#F5F5F5] px-4 py-3 rounded-lg text-base font-medium hover:bg-[#BB2F3D] transition-all duration-300 shadow-lg block text-center"
+                  className={`w-full ${isDistributor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-[#D72638] text-[#F5F5F5] hover:bg-[#BB2F3D]'} px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 shadow-lg block text-center`}
                 >
                   Regístrate
                 </Link>
