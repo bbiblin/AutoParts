@@ -1,9 +1,10 @@
 // src/pages/CartPage.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { data, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useCart } from '../contexts/cartContext';
 import { useAuth } from '../contexts/authContext';
+import axios from 'axios';
 
 export default function CartPage() {
     const {
@@ -17,10 +18,16 @@ export default function CartPage() {
 
     const { isLoggedIn } = useAuth();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [urlWebPay, setUrlWebPay] = useState('');
+    const [tokenWebPay, setTokenWebPay] = useState('');
 
     useEffect(() => {
         console.log('token:' + Cookies.get('authToken'));
         console.log('userId: ' + Cookies.get('user_id'));
+    }, []);
+
+    useEffect(() => {
+        Cookies.set('cart_items', cartItems);
     }, []);
 
     const formatPrice = (price) => {
@@ -50,24 +57,34 @@ export default function CartPage() {
 
     const handleCheckout = async () => {
         if (!isLoggedIn) {
-            // Redirigir al login si no está autenticado
             return;
         }
 
         setIsProcessing(true);
         try {
-            // Aquí implementarías la lógica de checkout
-            console.log('Procesando compra...');
-            // Simulación de proceso
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            alert('¡Compra realizada con éxito!');
-            clearCart();
+            const user_id = Cookies.get('user_id');
+            console.log('Procesando compra para usuario:', user_id);
+            
+            const response = await axios.post("http://localhost:5374/webpay/create-order", {
+                user_id: user_id
+            });
+            
+            if (response.data?.success && response.data?.webpay) {
+                const { url, token } = response.data.webpay;
+                console.log('Redirigiendo a WebPay...');
+                
+                // Redirección directa a WebPay
+                window.location.href = `${url}?token_ws=${token}`;
+            } else {
+                throw new Error('Respuesta inválida del servidor');
+            }
+            
         } catch (error) {
-            console.error('Error en el checkout:', error);
-            alert('Error al procesar la compra');
-        } finally {
+            console.error('Error en checkout:', error);
+            alert('Error al procesar la compra: ' + (error.response?.data?.error || error.message));
             setIsProcessing(false);
         }
+        // No ponemos finally aquí porque la página se va a redireccionar
     };
 
     if (isLoading) {
@@ -321,12 +338,7 @@ export default function CartPage() {
                                     )}
 
                                     <div className="mt-6 text-center">
-                                        <Link
-                                            to="/productos"
-                                            className="text-[#1F3A93] hover:text-blue-800 text-sm font-medium transition-colors duration-300"
-                                        >
-                                            ← Continuar comprando
-                                        </Link>
+                                        
                                     </div>
                                 </div>
                             </div>

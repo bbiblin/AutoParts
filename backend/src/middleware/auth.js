@@ -1,12 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (ctx, next) => {
-    console.log('=== AUTH MIDDLEWARE DEBUG ===');
-    console.log('Headers:', ctx.headers);
-    console.log('Authorization header:', ctx.headers.authorization);
     
     const token = ctx.headers.authorization?.split(' ')[1];
-    console.log('Token extraído:', token);
     
     if (!token) {
         console.log('❌ No hay token');
@@ -18,7 +14,6 @@ module.exports = async (ctx, next) => {
     try {
         const SECRET = process.env.JWT_SECRET || 'clave'
         const decoded = jwt.verify(token, SECRET);
-        console.log('✅ Token decodificado:', decoded);
         
         ctx.state.user = decoded; // Guardamos el usuario decodificado
         console.log('✅ ctx.state.user establecido:', ctx.state.user);

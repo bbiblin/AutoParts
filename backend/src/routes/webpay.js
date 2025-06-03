@@ -1,17 +1,22 @@
 // routes/webpay.js
 const Router = require('koa-router');
-const { pedidos, detalle_pedido, cart, cart_item } = require('../models');
-const webpayService = require('../services/webpayService');
+const { pedidos, detalle_pedido, cart, cart_item, producto } = require('../models');
+const WebpayPlus = require('transbank-sdk').WebpayPlus;
+const { Options, IntegrationApiKeys, Environment, IntegrationCommerceCodes } = require("transbank-sdk"); 
 
-const router = new Router({ prefix: '/api/webpay' });
+const router = new Router();
 
 /**
  * Crear pedido desde carrito y generar transacción WebPay
  * POST /api/webpay/create-order
  */
 router.post('/create-order', async (ctx) => {
+    console.log("Llamando a crear orden");
     try {
+        console.log('Endpoint /create-order llamado');
+        console.log('Body recibido:', ctx.request.body);
         const { user_id, shipping_cost = 0, origen = 'web' } = ctx.request.body;
+
 
         if (!user_id) {
             ctx.status = 400;
@@ -21,7 +26,7 @@ router.post('/create-order', async (ctx) => {
 
         // Buscar carrito del usuario con items
         const userCart = await cart.findOne({
-            where: { user_id },
+            where: { user_id: user_id },
             include: [
                 {
                     association: 'cart_items',
@@ -38,7 +43,12 @@ router.post('/create-order', async (ctx) => {
 
         // Calcular subtotal
         const subtotal = userCart.cart_items.reduce((total, item) => {
-            return total + (item.precio_unitario * item.quantity);
+            if (item.product.discount_percentage > 0) {
+                return total + (item.product.retail_price_sale * item.quantity);
+            } else {
+                return total + (item.precio_unitario * item.quantity);
+            }
+            
         }, 0);
 
         const totalAmount = subtotal + shipping_cost;
@@ -54,12 +64,25 @@ router.post('/create-order', async (ctx) => {
             subtotal: subtotal,
             shipping_cost: shipping_cost,
             metodo_pago: 1, // 1 = WebPay
-            origen: origen
+            origen: origen,
+            is_pickup: true,
+            fecha_pedido: Date.now(),
+            precio_total: subtotal
         });
 
         // Crear detalles del pedido
         for (const item of userCart.cart_items) {
-            await detalle_pedido.create({
+            if (item.product.discount_percentage > 0) {
+                await detalle_pedido.create({
+                pedido_id: nuevoPedido.id,
+                product_id: item.product_id,
+                cantidad: item.quantity,
+                precio_unitario: item.product.retail_price_sale,
+                subtotal: item.product.retail_price_sale * item.quantity,
+                descuento_linea: 0
+            });
+            } else {
+                await detalle_pedido.create({
                 pedido_id: nuevoPedido.id,
                 product_id: item.product_id,
                 cantidad: item.quantity,
@@ -67,17 +90,18 @@ router.post('/create-order', async (ctx) => {
                 subtotal: item.precio_unitario * item.quantity,
                 descuento_linea: 0
             });
+            }
+            
         }
 
         // Generar session_id único
         const sessionId = `SID-${user_id}-${Date.now()}`;
 
         // Crear transacción WebPay
-        const webpayTransaction = await webpayService.createTransaction({
-            pedidoId: nuevoPedido.id,
-            amount: totalAmount,
-            sessionId: sessionId
-        });
+        const webpayTransaction = new WebpayPlus.Transaction(new Options(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, Environment.Integration));
+        
+        const returnUrl = "http://localhost:3000/webpay/confirm"
+        const response = await webpayTransaction.create(codPedido, sessionId, totalAmount, returnUrl);
 
         // Limpiar carrito después de crear el pedido
         await cart_item.destroy({
@@ -94,11 +118,14 @@ router.post('/create-order', async (ctx) => {
                 total: totalAmount
             },
             webpay: {
-                token: webpayTransaction.token,
-                url: webpayTransaction.url,
-                buyOrder: webpayTransaction.buyOrder
+                token: response.token,
+                url: response.url,
+                buyOrder: codPedido
             }
         };
+
+        console.log('Resp webpay: ' + response)
+        console.log('Body retorno webpay: ' + ctx.body);
 
     } catch (error) {
         console.error('Error creating order:', error);
@@ -115,42 +142,63 @@ router.post('/create-order', async (ctx) => {
  * POST /api/webpay/confirm
  */
 router.post('/confirm', async (ctx) => {
+    const { token_ws } = ctx.request.body;
+
+    if (!token_ws) {
+        ctx.status = 400;
+        ctx.body = { error: 'Token WebPay es requerido' };
+        return;
+    }
+
+    const tx = new WebpayPlus.Transaction(new Options(
+        IntegrationCommerceCodes.WEBPAY_PLUS,
+        IntegrationApiKeys.WEBPAY,
+        Environment.Integration
+    ));
+
     try {
-        const { token_ws } = ctx.request.body;
+        const response = await tx.commit(token_ws);
 
-        if (!token_ws) {
-            ctx.status = 400;
-            ctx.body = { error: 'Token WebPay es requerido' };
-            return;
-        }
+        if (response.status === 'AUTHORIZED') {
+            const pedido = await pedidos.findOne({ where: {
+                cod_pedido: response.buy_order
+            }, include: [{ model: detalle_pedido, as: 'detalles_pedido', include: [{
+                model: producto,
+                as: 'product'
+            }] }]
+        });
 
-        // Confirmar transacción
-        const confirmation = await webpayService.confirmTransaction(token_ws);
+            if (pedido) {
+                for (const item of pedido.detalles_pedido) {
+                    console.log('Producto:', item.product);
+                    const product = item.product;
+                    const nuevaCantidad = product.stock - item.cantidad;
+                    await product.update({ stock: nuevaCantidad });
+                }
 
-        ctx.body = {
-            success: confirmation.success,
-            pedido: {
-                id: confirmation.pedido.id,
-                cod_pedido: confirmation.pedido.cod_pedido,
-                state: confirmation.pedido.state,
-                total: confirmation.webpayResponse.amount
-            },
-            webpay: {
-                authorizationCode: confirmation.authorizationCode,
-                amount: confirmation.amount,
-                success: confirmation.success
+                await pedido.update({ state: 'pagado' }); // opcional: marcar como pagado
             }
-        };
-
+        }
+        ctx.body = { webpay: response };
     } catch (error) {
-        console.error('Error confirming payment:', error);
-        ctx.status = 500;
-        ctx.body = {
-            error: 'Error al confirmar pago',
-            details: error.message
-        };
+        // Si ya fue confirmado, se puede consultar estado
+        if (error.message.includes('Transaction already locked')) {
+            try {
+                const fallbackResponse = await tx.status(token_ws);
+                ctx.body = { webpay: fallbackResponse };
+            } catch (fallbackError) {
+                console.error('Error en fallback status:', fallbackError);
+                ctx.status = 500;
+                ctx.body = { error: 'Error al consultar estado de transacción', details: fallbackError.message };
+            }
+        } else {
+            console.error('Error confirming payment:', error);
+            ctx.status = 500;
+            ctx.body = { error: 'Error al confirmar pago', details: error.message };
+        }
     }
 });
+
 
 /**
  * Obtener estado de transacción
@@ -158,13 +206,28 @@ router.post('/confirm', async (ctx) => {
  */
 router.get('/status/:token', async (ctx) => {
     try {
-        const { token } = ctx.params;
+        const { token } = ctx.params.token;
 
-        const status = await webpayService.getTransactionStatus(token);
+        const tx = new WebpayPlus.Transaction(new Options(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, Environment.Integration));
+        const response = await tx.status(token);
 
         ctx.body = {
-            success: true,
-            status: status
+            webpay: {
+                vci: response.vci,
+                amount: response.amount,
+                status: response.status,
+                buy_order: response.buy_order,
+                session_id: response.session_id,
+                card_detail: response.card_detail,
+                accounting_date: response.accounting_date,
+                transaction_date: response.transaction_date,
+                authorization_code: response.authorization_code,
+                payment_type_code: response.payment_type_code,
+                response_code: response.response_code,
+                installments_amount: response.installments_amount,
+                installments_number: response.installments_number,
+                balance: response.balance
+            }
         };
 
     } catch (error) {
@@ -172,76 +235,6 @@ router.get('/status/:token', async (ctx) => {
         ctx.status = 500;
         ctx.body = {
             error: 'Error al obtener estado de transacción',
-            details: error.message
-        };
-    }
-});
-
-/**
- * Anular transacción
- * POST /api/webpay/refund
- */
-router.post('/refund', async (ctx) => {
-    try {
-        const { token, amount } = ctx.request.body;
-
-        if (!token || !amount) {
-            ctx.status = 400;
-            ctx.body = { error: 'Token y monto son requeridos' };
-            return;
-        }
-
-        const refund = await webpayService.refundTransaction(token, amount);
-
-        ctx.body = {
-            success: refund.success,
-            refund: refund.response
-        };
-
-    } catch (error) {
-        console.error('Error refunding transaction:', error);
-        ctx.status = 500;
-        ctx.body = {
-            error: 'Error al anular transacción',
-            details: error.message
-        };
-    }
-});
-
-/**
- * Obtener pedido por ID
- * GET /api/webpay/order/:id
- */
-router.get('/order/:id', async (ctx) => {
-    try {
-        const { id } = ctx.params;
-
-        const pedido = await pedidos.findByPk(id, {
-            include: [
-                {
-                    association: 'detalles_pedido',
-                    include: ['product']
-                },
-                { association: 'user' }
-            ]
-        });
-
-        if (!pedido) {
-            ctx.status = 404;
-            ctx.body = { error: 'Pedido no encontrado' };
-            return;
-        }
-
-        ctx.body = {
-            success: true,
-            pedido: pedido
-        };
-
-    } catch (error) {
-        console.error('Error getting order:', error);
-        ctx.status = 500;
-        ctx.body = {
-            error: 'Error al obtener pedido',
             details: error.message
         };
     }

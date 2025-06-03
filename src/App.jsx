@@ -11,6 +11,7 @@ import Destacados from './pages/productosDestacados';
 import DetallesProducto from './pages/detalleProducto';
 import CatalogoMayorista from './pages/catalogoMayorista';
 import AboutUs from './pages/aboutUs';
+import WebPayConfirm from './pages/webpayConfirm';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import '../src/index.css';
@@ -31,6 +32,8 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/detalles_producto/:id" element={<DetallesProducto />} />
           <Route path="/aboutUs" element={<AboutUs />} />
+          <Route path="/webpay/confirm" element={<WebPayConfirm />} />
+
 
           <Route path="/catalogo_mayorista"
             element={

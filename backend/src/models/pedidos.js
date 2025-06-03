@@ -25,6 +25,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    fecha_pedido: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    precio_total: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -45,39 +53,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // Nuevos campos para WebPay
-    webpay_token: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    webpay_session_id: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    webpay_status: {
-      type: DataTypes.ENUM('PENDING', 'AUTHORIZED', 'FAILED', 'NULLIFIED'),
-      allowNull: true,
-      defaultValue: 'PENDING',
-    },
-    webpay_amount: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    webpay_buy_order: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    webpay_authorization_code: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    webpay_response_code: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    webpay_transaction_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    is_pickup: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     },
   }, {
     sequelize,

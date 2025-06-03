@@ -19,5 +19,6 @@ app.use(KoaLogger());
 app.use(koaBody());
 
 app.use(router.routes());
+app.use(router.allowedMethods());
 
 module.exports = app;

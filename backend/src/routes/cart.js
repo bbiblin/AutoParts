@@ -53,9 +53,6 @@ router.get('/', authenticateToken, async (ctx) => {
 // Agregar producto al carrito
 router.post('/add', authenticateToken, async (ctx) => {
     try {
-        console.log('=== DEBUG CARRITO ===');
-        console.log('ctx.state.user:', ctx.state.user);
-        console.log('ctx.request.body:', ctx.request.body);
 
         const { product_id, quantity = 1 } = ctx.request.body;
 
@@ -93,16 +90,12 @@ router.post('/add', authenticateToken, async (ctx) => {
             return;
         }
 
-        console.log('Producto encontrado:', productFound.product_name);
-
         // Obtener o crear carrito
         let carrito = await cart.findOne({ where: { user_id: userId } });
         if (!carrito) {
             console.log('Creando nuevo carrito para usuario:', userId);
             carrito = await cart.create({ user_id: userId });
         }
-
-        console.log('Carrito ID:', carrito.id);
 
         // Verificar si el producto ya está en el carrito
         let cartItem = await cart_item.findOne({

@@ -14,6 +14,6 @@ router.use('/categories', categories_routes.routes());
 router.use('/brands', brands_routes.routes());
 router.use('/users', users_routes.routes());
 router.use('/cart', cart_routes.routes());
-router.use('/webpay', cart_routes.routes());
+router.use('/webpay', webpay_routes.routes());
 
 module.exports = router;

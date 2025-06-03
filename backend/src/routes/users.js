@@ -24,7 +24,6 @@ router.get('/distribuitor', async (ctx) => {
 // Registro de usuario
 router.post('/register', async (ctx) => {
   try {
-    console.log(ctx.request.body);
     const { email, password, username, name, address, phone, isDistribuitor } = ctx.request.body;
 
     // Validaciones básicas
@@ -91,7 +90,6 @@ router.get('/', async (ctx) => {
 
 // Login de users 
 router.post('/login', async (ctx) => {
-  console.log("Intento de login");
   try {
     const { email, password } = ctx.request.body;
 
@@ -113,9 +111,6 @@ router.post('/login', async (ctx) => {
 
     // CORREGIDO: await bcrypt.compare
     const validPass = await bcrypt.compare(password, user.password);
-
-    console.log("Usuario encontrado:", user.email);
-    console.log("Contraseña válida:", validPass);
 
     if (validPass) {
       console.log("Login exitoso");

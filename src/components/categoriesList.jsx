@@ -7,7 +7,7 @@ export default function CategoriesList({ valueCategory, valueBrand, onChangeCate
 
   const getBrands = async () => {
     try {
-      const res = await axios.get("https://autoparts-i2gt.onrender.com/brands");
+      const res = await axios.get("http://localhost:5374/brands");
       setAllBrands(res.data);
     } catch (error) {
       console.error('Error al obtener marcas:', error);
@@ -16,7 +16,7 @@ export default function CategoriesList({ valueCategory, valueBrand, onChangeCate
 
   const getCategories = async () => {
     try {
-      const res = await axios.get("https://autoparts-i2gt.onrender.com/categories");
+      const res = await axios.get("http://localhost:5374/categories");
       setAllCategories(res.data);
     } catch (error) {
       console.error('Error al obtener categorias:', error);

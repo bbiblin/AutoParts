@@ -44,8 +44,7 @@ export const AuthProvider = ({ children }) => {
     const login = (userData, token) => {
         setUser(userData);
         setIsLoggedIn(true);
-        console.log(token);
-
+        
         const decoded_token = jwtDecode(token);
 
         if (decoded_token.exp) {
