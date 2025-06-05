@@ -1,6 +1,7 @@
-<<<<<<< HEAD
+
+
+***Proyecto Integración de Plataformas***
 Deploy: https://autoparts-frontend.onrender.com/
-Proyecto Integración de Plataformas
 Caso semestral: AutoParts
 Tecnologías utilizadas: React, Node.Js, PostgreSQL, Koa (para las rutas), Sequelizer
 Integrantes: Belen Díaz, Isaías Vejar, Lucero Leyva 
