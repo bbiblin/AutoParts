@@ -28,7 +28,7 @@ export const CartProvider = ({ children }) => {
     const loadCart = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('http://localhost:5374/cart', {
+            const response = await axios.get('https://autoparts-i2gt.onrender.com/cart', {
                 headers: {
                     'Authorization': `Bearer ${Cookies.get('authToken')}`
                 }
@@ -48,7 +48,7 @@ export const CartProvider = ({ children }) => {
     const addToCart = async (product, quantity = 1) => {
         try {
             if (isLoggedIn) {
-                await axios.post('http://localhost:5374/cart/add', {
+                await axios.post('https://autoparts-i2gt.onrender.com/cart/add', {
                     product_id: product.id,
                     quantity: quantity
                 }, {
@@ -82,7 +82,7 @@ export const CartProvider = ({ children }) => {
                 setCartItems(updatedItems);
 
                 // Luego hacer la petición al servidor
-                await axios.put(`http://localhost:5374/cart/update/${itemId}`, {
+                await axios.put(`https://autoparts-i2gt.onrender.com/cart/update/${itemId}`, {
                     quantity: newQuantity
                 }, {
                     headers: {
@@ -103,7 +103,7 @@ export const CartProvider = ({ children }) => {
     const removeFromCart = async (itemId) => {
         try {
             if (isLoggedIn) {
-                await axios.delete(`http://localhost:5374/cart/remove/${itemId}`, {
+                await axios.delete(`https://autoparts-i2gt.onrender.com/cart/remove/${itemId}`, {
                     headers: {
                         'Authorization': `Bearer ${Cookies.get('authToken')}`
                     }
@@ -119,7 +119,7 @@ export const CartProvider = ({ children }) => {
     const clearCart = async () => {
         try {
             if (isLoggedIn) {
-                await axios.delete('http://localhost:5374/cart/clear', {
+                await axios.delete('https://autoparts-i2gt.onrender.com/cart/clear', {
                     headers: {
                         'Authorization': `Bearer ${Cookies.get('authToken')}`
                     }

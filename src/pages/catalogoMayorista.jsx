@@ -18,13 +18,13 @@ export default function Productos() {
       setLoading(true);
       let url = '';
       if (category && !brand) {
-        url = `http://localhost:5374/productos?category_id=${category}`;
+        url = `https://autoparts-i2gt.onrender.com/productos?category_id=${category}`;
       } else if (!category && brand) {
-        url = `http://localhost:5374/productos?brand_id=${brand}`;
+        url = `https://autoparts-i2gt.onrender.com/productos?brand_id=${brand}`;
       } else if (category && brand) {
-        url = `http://localhost:5374/productos?brand_id=${brand}&category_id=${category}`;
+        url = `https://autoparts-i2gt.onrender.com/productos?brand_id=${brand}&category_id=${category}`;
       } else {
-        url = "http://localhost:5374/productos";
+        url = "https://autoparts-i2gt.onrender.com/productos";
       }
 
       const res = await axios.get(url);
