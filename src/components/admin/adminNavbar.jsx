@@ -31,7 +31,7 @@ export default function AdminNavbar() {
           {/* Logo del Admin */}
           <div className="flex-shrink-0">
             <Link
-              to="/admin/adminHome"
+              to="/adminHome"
               className="text-m font-bold text-[#FFFF] hover:text-[#a0a0a0] transition-all duration-300 flex items-center space-x-2"
             >
               <span>AutoParts - Panel de administrador</span>
