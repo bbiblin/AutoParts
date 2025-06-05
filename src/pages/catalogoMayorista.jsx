@@ -288,19 +288,8 @@ export default function Productos() {
               <h3 className="text-2xl font-bold text-[#1e293b] mb-4">
                 ¿No encontraste lo que buscabas?
               </h3>
-              <p className="text-[#475569] mb-6 max-w-md mx-auto">
-                Contáctanos y te ayudaremos a encontrar el repuesto perfecto para ti
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/contacto"
-                  className="inline-flex items-center bg-brand-redDark  text-[#ffff] font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  Contáctanos
-                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </Link>
+              
+            
                 <Link
                   to="/productos_destacados"
                   className="inline-flex items-center bg-gradient-to-r from-[#f1f5f9] to-[#e2e8f0] hover:from-[#e2e8f0] hover:to-[#cbd5e1] text-[#334155] font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
