@@ -301,7 +301,6 @@ export default function Productos() {
                 </Link>
               </div>
             </div>
-          </div>
         )}
       </div>
     </div>
