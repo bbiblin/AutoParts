@@ -9,9 +9,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    emptyOutDir: true
+    emptyOutDir: true,
+    assetsDir: 'assets',
   },
   server: {
+    mimeTypes: {
+      '.js': 'application/javascript',
+      '.css': 'text/css'
+    }
     port: 3000,
     host: true
   }
