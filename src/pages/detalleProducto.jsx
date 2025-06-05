@@ -123,7 +123,7 @@ export default function DetalleProducto() {
 
                             <div className="space-y-6 mb-10">
 
-}                                <div className="p-6 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg" style={{ borderColor: '#e5e7eb', backgroundColor: '#f8fafc' }}>
+                                <div className="p-6 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg" style={{ borderColor: '#e5e7eb', backgroundColor: '#f8fafc' }}>
                                     <div className="flex items-center justify-between mb-3">
                                         <div className="flex items-center">
                                             <div className="w-3 h-3 rounded-full mr-3" style={{ backgroundColor: '#3b82f6' }}></div>
