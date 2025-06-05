@@ -18,7 +18,7 @@ const WebPayConfirm = () => {
 
     const confirmPayment = async () => {
       try {
-        const response = await axios.post('http://localhost:5374/webpay/confirm', {
+        const response = await axios.post('https://autoparts-i2gt.onrender.com/webpay/confirm', {
           token_ws
         });
         setPaymentResult(response.data.webpay);

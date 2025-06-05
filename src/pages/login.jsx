@@ -18,11 +18,11 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, isLoggedIn, user } = useAuth();
 
-  // Redirigir si ya está logueado - mejorada la lógica
+  // Redirigir si ya está logueado
   useEffect(() => {
     if (isLoggedIn && user) {
       if (user.isAdmin === true) {
-        navigate("/admin/dashboard");
+        navigate("/adminHome");
       } else if (user.isDistribuitor === true) {
         navigate("/catalogo_mayorista");
       } else {
@@ -58,7 +58,7 @@ export default function Login() {
       };
 
       console.log("Data: ", userData);
-      const response = await axios.post("http://localhost:5374/users/login", userData);
+      const response = await axios.post("https://autoparts-i2gt.onrender.com/users/login", userData);
 
       if (response.data) {
         console.log("Response:", response.data);
@@ -72,8 +72,7 @@ export default function Login() {
         const tokensito = localStorage.getItem("authToken");
         setToken(tokensito);
 
-        // La redirección ahora se maneja en el contexto
-        // No necesitamos navigate("/") aquí
+       
       }
     } catch (error) {
       console.error("Ha ocurrido un error", error);
@@ -97,7 +96,7 @@ export default function Login() {
         }`}
     >
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-[#1E1E1E] mb-2">
             Iniciar Sesión
@@ -107,14 +106,14 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Error Message */}
+        
         {error && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
 
-        {/* Form */}
+        
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
@@ -158,19 +157,9 @@ export default function Login() {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center">
-              <input
-                type="checkbox"
-                className="h-4 w-4 text-[#D72638] focus:ring-[#D72638] border-gray-300 rounded"
-                disabled={isLoading}
-              />
-              <span className="ml-2 text-sm text-[#555555]">Recordarme</span>
+            
+
             </label>
-            <Link
-              to="/forgot-password"
-              className="text-sm text-[#D72638] hover:text-[#BB2F3D] font-medium transition-colors"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
           </div>
 
           <button
@@ -192,14 +181,14 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Divider */}
+        
         <div className="my-6 flex items-center">
           <div className="flex-1 border-t border-gray-300"></div>
           <span className="px-4 text-sm text-[#555555]">o</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
-        {/* Register Link */}
+        
         <div className="text-center">
           <p className="text-sm text-[#555555]">
             ¿No tienes una cuenta?{" "}
@@ -212,7 +201,7 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Back to Home */}
+        
         <div className="mt-8 text-center">
           <Link
             to="/"

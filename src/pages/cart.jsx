@@ -64,7 +64,7 @@ export default function CartPage() {
             const user_id = Cookies.get('user_id');
             console.log('Procesando compra para usuario:', user_id);
 
-            const response = await axios.post("http://localhost:5374/webpay/create-order", {
+            const response = await axios.post("https://autoparts-i2gt.onrender.com/webpay/create-order", {
                 user_id: user_id
             });
 

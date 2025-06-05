@@ -24,7 +24,8 @@ router.get('/distribuitor', async (ctx) => {
 // Registro de usuario
 router.post('/register', async (ctx) => {
   try {
-    const { email, password, username, name, address, phone, admin, isDistribuitor } = ctx.request.body;
+    const { email, password, username, name, address, phone, isDistribuitor } = ctx.request.body;
+    let { admin } = ctx.request.body;
     if (!admin){
       admin = false;
     }
@@ -146,5 +147,27 @@ router.post('/login', async (ctx) => {
     ctx.body = { error: 'Error interno del servidor' };
   }
 });
+
+router.delete('/:id', async (ctx) => {
+    try {
+        const deleted_user = await User.destroy({ where: { id: ctx.params.id } });
+        if (deleted_user) {
+            ctx.status = 200;
+            const msg = " Usuario eliminado correctamente";
+            ctx.body = { message: msg };
+            console.log(msg);
+        }
+        else {
+            ctx.status = 404;
+            ctx.body = { error: 'Usuario no encontrado' };
+        }
+    }
+    catch (error) {
+        console.error(error);
+        ctx.status = 500;
+        ctx.body = { error: error.message };
+    }
+});
+
 
 module.exports = router;

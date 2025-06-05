@@ -6,6 +6,7 @@ const users_routes = require('./routes/users');
 const cart_routes = require('./routes/cart');
 const webpay_routes = require('./routes/webpay');
 const email_routes = require('./routes/email');
+const pedidos_routes = require('./routes/pedidos');
 
 
 
@@ -17,6 +18,7 @@ router.use('/users', users_routes.routes());
 router.use('/cart', cart_routes.routes());
 router.use('/webpay', webpay_routes.routes());
 router.use('/email', email_routes.routes());
+router.use('/pedidos', pedidos_routes.routes());
 
 
 module.exports = router;

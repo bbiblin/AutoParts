@@ -66,7 +66,7 @@ export default function CartPage() {
             const user_id = Cookies.get('user_id');
             console.log('Procesando compra para usuario:', user_id);
 
-            const response = await axios.post("http://localhost:5374/email/enviarEmail", {
+            const response = await axios.post("https://autoparts-i2gt.onrender.com/email/enviarEmail", {
                 email: user.email,
                 nombre: user.name,
                 user_id: user.id

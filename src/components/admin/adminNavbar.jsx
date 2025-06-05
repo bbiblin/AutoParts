@@ -16,11 +16,12 @@ export default function AdminNavbar() {
 
   // Items de navegación para admin
   const navItems = [
-    { title: "Dashboard", to: "/adminHome"},
+    { title: "Inicio", to: "/adminHome"},
     { title: "Productos", to: "/adminProductos"},
-    { title: "Categorías", to: "/admin/categorias"},
-    { title: "Usuarios", to: "/admin/usuarios"},
-    { title: "Pedidos", to: "/admin/pedidos"},
+    { title: "Categorías", to: "/adminCategories"},
+    { title: "Marcas", to: "/adminBrands"},
+    { title: "Usuarios", to: "/adminUsuarios"},
+    { title: "Pedidos", to: "/adminPedidos"},
   ];
 
   return (

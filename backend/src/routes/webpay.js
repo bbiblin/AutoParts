@@ -166,7 +166,7 @@ router.post('/confirm', async (ctx) => {
                 model: producto,
                 as: 'product'
             }] }]
-        });
+            });
 
             if (pedido) {
                 for (const item of pedido.detalles_pedido) {
@@ -178,6 +178,17 @@ router.post('/confirm', async (ctx) => {
 
                 await pedido.update({ state: 'pagado' }); // opcional: marcar como pagado
             }
+        } else if (response.status === 'FAILED'){
+            const pedido = await pedidos.findOne({ where: {
+                cod_pedido: response.buy_order
+            }, include: [{ model: detalle_pedido, as: 'detalles_pedido', include: [{
+                model: producto,
+                as: 'product'
+            }] }]
+            });
+
+            await pedido.update({ state: 'Rechazado' }); // opcional: marcar como pagado
+            
         }
         ctx.body = { webpay: response };
     } catch (error) {

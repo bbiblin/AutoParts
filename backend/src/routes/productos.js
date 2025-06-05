@@ -131,60 +131,22 @@ router.delete('/:id', async (ctx) => {
 router.patch('/:id', async (ctx) => {
     try {
         const prod = await producto.findByPk(ctx.params.id);
-        
-        if (!prod) {
-            ctx.status = 404;
-            ctx.body = { error: 'Producto no encontrado' };
-            return;
+        prod.update(ctx.request.body);
+        console.log(ctx.request.body.image_url);
+
+        if (prod.discount_percentage > 0) {
+            let precio_retail = prod.retail_price;
+            let precio_wholesale = prod.wholesale_price;
+            let porcentaje_descuento = prod.discount_percentage;
+            let porcentaje_restante = (100 - porcentaje_descuento);
+            let precio_final_retail = Math.floor((precio_retail * (porcentaje_restante / 100)));
+            let precio_final_wholesale = Math.floor((precio_wholesale * (porcentaje_restante / 100)));
+
+            await prod.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
         }
-
-        const { 
-            stock, 
-            discount_percentage, 
-            description, 
-            product_name, 
-            isActive, 
-            retail_price, 
-            wholesale_price 
-        } = ctx.request.body;
-
-        // Actualizar solo los campos que se envían (evitar undefined)
-        const updateData = {};
-        if (stock !== undefined) updateData.stock = stock;
-        if (retail_price !== undefined) updateData.retail_price = retail_price;
-        if (wholesale_price !== undefined) updateData.wholesale_price = wholesale_price;
-        if (discount_percentage !== undefined) updateData.discount_percentage = discount_percentage;
-        if (description !== undefined) updateData.description = description;
-        if (product_name !== undefined) updateData.product_name = product_name;
-        if (isActive !== undefined) updateData.isActive = isActive;
-
-        // Calcular precios con descuento si hay descuento
-        const finalDiscountPercentage = discount_percentage !== undefined ? discount_percentage : prod.discount_percentage;
-        const finalRetailPrice = retail_price !== undefined ? retail_price : prod.retail_price;
-        const finalWholesalePrice = wholesale_price !== undefined ? wholesale_price : prod.wholesale_price;
-
-        if (finalDiscountPercentage > 0) {
-            const discountMultiplier = (100 - finalDiscountPercentage) / 100;
-            updateData.retail_price_sale = Math.floor(finalRetailPrice * discountMultiplier);
-            updateData.wholesale_price_sale = Math.floor(finalWholesalePrice * discountMultiplier);
-        } else {
-            // Si no hay descuento, los precios de venta son iguales a los normales
-            updateData.retail_price_sale = finalRetailPrice;
-            updateData.wholesale_price_sale = finalWholesalePrice;
-        }
-categoría:
-        // Actualizar el producto (una sola vez)
-        await prod.update(updateData);
-
-        // Recargar para obtener los datos actualizados (incluyendo el slug si cambió el nombre)
-        await prod.reload();
-
+        console.log(prod);
         ctx.status = 200;
-        ctx.body = {
-            success: true,
-            message: 'Producto actualizado exitosamente',
-            data: prod
-        };
+        ctx.body = prod;
 
     } catch (error) {
         console.error('Error al actualizar producto:', error);

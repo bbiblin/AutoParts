@@ -67,7 +67,7 @@ module.exports = {
 
       state: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
       },
       featured: {
         type: Sequelize.BOOLEAN,

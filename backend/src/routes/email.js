@@ -125,6 +125,47 @@ router.post('/enviarEmail', async (ctx) => {
             Saludos,
             Equipo de AutoParts.
         `,
+        html:  `
+            <div style="font-family: Arial, sans-serif; color: #333;">
+            <h2 style="color: #0077b6;">Hola ${nombre},</h2>
+
+            <p>Hemos recibido una nueva cotización de su parte. A continuación, los detalles:</p>
+
+            <table style="margin-top: 10px; border-collapse: collapse;">
+                <tr>
+                <td style="padding: 5px 10px;"><strong>Número de Orden:</strong></td>
+                <td style="padding: 5px 10px;">${codPedido}</td>
+                </tr>
+                <tr>
+                <td style="padding: 5px 10px;"><strong>Fecha:</strong></td>
+                <td style="padding: 5px 10px;">${new Date(nuevoPedido.createdAt).toLocaleString()}</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 20px; color: #023e8a;">Productos solicitados:</h3>
+            <ul>
+                ${pedido.detalles_pedido.map(item => `
+                <li>
+                    <strong>${item.product.product_name}</strong>
+                    (Código: ${item.product.product_cod || 'N/A'}) x ${item.cantidad}
+                    - $${(item.subtotal).toFixed(2)}
+                </li>
+                `).join('')}
+            </ul>
+
+            <p><strong>Subtotal:</strong> $${precio_total.toFixed(2)}</p>
+
+            <p>
+                Por favor, contáctese con nuestro equipo a través de cualquiera de nuestros canales de contacto
+                o acérquese a alguna sucursal para adquirir los productos.
+            </p>
+
+            <p style="margin-top: 30px;">Saludos cordiales,<br><strong>Equipo de AutoParts</strong></p>
+
+            <hr style="margin-top: 40px;">
+            <p style="font-size: 12px; color: #888;">Este es un mensaje automático, por favor no responder a este correo.</p>
+            </div>
+        `,
         });
 
         if (pedido) {

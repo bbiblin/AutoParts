@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, Trash2, X, Save, Eye, Package, Percent } from 'lucide-react';
+import axios from 'axios';
 
 export default function AdminProductos() {
   const [productos, setProductos] = useState([]);
@@ -15,9 +16,11 @@ export default function AdminProductos() {
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
+    product_cod: '',
     product_name: '',
     description: '',
     retail_price: '',
+    image_url: '',
     wholesale_price: '',
     stock: '',
     discount_percentage: '',
@@ -31,11 +34,10 @@ export default function AdminProductos() {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/productos/:id');
-      if (response.ok) {
-        const data = await response.json();
-        setProductos(data);
-        setFilteredProductos(data);
+      const response = await axios.get('http://localhost:5374/productos');
+      if (response) {
+        setProductos(response.data);
+        setFilteredProductos(response.data);
       } else {
         console.error('Error al obtener productos');
       }
@@ -71,9 +73,11 @@ export default function AdminProductos() {
     
     if (mode === 'add') {
       setFormData({
+        product_cod: '',
         product_name: '',
         description: '',
         retail_price: '',
+        image_url: '',
         wholesale_price: '',
         stock: '',
         discount_percentage: '',
@@ -84,7 +88,9 @@ export default function AdminProductos() {
       });
     } else if (product) {
       setFormData({
+        product_cod: product.product_cod || '',
         product_name: product.product_name || '',
+        image_url: product.image_url,
         description: product.description || '',
         retail_price: product.retail_price?.toString() || '',
         wholesale_price: product.wholesale_price?.toString() || '',
@@ -105,9 +111,11 @@ export default function AdminProductos() {
     setShowModal(false);
     setSelectedProduct(null);
     setFormData({
+      product_cod: '',
       product_name: '',
       description: '',
       retail_price: '',
+      image_url: '',
       wholesale_price: '',
       stock: '',
       discount_percentage: '',
@@ -137,7 +145,9 @@ export default function AdminProductos() {
     setSaving(true);
     try {
       const productData = {
+        product_cod: formData.product_cod,
         product_name: formData.product_name,
+        image_url: formData.image_url,
         description: formData.description,
         retail_price: parseInt(formData.retail_price),
         wholesale_price: parseInt(formData.wholesale_price),
@@ -145,35 +155,26 @@ export default function AdminProductos() {
         discount_percentage: parseInt(formData.discount_percentage) || 0,
         isActive: formData.isActive,
         featured: formData.featured,
+        state: 1,
         category_id: formData.category_id ? parseInt(formData.category_id) : null,
         brand_id: formData.brand_id ? parseInt(formData.brand_id) : null
       };
 
       let response;
       if (modalMode === 'add') {
-        response = await fetch('/api/productos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(productData)
-        });
+        console.log(productData);
+        response = await axios.post('http://localhost:5374/productos', productData);
       } else if (modalMode === 'edit') {
-        response = await fetch(`/api/productos/${selectedProduct.id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(productData)
-        });
+        console.log(productData);
+        response = await axios.patch(`http://localhost:5374/productos/${selectedProduct.id}`, productData);
       }
 
-      if (response.ok) {
+      if (response) {
         await fetchProductos(); // Recargar productos
         closeModal();
       } else {
-        const error = await response.json();
-        alert(`Error: ${error.message || 'No se pudo guardar el producto'}`);
+
+        alert("No se pudo guardar el producto");
       }
     } catch (error) {
       console.error('Error al guardar:', error);
@@ -192,17 +193,14 @@ export default function AdminProductos() {
   // Eliminar producto
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/productos/${productToDelete.id}`, {
-        method: 'DELETE'
-      });
+      const response = await axios.delete(`http://localhost:5374/productos/${productToDelete.id}`);
 
-      if (response.ok) {
-        await fetchProductos(); // Recargar productos
+      if (response) {
+        fetchProductos(); // Recargar productos
         setShowDeleteConfirm(false);
         setProductToDelete(null);
       } else {
-        const error = await response.json();
-        alert(`Error: ${error.message || 'No se pudo eliminar el producto'}`);
+        alert("No se pudo eliminar el producto");
       }
     } catch (error) {
       console.error('Error al eliminar:', error);
@@ -213,16 +211,14 @@ export default function AdminProductos() {
   // Aplicar descuento a un producto
   const applyDiscount = async (productId) => {
     try {
-      const response = await fetch(`/api/productos/${productId}/descuento`, {
-        method: 'PATCH'
-      });
+      const response = await axios.patch(`http://localhost:5374/productos/${productId}/descuento`);
 
-      if (response.ok) {
-        await fetchProductos(); // Recargar productos
+      if (response) {
+        fetchProductos(); // Recargar productos
         alert('Descuento aplicado correctamente');
       } else {
-        const error = await response.json();
-        alert(`Error: ${error.message || 'No se pudo aplicar el descuento'}`);
+        const error = response;
+        alert('No se pudo aplicar el descuento');
       }
     } catch (error) {
       console.error('Error al aplicar descuento:', error);
@@ -238,15 +234,18 @@ export default function AdminProductos() {
   };
 
   const getPriceToShow = (producto) => {
-    if (producto.discount_percentage > 0 && producto.retail_price_sale) {
+    if (producto.discount_percentage > 0) {
       return {
         original: formatPrice(producto.retail_price),
         sale: formatPrice(producto.retail_price_sale),
+        wholesale: formatPrice(producto.wholesale_price),
+        wholesale_sale: formatPrice(producto.wholesale_price_sale),
         hasDiscount: true
       };
     }
     return {
       original: formatPrice(producto.retail_price),
+      wholesale: formatPrice(producto.wholesale_price),
       hasDiscount: false
     };
   };
@@ -278,7 +277,7 @@ export default function AdminProductos() {
             
             <button
               onClick={() => openModal('add')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
+              className="bg-brand-darBlue text-[#ffff] px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
             >
               <Plus className="h-5 w-5" />
               <span>Nuevo Producto</span>
@@ -319,7 +318,7 @@ export default function AdminProductos() {
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="bg-brand-darBlue text-xs text-[#b8b8b8] uppercase tracking-wider">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Producto
@@ -374,7 +373,15 @@ export default function AdminProductos() {
                             )}
                           </div>
                           <div className="text-xs text-gray-500">
-                            Mayorista: {formatPrice(producto.wholesale_price)}
+                            {priceInfo.hasDiscount ? (
+                              <>
+                                Mayorista: <span className="line-through text-gray-500">{priceInfo.wholesale}</span> | 
+                                <span className="font-semibold text-green-600">{priceInfo.wholesale_sale}</span>
+                              </>
+                            ) : (
+                              <span className="font-semibold text-gray-500">Mayorista: {priceInfo.wholesale}</span>
+                            )}
+
                           </div>
                         </div>
                       </td>
@@ -422,21 +429,21 @@ export default function AdminProductos() {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             onClick={() => openModal('view', producto)}
-                            className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                            className="text-[#111a52]  p-1 rounded "
                             title="Ver detalles"
                           >
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => openModal('edit', producto)}
-                            className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50"
+                            className="text-[#65cf48] p-1 rounded "
                             title="Editar"
                           >
                             <Edit className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => confirmDelete(producto)}
-                            className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                            className="text-[#d21e1e] rounded "
                             title="Eliminar"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -462,8 +469,8 @@ export default function AdminProductos() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#ffff] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
@@ -491,6 +498,36 @@ export default function AdminProductos() {
                     disabled={modalMode === 'view'}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                     placeholder="Nombre del producto"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Código del producto
+                  </label>
+                  <input
+                    type="text"
+                    name="product_cod"
+                    value={formData.product_cod}
+                    onChange={handleInputChange}
+                    disabled={modalMode === 'view'}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
+                    placeholder="Código del producto"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Enlace de la imagen
+                  </label>
+                  <input
+                    type="text"
+                    name="image_url"
+                    value={formData.image_url}
+                    onChange={handleInputChange}
+                    disabled={modalMode === 'view'}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
+                    placeholder="Enlace"
                   />
                 </div>
 
@@ -642,7 +679,7 @@ export default function AdminProductos() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2 disabled:opacity-50"
+                    className="px-4 py-2 bg-brand-darBlue text-[#ffff] rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2 disabled:opacity-50"
                   >
                     <Save className="h-4 w-4" />
                     <span>{saving ? 'Guardando...' : 'Guardar'}</span>
@@ -656,8 +693,8 @@ export default function AdminProductos() {
 
       {/* Modal de confirmación de eliminación */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                 <Trash2 className="h-6 w-6 text-red-600" />
@@ -671,13 +708,13 @@ export default function AdminProductos() {
               <div className="flex justify-center space-x-3">
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                  className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:hover:bg-[#5f5f5f] transition-colors duration-200"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
+                  className="px-4 py-2 bg-brand-redDark text-[#ffff] rounded-lg transition-colors duration-200"
                 >
                   Eliminar
                 </button>

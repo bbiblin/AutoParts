@@ -192,7 +192,7 @@ export default function AboutUs() {
                     <div className={`text-center mb-16 transition-all duration-700 ease-out ${
                         visibleSections.stats ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                     }`}>
-                        <h2 className="text-5xl font-bold text-white mb-4">
+                        <h2 className="text-5xl font-bold text-[#ffff] mb-4">
                             Números que nos respaldan
                         </h2>
                     </div>
@@ -213,7 +213,7 @@ export default function AboutUs() {
                                 <div className="text-6xl font-bold text-[#D72638] mb-2">
                                     {stat.number}
                                 </div>
-                                <div className="text-xl text-gray-300">
+                                <div className="text-xl text-[#ffff]">
                                     {stat.label}
                                 </div>
                             </div>
@@ -294,14 +294,7 @@ export default function AboutUs() {
                             Descubre por qué miles de clientes confían en nosotros para mantener 
                             sus vehículos en perfectas condiciones
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <button className="w-60 py-3 px-4 bg-[#D72638] border border-[#BB2F3D] rounded-lg text-[#F5F5F5] text-base font-medium hover:scale-105 active:scale-95 transition-transform">
-                                Ver nuestros productos
-                            </button>
-                            <button className="w-60 py-3 px-4 bg-white border-2 border-[#D72638] rounded-lg text-[#D72638] text-base font-medium hover:bg-[#D72638] hover:text-white hover:scale-105 active:scale-95 transition-all">
-                                Contáctanos
-                            </button>
-                        </div>
+                
                     </div>
                 </div>
             </div>

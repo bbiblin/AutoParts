@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
 
     state: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
     },
 
     featured: {

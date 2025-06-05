@@ -16,6 +16,10 @@ import MayoristaCart from './pages/mayoristaCart';
 import ConfirmarOrden from './pages/confirmarOrden';
 import AdminHome from './pages/admin/adminHome';
 import AdminProductos from './pages/admin/adminProductos';
+import AdminCategories from './pages/admin/adminCategories';
+import AdminUsuarios from './pages/admin/adminUsuarios';
+import AdminPedidos from './pages/admin/adminPedidos';
+import AdminBrands from './pages/admin/adminBrands';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import ProtectedRoute from './components/protectedRoute';
@@ -44,6 +48,11 @@ function AppContent() {
         <Route path="/productos_destacados" element={<Destacados />} />
         {isAdmin && <Route path="/adminHome" element={<AdminHome />} />}
         {isAdmin && <Route path="/adminProductos" element={<AdminProductos />} />}
+        {isAdmin && <Route path="/adminCategories" element={<AdminCategories />} />}
+        {isAdmin && <Route path="/adminUsuarios" element={<AdminUsuarios />} />}
+        {isAdmin && <Route path="/adminPedidos" element={<AdminPedidos />} />}
+        {isAdmin && <Route path="/adminBrands" element={<AdminBrands />} />}
+
 
         
         {!isAdmin && 
