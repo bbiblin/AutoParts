@@ -16,7 +16,7 @@ export default defineConfig({
     mimeTypes: {
       '.js': 'application/javascript',
       '.css': 'text/css'
-    }
+    },
     port: 3000,
     host: true
   }
