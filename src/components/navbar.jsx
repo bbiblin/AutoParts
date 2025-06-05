@@ -81,12 +81,14 @@ export default function Navbar() {
                     ¡Hola, {user.username}!
                   </span>
                 </div>
-                <button
+                <Link
                   onClick={handleLogout}
+                  to="/"
                   className={`${isDistributor ? 'bg-brand-darBlue text-[#F5F5F5]' : 'bg-[#D72638] text-[#F5F5F5] hover:bg-[#BB2F3D]'} px-6 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
                 >
                   Cerrar sesión
-                </button>
+                </Link>
+
               </>
             ) : (
               <>

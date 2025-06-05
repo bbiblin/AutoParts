@@ -1,10 +1,8 @@
 import axios from "axios";
-import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext"; // Ajusta la ruta según tu estructura
-import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const [show, setShow] = useState(false);
@@ -12,19 +10,26 @@ export default function Login() {
     email: "",
     password: "",
   });
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState(null);
 
   const navigate = useNavigate();
-  const { login, isLoggedIn } = useAuth();
+  const { login, isLoggedIn, user } = useAuth();
 
-  // Redirigir si ya está logueado
+  // Redirigir si ya está logueado - mejorada la lógica
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
+    if (isLoggedIn && user) {
+      if (user.isAdmin === true) {
+        navigate("/admin/dashboard");
+      } else if (user.isDistribuitor === true) {
+        navigate("/catalogo_mayorista");
+      } else {
+        navigate("/");
+      }
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, user, navigate]);
 
   useEffect(() => {
     const timeout = setTimeout(() => setShow(true), 100);
@@ -37,7 +42,7 @@ export default function Login() {
       ...prev,
       [name]: value,
     }));
-    // Limpiar error cuando el usuario empiece a escribir
+
     if (error) setError("");
   };
 
@@ -58,17 +63,17 @@ export default function Login() {
       if (response.data) {
         console.log("Response:", response.data);
 
-        // Usar la función login del contexto
+        // Usar la función login del contexto con navigate
         login(
           response.data.user,
-          response.data.token // Ajusta según tu API
+          response.data.token,
         );
 
         const tokensito = localStorage.getItem("authToken");
-
         setToken(tokensito);
-        
-        navigate("/");
+
+        // La redirección ahora se maneja en el contexto
+        // No necesitamos navigate("/") aquí
       }
     } catch (error) {
       console.error("Ha ocurrido un error", error);

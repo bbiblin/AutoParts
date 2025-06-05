@@ -45,9 +45,6 @@ export const CartProvider = ({ children }) => {
     };
 
 
-
-
-
     const addToCart = async (product, quantity = 1) => {
         try {
             if (isLoggedIn) {

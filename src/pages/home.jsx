@@ -2,12 +2,22 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import BrandsSpace from "../components/brandsSpace";
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 
 export default function Home() {
     const [show, setShow] = useState(false);
+    const navigate = useNavigate();
+    const { user } = useAuth();
 
+    useEffect(() => {
+        if (user) {
+            if (user.admin == true) {
+                navigate("/adminHome");
+            }
+        } 
+    })
 
     useEffect(() => {
         const timeout = setTimeout(() => setShow(true), 100);

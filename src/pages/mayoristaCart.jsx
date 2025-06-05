@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useCart } from '../contexts/cartContext';
 import { useAuth } from '../contexts/authContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function CartPage() {
     const {
@@ -16,8 +17,10 @@ export default function CartPage() {
         isLoading
     } = useCart();
 
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [estado, setEstado] = useState("");
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -38,10 +41,10 @@ export default function CartPage() {
 
     const subtotal = cartItems.reduce((acc, item) => {
         if (item.product.discount_percentage > 0) {
-            return acc + (item.product?.retail_price_sale || 0) * item.quantity;
+            return acc + (item.product?.wholesale_price_sale || 0) * item.quantity;
 
         } else {
-            return acc + (item.product?.retail_price || 0) * item.quantity;
+            return acc + (item.product?.wholesale_price || 0) * item.quantity;
 
         }
     }, 0);
@@ -58,32 +61,31 @@ export default function CartPage() {
         if (!isLoggedIn) {
             return;
         }
-
         setIsProcessing(true);
         try {
             const user_id = Cookies.get('user_id');
             console.log('Procesando compra para usuario:', user_id);
 
-            const response = await axios.post("http://localhost:5374/webpay/create-order", {
-                user_id: user_id
+            const response = await axios.post("http://localhost:5374/email/enviarEmail", {
+                email: user.email,
+                nombre: user.name,
+                user_id: user.id
+
             });
+            console.log(response.data.estado);
+            if (response.data.estado == "aceptado") {
+                setEstado("aceptado");
+                setIsProcessing(false);
+                clearCart();
+                navigate("/confirmarOrden");
 
-            if (response.data?.success && response.data?.webpay) {
-                const { url, token } = response.data.webpay;
-                console.log('Redirigiendo a WebPay...');
-
-                // Redirección directa a WebPay
-                window.location.href = `${url}?token_ws=${token}`;
             } else {
-                throw new Error('Respuesta inválida del servidor');
+                setEstado("rechazado");
             }
 
         } catch (error) {
-            console.error('Error en checkout:', error);
-            alert('Error al procesar la compra: ' + (error.response?.data?.error || error.message));
-            setIsProcessing(false);
+            console.error("Error al procesar compra", error);
         }
-        // No ponemos finally aquí porque la página se va a redireccionar
     };
 
     if (isLoading) {
@@ -201,15 +203,15 @@ export default function CartPage() {
                                                         {item.product.discount_percentage > 0 ? (
                                                             <>
                                                                 <p className="text-sm text-red-600 mt-1">
-                                                                    {formatPrice(item.product?.retail_price_sale || 0)}
+                                                                    {formatPrice(item.product?.wholesale_price_sale || 0)}
                                                                 </p>
                                                                 <p className="text-sm text-gray-500 mt-1 line-through">
-                                                                    {formatPrice(item.product?.retail_price || 0)}
+                                                                    {formatPrice(item.product?.wholesale_price || 0)}
                                                                 </p>
                                                             </>
                                                         ) : (
                                                             <p className="text-sm text-gray-500 mt-1">
-                                                                {formatPrice(item.product?.retail_price || 0)}
+                                                                {formatPrice(item.product?.wholesale_price || 0)}
                                                             </p>
                                                         )}
                                                     </div>
@@ -248,15 +250,15 @@ export default function CartPage() {
                                                         {item.product.discount_percentage > 0 ? (
                                                             <>
                                                                 <p className="text-sm text-red-600 mt-1">
-                                                                    {formatPrice(item.product?.retail_price_sale || 0)}
+                                                                    {formatPrice(item.product?.wholesale_price_sale || 0)}
                                                                 </p>
                                                                 <p className="text-sm text-gray-500 mt-1 line-through">
-                                                                    {formatPrice(item.product?.retail_price || 0)}
+                                                                    {formatPrice(item.product?.wholesale_price || 0)}
                                                                 </p>
                                                             </>
                                                         ) : (
                                                             <p className="text-sm text-gray-500 mt-1">
-                                                                {formatPrice(item.product?.retail_price || 0)}
+                                                                {formatPrice(item.product?.wholesale_price || 0)}
                                                             </p>
                                                         )}
                                                     </div>
@@ -331,7 +333,7 @@ export default function CartPage() {
                                                     Procesando...
                                                 </>
                                             ) : (
-                                                'Proceder al pago'
+                                                'Enviar cotización'
                                             )}
                                         </button>
                                     )}

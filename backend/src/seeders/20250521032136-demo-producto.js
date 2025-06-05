@@ -1,6 +1,5 @@
 'use strict';
 
-const { url } = require('koa-router');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -13,8 +12,8 @@ module.exports = {
       product_name: 'Filtro de aceite Toyota',
       description: 'Filtro de aceite compatible con Toyota Corolla y Yaris.',
       stock: 50,
-      category_id: 1,
-      brand_id: 1,
+      category_id: 20,
+      brand_id: 11,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,
@@ -33,8 +32,8 @@ module.exports = {
       product_name: 'Motor toyota',
       description: 'Motor loko',
       stock: 50,
-      category_id: 2,
-      brand_id: 2,
+      category_id: 21,
+      brand_id: 12,
       image_url: 'https://tiendadelmecanico.cl/wp-content/uploads/2023/02/PhotoRoom-20230222_151420.png',
       state: true,
       featured: false,

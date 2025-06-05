@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class producto extends Model {
     /**
@@ -111,12 +112,16 @@ module.exports = (sequelize, DataTypes) => {
     featured: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-    }
+    },
+
+
 
   }, {
     sequelize,
     modelName: 'producto',
     tableName: "productos"
   });
+
+
   return producto;
 };

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class brand extends Model {
     /**
@@ -31,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     origin_country: {
       type: DataTypes.STRING,
     },
+
   }, {
     sequelize,
     modelName: 'brand',
@@ -38,5 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "brands"
     });
+
+
+
   return brand;
 };

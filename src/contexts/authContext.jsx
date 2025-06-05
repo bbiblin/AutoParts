@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -19,12 +20,13 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState('');
     const [time_left, setTimeLeft] = useState('');
+    const navigate = useNavigate();
 
     // Verificar si hay un usuario logueado al cargar la app
     useEffect(() => {
         const storedToken = Cookies.get('authToken');
         const userData = Cookies.get('userData');
-
+        
         if (storedToken && userData) {
             try {
                 const parsedUser = JSON.parse(userData);
@@ -37,7 +39,6 @@ export const AuthProvider = ({ children }) => {
                 Cookies.remove('userData');
             }
         }
-
         setLoading(false);
     }, []);
 
@@ -46,35 +47,48 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
         
         const decoded_token = jwtDecode(token);
-
         if (decoded_token.exp) {
             console.log(new Date(decoded_token.exp * 1000)); // Fecha de expiración
             console.log((decoded_token.exp - decoded_token.iat) / 60, 'minutos'); // Duración del token
         }
 
-        // aquí se guarda el token en la Cookie 'authToken' y expira en 1 día
+        // Guardar en cookies
         Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'strict' });
-
-        // Guardar id de usuario en Cookie 'user_id'
         Cookies.set('user_id', decoded_token.id);
-
-        // Se guardan los datos de usuario en la Cookie 'userData'
         Cookies.set('userData', JSON.stringify(userData));
+        Cookies.set('isDistribuitor', userData.isDistribuitor); // "true" o "false"
+        
+        // Guardar estado de admin si existe
+        if (userData.admin !== undefined) {
+            Cookies.set('isAdmin', userData.admin);
+        }
 
-        // Guardar en localStorage
-        //localStorage.setItem('authToken', token);
-        //localStorage.setItem('userData', JSON.stringify(userData));
+        // Lógica de redirección basada en el tipo de usuario
+        if (navigate) {
+            if (userData.admin === true) {
+                console.log('Usuario administrador detectado, redirigiendo al panel admin');
+                navigate('/adminHome');
+            } else if (userData.isDistribuitor === true) {
+                console.log('Usuario distribuidor detectado, redirigiendo al catálogo mayorista');
+                navigate('/catalogo_mayorista');
+            } else {
+                console.log('Usuario regular, redirigiendo al inicio');
+                navigate('/');
+            }
+        }
     };
 
     const logout = () => {
         setUser(null);
         setIsLoggedIn(false);
-
+        navigate('/');
+        
         // Limpiar Cookies
         Cookies.remove('authToken');
         Cookies.remove('userData');
-        //localStorage.removeItem('authToken');
-        //localStorage.removeItem('userData');
+        Cookies.remove('isDistribuitor');
+        Cookies.remove('isAdmin');
+        Cookies.remove('user_id');
     };
 
     const value = {

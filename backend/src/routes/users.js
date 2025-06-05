@@ -24,7 +24,10 @@ router.get('/distribuitor', async (ctx) => {
 // Registro de usuario
 router.post('/register', async (ctx) => {
   try {
-    const { email, password, username, name, address, phone, isDistribuitor } = ctx.request.body;
+    const { email, password, username, name, address, phone, admin, isDistribuitor } = ctx.request.body;
+    if (!admin){
+      admin = false;
+    }
 
     // Validaciones básicas
     if (!email || !password || !username || !name || !address || !phone) {
@@ -48,7 +51,7 @@ router.post('/register', async (ctx) => {
       password: hashedPassword,
       username,
       name,
-      admin: false,
+      admin,
       address,
       phone,
       isDistribuitor: isDistribuitor || false,

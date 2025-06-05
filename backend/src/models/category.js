@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class category extends Model {
     /**
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
   }, {
     sequelize,
     modelName: 'category',
@@ -32,5 +34,6 @@ module.exports = (sequelize, DataTypes) => {
   {
     tableName: "categories"
   });
+  
   return category;
 };
