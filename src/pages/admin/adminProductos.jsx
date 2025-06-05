@@ -30,11 +30,10 @@ export default function AdminProductos() {
     brand_id: ''
   });
 
-  // Cargar productos desde la API
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5374/productos');
+      const response = await axios.get('https://autoparts-i2gt.onrender.com/productos');
       if (response) {
         setProductos(response.data);
         setFilteredProductos(response.data);
@@ -163,10 +162,10 @@ export default function AdminProductos() {
       let response;
       if (modalMode === 'add') {
         console.log(productData);
-        response = await axios.post('http://localhost:5374/productos', productData);
+        response = await axios.post('https://autoparts-i2gt.onrender.com/productos', productData);
       } else if (modalMode === 'edit') {
         console.log(productData);
-        response = await axios.patch(`http://localhost:5374/productos/${selectedProduct.id}`, productData);
+        response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, productData);
       }
 
       if (response) {
@@ -193,7 +192,7 @@ export default function AdminProductos() {
   // Eliminar producto
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5374/productos/${productToDelete.id}`);
+      const response = await axios.delete(`https://autoparts-i2gt.onrender.com/productos/${productToDelete.id}`);
 
       if (response) {
         fetchProductos(); // Recargar productos
@@ -211,7 +210,7 @@ export default function AdminProductos() {
   // Aplicar descuento a un producto
   const applyDiscount = async (productId) => {
     try {
-      const response = await axios.patch(`http://localhost:5374/productos/${productId}/descuento`);
+      const response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${productId}/descuento`);
 
       if (response) {
         fetchProductos(); // Recargar productos
