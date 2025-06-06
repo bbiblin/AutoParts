@@ -28,7 +28,6 @@ export default function AdminNavbar() {
     <nav className="bg-brand-darBlue sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo del Admin */}
           <div className="flex-shrink-0">
             <Link
               to="/adminHome"
@@ -70,7 +69,6 @@ export default function AdminNavbar() {
                 </Link>
               ))}
               
-              {/* Dropdown for remaining items */}
               <div className="relative group">
                 <button className="text-[#ffff] hover:text-[#979797]  px-2 py-2 rounded-lg text-xs font-medium transition-colors duration-300 hover:bg-slate-700 flex flex-col items-center space-y-1">
                   <span className="text-base">⋯</span>
@@ -184,7 +182,6 @@ export default function AdminNavbar() {
               onClick={handleLogout}
               className="w-full bg-red-600 text-white px-4 py-3 rounded-lg text-base font-medium hover:bg-red-700 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
             >
-              <span>🚪</span>
               <span>Cerrar sesión</span>
             </button>
           </div>
