@@ -25,7 +25,7 @@ router.get('/', async (ctx) => {
     }
 });
 
-
+//GET de marca por id
 router.get('/:id', async (ctx) => {
     try {
         const marca = await brand.findByPk(ctx.params.id);
@@ -44,6 +44,8 @@ router.get('/:id', async (ctx) => {
     }
 });
 
+
+//PATCH (update) de marca
 router.patch("/:id", async (ctx) => {
   try {
     console.log(ctx.request.body);
@@ -67,6 +69,8 @@ router.patch("/:id", async (ctx) => {
   }
 });
 
+
+//POST marca
 router.post("/", async (ctx) => {
   try {
     console.log(ctx.request.body);
@@ -83,7 +87,6 @@ router.post("/", async (ctx) => {
       return;
     }
 
-    // Crear la nueva categoría
     const nuevaBrand = await brand.create(ctx.request.body);
 
     ctx.status = 201;
@@ -93,6 +96,8 @@ router.post("/", async (ctx) => {
   }
 });
 
+
+//DELETE marca
 router.delete('/:id', async (ctx) => {
     try {
 
