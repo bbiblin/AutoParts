@@ -1,0 +1,9 @@
+Usuarios prueba: 
+Distribuidor: belendiazfuentes2021@gmail.com / distribuidor1
+Cliente normal: cliente@gmail.com / cliente1234
+Admin: admin@gmail.com / admin1234
+
+TARJETAS DE PRUEBA: CVV 123 para todas
+
+Aprobada: 4051 8856 0044 6623
+Rechazada: 5186 0595 5959 0568
