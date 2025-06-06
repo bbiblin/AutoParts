@@ -123,14 +123,23 @@ router.post('/add', authenticateToken, async (ctx) => {
             
         } else {
             // Si no existe, crear nuevo item
-            console.log('Creando nuevo item en el carrito');
-            cartItem = await cart_item.create({
-                cart_id: carrito.id,
-                product_id: product_id,
-                quantity: quantity,
-                precio_unitario: productFound.retail_price
-            });
-            console.log('Item creado con ID:', cartItem.id);
+            if (productFound.stock == 0) {
+                console.error("No se puede añadir el producto: La cantidad supera al stock");
+                ctx.body = {
+                    success: false,
+                    message: 'Producto no agregado al carrito',
+                    cartItem
+                };
+            } else {
+                console.log('Creando nuevo item en el carrito');
+                cartItem = await cart_item.create({
+                    cart_id: carrito.id,
+                    product_id: product_id,
+                    quantity: quantity,
+                    precio_unitario: productFound.retail_price
+                });
+                console.log('Item creado con ID:', cartItem.id);
+            }      
         }
 
         ctx.body = {
