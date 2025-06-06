@@ -113,8 +113,7 @@ router.post('/login', async (ctx) => {
       return;
     }
 
-    // CORREGIDO: await bcrypt.compare
-    const validPass = await bcrypt.compare(password, user.password);
+    const validPass = await bcrypt.compare(password, user.password); // se compara la contraseña encriptada con la contraseña desencriptada para permitir que el usuario inicie sesión con su contraseña.
 
     if (validPass) {
       console.log("Login exitoso");
@@ -125,7 +124,7 @@ router.post('/login', async (ctx) => {
           username: user.username,
           isDistribuitor: user.isDistribuitor,
         },
-        process.env.JWT_SECRET || 'clave', // Usar variable de entorno
+        process.env.JWT_SECRET || 'clave', 
         { expiresIn: '2h' }
       );
 
