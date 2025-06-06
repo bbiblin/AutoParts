@@ -2,6 +2,8 @@ const Router = require('@koa/router');
 const router = new Router();
 const { pedidos, cart_item, detalle_pedido, producto, User } = require('../models');
 
+
+//GET de todos los pedidos
 router.get('/', async (ctx) => {
   try {
     const allPedidos = await pedidos.findAll({
@@ -41,6 +43,8 @@ router.get('/', async (ctx) => {
   }
 });
 
+
+//DELETE de un pedido en especifico
 router.delete('/:id', async (ctx) => {
     try {
         const deleted_pedido = await pedidos.destroy({ where: { id: ctx.params.id } });
