@@ -1,4 +1,3 @@
-// routes/webpay.js
 const Router = require('koa-router');
 const { pedidos, detalle_pedido, cart, cart_item, producto } = require('../models');
 const WebpayPlus = require('transbank-sdk').WebpayPlus;
@@ -8,7 +7,6 @@ const router = new Router();
 
 /**
  * Crear pedido desde carrito y generar transacción WebPay
- * POST /api/webpay/create-order
  */
 router.post('/create-order', async (ctx) => {
     console.log("Llamando a crear orden");
@@ -139,7 +137,6 @@ router.post('/create-order', async (ctx) => {
 
 /**
  * Confirmar pago WebPay
- * POST /api/webpay/confirm
  */
 router.post('/confirm', async (ctx) => {
     const { token_ws } = ctx.request.body;
@@ -187,7 +184,7 @@ router.post('/confirm', async (ctx) => {
             }] }]
             });
 
-            await pedido.update({ state: 'Rechazado' }); // opcional: marcar como pagado
+            await pedido.update({ state: 'Rechazado' }); 
             
         }
         ctx.body = { webpay: response };
@@ -213,7 +210,6 @@ router.post('/confirm', async (ctx) => {
 
 /**
  * Obtener estado de transacción
- * GET /api/webpay/status/:token
  */
 router.get('/status/:token', async (ctx) => {
     try {
