@@ -33,7 +33,9 @@ export default function AdminProductos() {
   const fetchProductos = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('https://autoparts-i2gt.onrender.com/productos');
+      const response = await axios.get('https://autoparts-i2gt.onrender.com/productos', {
+        params: { admin: true }
+    });
       if (response) {
         setProductos(response.data);
         setFilteredProductos(response.data);
@@ -195,7 +197,7 @@ export default function AdminProductos() {
       const response = await axios.delete(`https://autoparts-i2gt.onrender.com/productos/${productToDelete.id}`);
 
       if (response) {
-        fetchProductos(); // Recargar productos
+        fetchProductos(); 
         setShowDeleteConfirm(false);
         setProductToDelete(null);
       } else {
@@ -213,7 +215,7 @@ export default function AdminProductos() {
       const response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${productId}/descuento`);
 
       if (response) {
-        fetchProductos(); // Recargar productos
+        fetchProductos(); 
         alert('Descuento aplicado correctamente');
       } else {
         const error = response;
@@ -552,6 +554,7 @@ export default function AdminProductos() {
                   <input
                     type="number"
                     name="retail_price"
+                    min={100}
                     value={formData.retail_price}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
@@ -567,6 +570,7 @@ export default function AdminProductos() {
                   <input
                     type="number"
                     name="wholesale_price"
+                    min={100}
                     value={formData.wholesale_price}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
@@ -582,6 +586,7 @@ export default function AdminProductos() {
                   <input
                     type="number"
                     name="stock"
+                    min={0}
                     value={formData.stock}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
@@ -614,6 +619,7 @@ export default function AdminProductos() {
                   <input
                     type="number"
                     name="category_id"
+                    min={0}
                     value={formData.category_id}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
@@ -629,6 +635,7 @@ export default function AdminProductos() {
                   <input
                     type="number"
                     name="brand_id"
+                    min={0}
                     value={formData.brand_id}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}

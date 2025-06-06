@@ -7,7 +7,7 @@ const { where, findByPk, findAll, create, update, destroy } = require('sequelize
 //GET para los productos destacados... 
 router.get('/destacados', async (ctx) => {
     try {
-        const featuredProducts = await producto.findAll({ where: { featured: true } });
+        const featuredProducts = await producto.findAll({ where: { featured: true, isActive: true } });
         ctx.body = featuredProducts;
     }
     catch (error) {
@@ -50,22 +50,43 @@ router.get('/', async (ctx) => {
     try {
         let allProducts = [];
 
-        if (ctx.query.category_id && !ctx.query.brand_id) {
-            allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id } });
-        }
-        else if (!ctx.query.category_id && ctx.query.brand_id) {
-            allProducts = await producto.findAll({
-                where: { brand_id: ctx.query.brand_id }
-            });
-        }
-        else if (ctx.query.category_id && ctx.query.brand_id) {
-            allProducts = await producto.findAll({
-                where: { brand_id: ctx.query.brand_id, category_id: ctx.query.category_id }
-            });
+        let admin = ctx.request.query.admin;
+        if (!admin) {
+            if (ctx.query.category_id && !ctx.query.brand_id) {
+            allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id, isActive: true } });
+            }
+            else if (!ctx.query.category_id && ctx.query.brand_id) {
+                allProducts = await producto.findAll({
+                    where: { brand_id: ctx.query.brand_id, isActive: true }
+                });
+            }
+            else if (ctx.query.category_id && ctx.query.brand_id) {
+                allProducts = await producto.findAll({
+                    where: { brand_id: ctx.query.brand_id, category_id: ctx.query.category_id, isActive: true }
+                });
 
-        }
-        else {
-            allProducts = await producto.findAll();
+            }
+            else {
+                allProducts = await producto.findAll({where: {isActive: true}});
+            }
+        } else {
+            if (ctx.query.category_id && !ctx.query.brand_id) {
+            allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id }});
+            }
+            else if (!ctx.query.category_id && ctx.query.brand_id) {
+                allProducts = await producto.findAll({
+                    where: { brand_id: ctx.query.brand_id}
+                });
+            }
+            else if (ctx.query.category_id && ctx.query.brand_id) {
+                allProducts = await producto.findAll({
+                    where: { brand_id: ctx.query.brand_id, category_id: ctx.query.category_id }
+                });
+
+            }
+            else {
+                allProducts = await producto.findAll();
+            }
         }
 
         if (allProducts) {

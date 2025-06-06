@@ -257,10 +257,10 @@ export default function Productos() {
 
                     {/* Botón de agregar al carrito o login */}
                     {isLoggedIn ? (
-                      <AddToCartButton
+                        <AddToCartButton
                         product={product}
                         className="w-full bg-brand-darBlue hover:from-[#1d4ed8]  text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                      />
+                      />                      
                     ) : (
                       <div className="text-center">
                         <p className="text-[#64748b] text-sm mb-3">

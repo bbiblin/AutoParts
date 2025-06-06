@@ -232,10 +232,17 @@ export default function ProductosDestacados() {
 
                                     
                                     {isLoggedIn ? (
-                                        <AddToCartButton
+                                        producto.stock > 0 ? (
+                                            <AddToCartButton
                                             product={producto}
                                             className="w-full bg-brand-darBlue hover:from-[#1d4ed8]  text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                                         />
+                                        ) : (
+                                            <p className="text-[#64748b] text-sm mb-3">
+                                            No hay stock del producto.
+                                            </p>
+                                        )
+                                        
                                     ) : (
                                         <div className="text-center">
                                             <p className="text-slate-500 text-sm mb-3">

@@ -107,10 +107,20 @@ router.post('/add', authenticateToken, async (ctx) => {
 
         if (cartItem) {
             // Si existe, actualizar cantidad
-            console.log('Actualizando item existente. Cantidad anterior:', cartItem.quantity);
-            cartItem.quantity += quantity;
-            await cartItem.save();
-            console.log('Nueva cantidad:', cartItem.quantity);
+            if (cartItem.quantity >= productFound.stock) {
+                console.error("No se puede añadir el producto: La cantidad supera al stock");
+                ctx.body = {
+                    success: false,
+                    message: 'Producto no agregado al carrito',
+                    cartItem
+                };
+            } else {
+                console.log('Actualizando item existente. Cantidad anterior:', cartItem.quantity);
+                cartItem.quantity += quantity;
+                await cartItem.save();
+                console.log('Nueva cantidad:', cartItem.quantity);
+            }
+            
         } else {
             // Si no existe, crear nuevo item
             console.log('Creando nuevo item en el carrito');
@@ -148,7 +158,6 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
 
         console.log('Actualizando item:', itemId, 'nueva cantidad:', quantity);
 
-        // Validar cantidad
         if (!quantity || quantity < 0) {
             ctx.status = 400;
             ctx.body = {
@@ -158,7 +167,6 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
             return;
         }
 
-        // Verificar que el item pertenece al usuario
         const cartItem = await cart_item.findOne({
             where: { id: itemId },
             include: [
@@ -188,14 +196,32 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
             return;
         }
 
-        cartItem.quantity = quantity;
-        await cartItem.save();
+        const product = await producto.findByPk(cartItem.product_id);
+        if (!product) {
+            ctx.status = 404;
+            ctx.body = {
+                success: false,
+                message: "No existe el producto"
+            };
+            return;
+        }
 
-        ctx.body = {
-            success: true,
-            message: 'Cantidad actualizada',
-            cartItem
-        };
+        if (quantity <= product.stock) {
+            cartItem.quantity = quantity;
+            await cartItem.save();
+            ctx.body = {
+                success: true,
+                message: 'Cantidad actualizada',
+                cartItem
+            };
+        } else {
+            ctx.status = 400;
+            ctx.body = {
+                success: false,
+                message: "No hay suficiente stock del producto"
+            };
+        }
+
     } catch (error) {
         console.error('Error al actualizar cantidad:', error);
         ctx.status = 500;
@@ -206,6 +232,7 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
         };
     }
 });
+
 
 // Eliminar producto del carrito
 router.delete('/remove/:itemId', authenticateToken, async (ctx) => {

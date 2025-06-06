@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useAuth } from '../contexts/authContext';
 import AddToCartButton from '../components/addToCartButton';
 
+
+//Detalle producto muestra ambos precios, stock y permite añadir a carrito  
+
 export default function DetalleProducto() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
@@ -224,10 +227,17 @@ export default function DetalleProducto() {
                             <div className="space-y-4">
                                 {isLoggedIn ? (
                                     <div className="space-y-3">
-                                        <AddToCartButton
+                                        {isOutOfStock ? (
+                                            <p className="text-[#64748b] text-sm mb-3">
+                                            No hay stock del producto.
+                                            </p>
+                                        ) : (
+                                            <AddToCartButton
                                             product={product}
                                             className="w-full py-4 text-lg font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
-                                        />
+                                            />
+                                        )}
+                                        
                                         {hasDiscount && (
                                             <div className="text-center p-3 rounded-xl" style={{ backgroundColor: '#fef7ff', color: '#7c3aed' }}>
                                                 <p className="text-sm font-medium">🎉 ¡Oferta especial por tiempo limitado!</p>
