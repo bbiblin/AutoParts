@@ -6,7 +6,6 @@ export default function ProtectedRoute({ children }) {
     const isDistribuitor = Cookies.get("isDistribuitor") === "true";
     const location = useLocation();
 
-    // Ruta carrito normal (ajusta según tu ruta real)
     const isCartRoute = location.pathname === "/cart" || location.pathname === "/carrito";
 
     // Si no hay usuario, siempre redirigir al login
@@ -18,9 +17,6 @@ export default function ProtectedRoute({ children }) {
     if (isDistribuitor && isCartRoute) {
         return <Navigate to="/" replace />;
     }
-
-    // Si es distribuidor, pero accede a ruta válida para distribuidor, permitir
-    // Si no es distribuidor y accede a ruta normal, permitir
 
     return children;
 }
