@@ -3,6 +3,9 @@ Distribuidor: belendiazfuentes2021@gmail.com / distribuidor1
 Cliente normal: cliente@gmail.com / cliente1234
 Admin: admin@gmail.com / admin1234
 
+Imagen para probar producto:
+https://m.media-amazon.com/images/I/812UZ3IkwJL._AC_UF894,1000_QL80_FMwebp_DpWeblab_.jpg
+
 TARJETAS DE PRUEBA: CVV 123 para todas
 
 Aprobada: 4051 8856 0044 6623
