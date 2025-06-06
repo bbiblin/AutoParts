@@ -1,3 +1,10 @@
+/**
+ * Servicio de NodeMailer para enviar correos automáticos
+ * 
+ * Acá se configura el transporter y se creá la route "/enviarEmail" que se encarga de enviar el correo de cotización al usuario Distribuidor a su correo con 
+ * el que está registrado.
+ */
+
 const nodemailer = require("nodemailer");
 const Router = require('koa-router');
 const router = new Router();
