@@ -1,5 +1,3 @@
-
-// src/components/AddToCartButton.jsx
 import React, { useState } from 'react';
 import { useCart } from '../contexts/cartContext';
 
@@ -36,7 +34,6 @@ const AddToCartButton = ({ product, quantity = 1, className = "", variant = "pri
             return `${baseStyles} border-2 border-[#1F3A93] text-[#1F3A93] hover:bg-[#1F3A93] hover:text-white ${className}`;
         }
 
-        // Primary variant (default)
         return `${baseStyles} bg-[#1F3A93] text-[#FFFF] hover:bg-blue-800 ${className}`;
     };
 
