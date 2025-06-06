@@ -1,3 +1,9 @@
+/**
+ * Este middleware verifica si el request incluye un token JWT válido en el encabezado Authorization.
+ * Si el token es válido, decodifica la información del usuario y la almacena en `ctx.state.user`.
+ * Si el token no está presente o no es válido, responde con un error 401 (no autorizado).
+ */
+
 const jwt = require('jsonwebtoken');
 
 module.exports = async (ctx, next) => {
