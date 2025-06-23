@@ -2,6 +2,10 @@ const Router = require('koa-router');
 const router = new Router();
 const { producto } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
+const koaBody = require('koa-body');
+const cloudinary = require('../config/configCloudinary')
+const fs = require('fs');
+const path = require('path');
 
 
 //GET para los productos destacados... 
@@ -18,11 +22,35 @@ router.get('/destacados', async (ctx) => {
 });
 
 
+
 //POST para producto
-router.post('/', async (ctx) => {
+router.post('/', koaBody({
+    multipart: true,
+    formidable: {
+        uploadDir: path.join(__dirname, '../tmp'),
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024
+    }
+}), async (ctx) => {
     try {
+        const file = ctx.request.files?.imagen;
+        
+        let image_url = null;
+
+        if (file){
+            const result = await cloudinary.uploader.upload(file.filepath,{
+                folder: 'productos'
+            });
+
+            fs.unlinkSync(file.filepath);
+            image_url = result.secure_url;
+        }
+
         console.log(ctx.request.body);
-        const nuevoProducto = await producto.create(ctx.request.body);
+        const nuevoProducto = await producto.create({
+            ...ctx.request.body,
+            image_url});
+
         if (nuevoProducto.discount_percentage > 0) {
             let precio_retail = nuevoProducto.retail_price;
             let precio_wholesale = nuevoProducto.wholesale_price;
@@ -149,8 +177,26 @@ router.delete('/:id', async (ctx) => {
 
 
 //UPDATE para producto...
-router.patch('/:id', async (ctx) => {
+router.patch('/:id', koaBody({
+    multipat: true,
+    formidable: {
+        uploadDir: path.join(__dirname, '../tmp'),
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024
+    }
+}), async (ctx) => {
     try {
+
+        const file = ctx.request.files?.imagen;
+
+        if (file){
+            const result = await cloudinary.uploader.upload(file.filepath,{
+                folder: 'productos'
+            });
+            fs.unlinkSync(file.filepath);
+            ctx.request.body.image_url = result.secure_url;
+        }
+
         const prod = await producto.findByPk(ctx.params.id);
         prod.update(ctx.request.body);
         console.log(ctx.request.body.image_url);

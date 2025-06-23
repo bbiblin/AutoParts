@@ -136,6 +136,16 @@ export default function AdminProductos() {
     }));
   };
 
+  const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setFormData((prev) => ({
+      ...prev,
+      imagen: file
+    }));
+  }
+};
+
   // Guardar producto
   const handleSave = async () => {
     if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
@@ -310,7 +320,7 @@ export default function AdminProductos() {
 
             <div className="text-sm text-gray-600 flex items-center">
               <span className="font-medium">{filteredProductos.length}</span>
-              <span className="ml-1">productos encontrados</span>
+              <span className="ml-1">Productos encontrados</span>
             </div>
           </div>
         </div>
@@ -519,13 +529,13 @@ export default function AdminProductos() {
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Enlace de la imagen
+                    Imagen 
                   </label>
                   <input
-                    type="text"
-                    name="image_url"
-                    value={formData.image_url}
-                    onChange={handleInputChange}
+                    type="file"
+                    name="imagen"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     disabled={modalMode === 'view'}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
                     placeholder="Enlace"
