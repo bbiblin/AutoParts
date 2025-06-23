@@ -147,53 +147,61 @@ export default function AdminProductos() {
 };
 
   // Guardar producto
-  const handleSave = async () => {
-    if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
-      alert('Por favor completa todos los campos obligatorios');
-      return;
+const handleSave = async () => {
+  if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
+    alert('Por favor completa todos los campos obligatorios');
+    return;
+  }
+
+  setSaving(true);
+  try {
+    const data = new FormData();
+
+    data.append('product_cod', formData.product_cod);
+    data.append('product_name', formData.product_name);
+    data.append('description', formData.description);
+    data.append('retail_price', formData.retail_price);
+    data.append('wholesale_price', formData.wholesale_price);
+    data.append('stock', formData.stock);
+    data.append('discount_percentage', formData.discount_percentage);
+    data.append('isActive', formData.isActive);
+    data.append('featured', formData.featured);
+    data.append('category_id', formData.category_id);
+    data.append('brand_id', formData.brand_id);
+
+    if (formData.imagen) {
+      data.append('imagen', formData.imagen); // ⚠️ nombre debe coincidir con backend
     }
 
-    setSaving(true);
-    try {
-      const productData = {
-        product_cod: formData.product_cod,
-        product_name: formData.product_name,
-        image_url: formData.image_url,
-        description: formData.description,
-        retail_price: parseInt(formData.retail_price),
-        wholesale_price: parseInt(formData.wholesale_price),
-        stock: parseInt(formData.stock),
-        discount_percentage: parseInt(formData.discount_percentage) || 0,
-        isActive: formData.isActive,
-        featured: formData.featured,
-        state: 1,
-        category_id: formData.category_id ? parseInt(formData.category_id) : null,
-        brand_id: formData.brand_id ? parseInt(formData.brand_id) : null
-      };
-
-      let response;
-      if (modalMode === 'add') {
-        console.log(productData);
-        response = await axios.post('https://autoparts-i2gt.onrender.com/productos', productData);
-      } else if (modalMode === 'edit') {
-        console.log(productData);
-        response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, productData);
-      }
-
-      if (response) {
-        await fetchProductos(); // Recargar productos
-        closeModal();
-      } else {
-
-        alert("No se pudo guardar el producto");
-      }
-    } catch (error) {
-      console.error('Error al guardar:', error);
-      alert('Error de conexión al guardar el producto');
-    } finally {
-      setSaving(false);
+    let response;
+    if (modalMode === 'add') {
+      response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+    } else if (modalMode === 'edit') {
+      response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
     }
-  };
+
+    if (response) {
+      await fetchProductos();
+      closeModal();
+    } else {
+      alert("No se pudo guardar el producto");
+    }
+  } catch (error) {
+    console.error('Error al guardar:', error);
+    alert('Error de conexión al guardar el producto');
+  } finally {
+    setSaving(false);
+  }
+};
+
 
   // Confirmar eliminación
   const confirmDelete = (product) => {
