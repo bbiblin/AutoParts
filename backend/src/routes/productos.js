@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const router = new Router();
 const { producto } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
-const koaBody = require('koa-body');
+const { koaBody } = require('koa-body');
 const cloudinary = require('../config/configCloudinary')
 const fs = require('fs');
 const path = require('path');
@@ -178,7 +178,7 @@ router.delete('/:id', async (ctx) => {
 
 //UPDATE para producto...
 router.patch('/:id', koaBody({
-    multipat: true,
+    multipart: true,
     formidable: {
         uploadDir: path.join(__dirname, '../tmp'),
         keepExtensions: true,
