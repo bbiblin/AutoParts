@@ -149,7 +149,7 @@ router.post('/login', async (ctx) => {
 
 router.patch('/profile', authMiddleware, async (ctx) => {
   try {
-    const userId = ctx.user.id; // ID del usuario autenticado desde el token
+    const userId = ctx.state.user.id; // ID del usuario autenticado desde el token
     const updateData = ctx.request.body;
 
     // Campos que el usuario NO puede modificar desde su perfil
