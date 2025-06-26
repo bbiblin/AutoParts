@@ -147,6 +147,7 @@ export default function AdminProductos() {
 };
 
   // Guardar producto
+// Función handleSave mejorada con mejor manejo de errores
 const handleSave = async () => {
   if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
     alert('Por favor completa todos los campos obligatorios');
@@ -157,51 +158,73 @@ const handleSave = async () => {
   try {
     const data = new FormData();
 
+    // Agregar todos los campos
     data.append('product_cod', formData.product_cod);
     data.append('product_name', formData.product_name);
     data.append('description', formData.description);
     data.append('retail_price', formData.retail_price);
     data.append('wholesale_price', formData.wholesale_price);
     data.append('stock', formData.stock);
-    data.append('discount_percentage', formData.discount_percentage);
+    data.append('discount_percentage', formData.discount_percentage || '0');
     data.append('isActive', formData.isActive);
     data.append('featured', formData.featured);
-    data.append('category_id', formData.category_id);
-    data.append('brand_id', formData.brand_id);
+    data.append('category_id', formData.category_id || '');
+    data.append('brand_id', formData.brand_id || '');
 
     if (formData.imagen) {
-      data.append('imagen', formData.imagen); // ⚠️ nombre debe coincidir con backend
+      data.append('imagen', formData.imagen);
     }
+
+    // Configuración de axios mejorada
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 30000, // 30 segundos
+      withCredentials: false
+    };
 
     let response;
     if (modalMode === 'add') {
-      response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      console.log('Enviando datos:', Object.fromEntries(data.entries()));
+      response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, config);
     } else if (modalMode === 'edit') {
-      response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, config);
     }
 
-    if (response) {
+    console.log('Respuesta del servidor:', response);
+
+    if (response && response.status >= 200 && response.status < 300) {
       await fetchProductos();
       closeModal();
+      alert('Producto guardado exitosamente');
     } else {
+      console.error('Respuesta inesperada:', response);
       alert("No se pudo guardar el producto");
     }
   } catch (error) {
-    console.error('Error al guardar:', error);
-    alert('Error de conexión al guardar el producto');
+    console.error('Error completo:', error);
+    console.error('Error response:', error.response);
+    console.error('Error request:', error.request);
+    console.error('Error config:', error.config);
+    
+    // Manejo de errores más específico
+    if (error.code === 'ERR_NETWORK') {
+      alert('Error de conexión: No se puede conectar con el servidor. Verifica tu conexión a internet.');
+    } else if (error.response) {
+      // El servidor respondió con un código de error
+      alert(`Error del servidor (${error.response.status}): ${error.response.data?.error || error.response.statusText}`);
+    } else if (error.request) {
+      // La petición se hizo pero no hubo respuesta
+      alert('No se recibió respuesta del servidor. Verifica que el servidor esté funcionando.');
+    } else {
+      // Algo más salió mal
+      alert(`Error inesperado: ${error.message}`);
+    }
   } finally {
     setSaving(false);
   }
 };
-
 
   // Confirmar eliminación
   const confirmDelete = (product) => {
