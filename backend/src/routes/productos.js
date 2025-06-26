@@ -6,6 +6,7 @@ const { koaBody } = require('koa-body');
 const cloudinary = require('../config/configCloudinary')
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 
 //GET para los productos destacados... 
