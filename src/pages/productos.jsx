@@ -4,11 +4,13 @@ import CategoriesList from "../components/categoriesList";
 import AddToCartButton from "../components/addToCartButton";
 import { useAuth } from "../contexts/authContext";
 import { Link } from "react-router-dom";
+import SearchBar from "../components/searchBar"; // Importa el nuevo componente
 
 export default function Productos() {
   const [allProducts, setAllProducts] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useAuth();
@@ -28,7 +30,13 @@ export default function Productos() {
       }
 
       const res = await axios.get(url);
-      setAllProducts(res.data);
+
+      const filtered = res.data.filter((product) =>
+        product.product_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (product.product_cod && product.product_cod.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+
+      setAllProducts(filtered);
     } catch (error) {
       console.error("Error al obtener productos:", error);
     } finally {
@@ -43,7 +51,7 @@ export default function Productos() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-white to-[#f1f5f9]">
@@ -52,7 +60,7 @@ export default function Productos() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/20 to-[#9333ea]/20"></div>
         <div className="max-w-7xl mx-auto px-6 py-16 relative">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#ffff] bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#ffffff] bg-clip-text text-transparent">
               Catálogo de Productos
             </h1>
             <p className="text-xl text-[#dbeafe] max-w-3xl mx-auto leading-relaxed">
@@ -64,13 +72,16 @@ export default function Productos() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Barra de búsqueda */}
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
         {/* Filter Section */}
         <div className="bg-white rounded-3xl shadow-2xl border border-[#e2e8f0] mb-12 overflow-hidden backdrop-blur-sm">
           <div className="bg-gradient-to-r from-[#f8fafc] via-[#eff6ff] to-[#faf5ff] px-8 py-6 border-b border-[#e2e8f0]">
             <h2 className="text-xl font-bold text-[#1e293b] flex items-center">
               <div className="w-10 h-10 bg-brand-darBlue rounded-full flex items-center justify-center mr-3">
                 <svg
-                  className="w-5 h-5 text-[]"
+                  className="w-5 h-5 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -100,7 +111,7 @@ export default function Productos() {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-brand-redDark text-[#ffff] px-10 py-4 rounded-2xl font-bold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[200px] justify-center"
+                className="bg-brand-redDark text-[#ffffff] px-10 py-4 rounded-2xl font-bold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-w-[200px] justify-center"
               >
                 {loading ? (
                   <>
@@ -170,7 +181,7 @@ export default function Productos() {
               Productos Disponibles
             </h2>
             {allProducts.length > 0 && (
-              <div className="bg-brand-redDark text-[#ffff] px-6 py-3 rounded-3xl font-bold shadow-lg">
+              <div className="bg-brand-redDark text-[#ffffff] px-6 py-3 rounded-3xl font-bold shadow-lg">
                 {allProducts.length} producto
                 {allProducts.length !== 1 ? "s" : ""}
               </div>
@@ -229,7 +240,7 @@ export default function Productos() {
                 {/* Badge de descuento */}
                 {product.discount_percentage > 0 && (
                   <div className="absolute top-4 left-4 z-10">
-                    <div className="bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-[#ffff] px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
+                    <div className="bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-[#ffffff] px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
                       {Math.round(
                         ((product.retail_price - product.retail_price_sale) /
                           product.retail_price) *
@@ -279,7 +290,7 @@ export default function Productos() {
                                 product.retail_price_sale
                               )}
                             </span>
-                            <span className="bg-[#ef4444] text-[#ffff] px-2 py-1 rounded-lg text-xs font-bold">
+                            <span className="bg-[#ef4444] text-[#ffffff] px-2 py-1 rounded-lg text-xs font-bold">
                               {Math.round(
                                 ((product.retail_price -
                                   product.retail_price_sale) /
@@ -378,7 +389,7 @@ export default function Productos() {
                       product.stock > 0 ? (
                         <AddToCartButton
                           product={product}
-                          className="w-full bg-brand-darBlue hover:from-[#1d4ed8]  text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                          className="w-full bg-brand-darBlue hover:from-[#1d4ed8] text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                         />
                       ) : (
                         <p className="text-[#64748b] text-sm mb-3">

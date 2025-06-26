@@ -6,9 +6,7 @@ export default function CategoriesList({
   valueCategory, 
   valueBrand, 
   onChangeCategory, 
-  onChangeBrand, 
-  searchTerm, 
-  onSearchChange 
+  onChangeBrand,  
 }) {
   const [allCategories, setAllCategories] = useState([]);
   const [allBrands, setAllBrands] = useState([]);
@@ -38,18 +36,6 @@ export default function CategoriesList({
 
   return (
     <div className="space-y-6">
-
-      {/* Barra de búsqueda */}
-      <div className="bg-white p-4 rounded-lg shadow flex items-center gap-4">
-        <Search className="text-gray-400 h-5 w-5" />
-        <input
-          type="text"
-          placeholder="Buscar lo que necesitas"
-          className="w-full outline-none text-gray-700 placeholder-gray-400"
-          value={searchTerm}
-          onChange={e => onSearchChange(e.target.value)}
-        />
-      </div>
 
       {/* Filtros de categoría y marca */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
