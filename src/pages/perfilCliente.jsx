@@ -347,7 +347,7 @@ export default function PerfilCliente() {
                     Mis Pedidos
                   </h2>
 
-                  {orders.length === 0 ? (
+                  {pedidos.length === 0 ? (
                     <div className="text-center py-8">
                       <svg
                         className="w-16 h-16 text-gray-300 mx-auto mb-4"
@@ -374,26 +374,26 @@ export default function PerfilCliente() {
                     </div>
                   ) : (
                     <div className="space-y-4 max-h-96 overflow-y-auto">
-                      {orders.map((order) => (
-                        <div key={order.id} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                      {pedidos.map((order) => (
+                        <div key={pedido.id} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                           <div className="flex justify-between items-start mb-2">
                             <div className="font-semibold text-gray-900">
-                              Pedido #{order.id}
+                              Pedido #{pedido.id}
                             </div>
                             <span className={`px-2 py-1 text-xs rounded-full ${
-                              order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                              order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                              pedido.status === 'completed' ? 'bg-green-100 text-green-800' :
+                              pedido.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                              pedido.status === 'cancelled' ? 'bg-red-100 text-red-800' :
                               'bg-gray-100 text-gray-800'
                             }`}>
-                              {order.status}
+                              {pedido.status}
                             </span>
                           </div>
                           <div className="text-sm text-gray-600 mb-1">
-                            Fecha: {new Date(order.createdAt).toLocaleDateString('es-CL')}
+                            Fecha: {new Date(pedido.createdAt).toLocaleDateString('es-CL')}
                           </div>
                           <div className="text-sm font-medium text-gray-900">
-                            Total: {formatPrice(order.total)}
+                            Total: {formatPrice(pedido.precio_total)}
                           </div>
                         </div>
                       ))}
