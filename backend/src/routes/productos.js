@@ -25,7 +25,7 @@ router.get('/destacados', async (ctx) => {
 router.post('/', koaBody({
   multipart: true,
   formidable: {
-    uploadDir: path.join(__dirname, '../tmp'),
+    uploadDir: os.tmpdir(),
     keepExtensions: true,
     maxFileSize: 10 * 1024 * 1024 // 10MB
   }
