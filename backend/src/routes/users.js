@@ -217,6 +217,29 @@ router.patch('/profile', authMiddleware, async (ctx) => {
   }
 });
 
+router.get('/profile', authMiddleware, async (ctx) => {
+  try {
+    const userId = ctx.user.id;
+
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ['password'] }
+    });
+
+    if (!user) {
+      ctx.status = 404;
+      ctx.body = { error: 'Usuario no encontrado' };
+      return;
+    }
+
+    ctx.status = 200;
+    ctx.body = user;
+  } catch (error) {
+    console.error('Error al obtener perfil:', error);
+    ctx.status = 500;
+    ctx.body = { error: 'Error interno del servidor' };
+  }
+});
+
 
 router.delete('/:id', async (ctx) => {
     try {
