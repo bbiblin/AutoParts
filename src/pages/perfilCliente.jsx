@@ -8,7 +8,7 @@ export default function PerfilCliente() {
   const { user, logout, isLoggedIn } = useAuth(); // ✅ Removido token del contexto
   const navigate = useNavigate();
 
-  const [orders, setOrders] = useState([]);
+  const [pedidos, setPedidos] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     username: "",
