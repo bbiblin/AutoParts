@@ -20,6 +20,7 @@ import AdminCategories from './pages/admin/adminCategories';
 import AdminUsuarios from './pages/admin/adminUsuarios';
 import AdminPedidos from './pages/admin/adminPedidos';
 import AdminBrands from './pages/admin/adminBrands';
+import PerfilCliente from './pages/perfilCliente';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import ProtectedRoute from './components/protectedRoute';
@@ -46,6 +47,8 @@ function AppContent() {
         <Route path="/users/login" element={<Login />} />
         <Route path="/users/register" element={<Register />} />
         <Route path="/productos_destacados" element={<Destacados />} />
+        <Route path="/users/profile" element={<PerfilCliente />} />
+
         {isAdmin && <Route path="/adminHome" element={<AdminHome />} />}
         {isAdmin && <Route path="/adminProductos" element={<AdminProductos />} />}
         {isAdmin && <Route path="/adminCategories" element={<AdminCategories />} />}
