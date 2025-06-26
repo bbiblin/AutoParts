@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
 export default function PerfilCliente() {
-  const { user, token, logout, isLoggedIn } = useAuth();
+  const { user, logout, isLoggedIn } = useAuth(); // ✅ Removido token del contexto
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
@@ -20,10 +20,30 @@ export default function PerfilCliente() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Siguiendo el mismo patrón del carrito para debug de cookies
+  // ✅ Función para obtener el token válido
+  const getValidToken = () => {
+    const cookieToken = Cookies.get('authToken');
+    
+    if (!cookieToken) {
+      console.error('No hay token en cookies');
+      return null;
+    }
+    
+    // Verificar que el token no esté vacío o sea "undefined"
+    if (cookieToken === 'undefined' || cookieToken === 'null' || cookieToken.trim() === '') {
+      console.error('Token inválido en cookies:', cookieToken);
+      return null;
+    }
+    
+    return cookieToken;
+  };
+
+  // Debug de cookies
   useEffect(() => {
-    console.log('token:' + Cookies.get('authToken'));
-    console.log('userId: ' + Cookies.get('user_id'));
+    const token = getValidToken();
+    console.log('Token obtenido:', token ? 'VÁLIDO' : 'INVÁLIDO');
+    console.log('userId:', Cookies.get('user_id'));
+    console.log('isLoggedIn:', isLoggedIn);
   }, []);
 
   useEffect(() => {
@@ -36,14 +56,36 @@ export default function PerfilCliente() {
 
   const fetchUserData = async () => {
     try {
-      // ✅ CORREGIDO: Usar el endpoint correcto para obtener datos del usuario actual
-      // Opción 1: Si implementaste /users/profile
+      const token = getValidToken();
+      
+      if (!token) {
+        console.error('No se puede obtener datos del usuario: token inválido');
+        // Usar datos del contexto como fallback
+        if (user) {
+          setFormData({
+            email: user.email || "",
+            username: user.username || "",
+            name: user.name || "",
+            address: user.address || "",
+            phone: user.phone || "",
+            password: "",
+          });
+        }
+        return;
+      }
+
+      console.log('Haciendo petición a /users/profile con token válido');
+      
       const res = await axios.get("https://autoparts-i2gt.onrender.com/users/profile", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
       });
       
-      // ✅ CORREGIDO: Manejar la respuesta correctamente
-      const userData = res.data.user || res.data; // Dependiendo de tu estructura de respuesta
+      console.log('Respuesta del servidor:', res.data);
+      
+      const userData = res.data.user || res.data;
       setFormData({
         email: userData.email || "",
         username: userData.username || "",
@@ -54,16 +96,11 @@ export default function PerfilCliente() {
       });
     } catch (error) {
       console.error("Error al obtener datos del usuario:", error);
-      // Si el endpoint /profile no existe, puedes usar una alternativa:
-      // await fetchUserDataAlternative();
-    }
-  };
-
-  // ✅ Método alternativo si no tienes el endpoint /profile
-  const fetchUserDataAlternative = async () => {
-    try {
-      // Usar la información del usuario desde el contexto de autenticación
+      console.error("Error response:", error.response?.data);
+      
+      // ✅ FALLBACK: Usar datos del contexto si falla la petición
       if (user) {
+        console.log('Usando datos del contexto como fallback');
         setFormData({
           email: user.email || "",
           username: user.username || "",
@@ -73,19 +110,29 @@ export default function PerfilCliente() {
           password: "",
         });
       }
-    } catch (error) {
-      console.error("Error al cargar datos del usuario:", error);
     }
   };
 
   const fetchOrders = async () => {
     try {
+      const token = getValidToken();
+      
+      if (!token) {
+        console.error('No se pueden obtener pedidos: token inválido');
+        setLoading(false);
+        return;
+      }
+
       const res = await axios.get("https://autoparts-i2gt.onrender.com/pedidos", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
       });
       setOrders(res.data || []);
     } catch (error) {
       console.error("Error al obtener pedidos:", error);
+      console.error("Error response:", error.response?.data);
     } finally {
       setLoading(false);
     }
@@ -102,9 +149,16 @@ export default function PerfilCliente() {
       return;
     }
 
+    const token = getValidToken();
+    
+    if (!token) {
+      alert('Error: No se puede actualizar el perfil. Token de sesión inválido.');
+      return;
+    }
+
     setSaving(true);
     try {
-      // ✅ CORREGIDO: Filtrar campos vacíos para evitar enviar datos innecesarios
+      // Filtrar campos vacíos para evitar enviar datos innecesarios
       const updateData = {};
       Object.keys(formData).forEach(key => {
         if (formData[key] && formData[key].trim() !== "") {
@@ -112,9 +166,13 @@ export default function PerfilCliente() {
         }
       });
 
-      // ✅ Usar el endpoint correcto
+      console.log('Actualizando perfil con datos:', updateData);
+
       await axios.patch("https://autoparts-i2gt.onrender.com/users/profile", updateData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
       });
       
       alert("Datos actualizados correctamente");
@@ -122,6 +180,7 @@ export default function PerfilCliente() {
       setFormData(prev => ({ ...prev, password: "" }));
     } catch (error) {
       console.error("Error al actualizar perfil:", error);
+      console.error("Error response:", error.response?.data);
       const errorMessage = error.response?.data?.error || "No se pudo actualizar el perfil";
       alert(errorMessage);
     } finally {
@@ -136,7 +195,6 @@ export default function PerfilCliente() {
     }).format(price);
   };
 
-  // Siguiendo el mismo patrón de loading del carrito
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -347,7 +405,6 @@ export default function PerfilCliente() {
           </div>
         </div>
       ) : (
-        // Siguiendo exactamente el mismo patrón del carrito para usuarios no autenticados
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-16">
             <svg
