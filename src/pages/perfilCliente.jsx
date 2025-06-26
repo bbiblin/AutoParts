@@ -129,7 +129,7 @@ export default function PerfilCliente() {
           'Content-Type': 'application/json'
         },
       });
-      setOrders(res.data || []);
+      setPedidos(res.data || []);
     } catch (error) {
       console.error("Error al obtener pedidos:", error);
       console.error("Error response:", error.response?.data);
