@@ -149,21 +149,6 @@ export default function AdminProductos() {
   // Guardar producto
 // Función handleSave mejorada con mejor manejo de errores
 const handleSave = async () => {
-   console.log('🔍 ESTADO ACTUAL DEL FORMULARIO:');
-  console.log('================================');
-  console.log('formData completo:', formData);
-  console.log('Valores específicos:');
-  console.log('  product_cod:', formData.product_cod, '(tipo:', typeof formData.product_cod, ')');
-  console.log('  product_name:', formData.product_name, '(tipo:', typeof formData.product_name, ')');
-  console.log('  description:', formData.description, '(tipo:', typeof formData.description, ')');
-  console.log('  retail_price:', formData.retail_price, '(tipo:', typeof formData.retail_price, ')');
-  console.log('  wholesale_price:', formData.wholesale_price, '(tipo:', typeof formData.wholesale_price, ')');
-  console.log('  stock:', formData.stock, '(tipo:', typeof formData.stock, ')');
-  console.log('  category_id:', formData.category_id, '(tipo:', typeof formData.category_id, ')');
-  console.log('  brand_id:', formData.brand_id, '(tipo:', typeof formData.brand_id, ')');
-  console.log('  isActive:', formData.isActive, '(tipo:', typeof formData.isActive, ')');
-  console.log('  featured:', formData.featured, '(tipo:', typeof formData.featured, ')');
-  console.log('  imagen:', formData.imagen, '(tipo:', typeof formData.imagen, ')');
   
   if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
     alert('Por favor completa todos los campos obligatorios');

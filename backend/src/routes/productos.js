@@ -28,9 +28,7 @@ router.post('/', koaBody({
     multipart: true,
     formidable: {
         uploadDir: path.join(__dirname, '../tmp'),
-        keepExtensions: true,
-        maxFileSize: 10 * 1024 * 1024
-    }
+        keepExtensions: true    }
 }), async (ctx) => {
     try {
         const file = ctx.request.files?.imagen;
