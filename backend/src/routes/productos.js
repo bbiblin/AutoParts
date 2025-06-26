@@ -22,51 +22,92 @@ router.get('/destacados', async (ctx) => {
 });
 
 
-
-//POST para producto
 router.post('/', koaBody({
-    multipart: true,
-    formidable: {
-        uploadDir: path.join(__dirname, '../tmp'),
-        keepExtensions: true    }
+  multipart: true,
+  formidable: {
+    uploadDir: path.join(__dirname, '../tmp'),
+    keepExtensions: true,
+    maxFileSize: 10 * 1024 * 1024 // 10MB
+  }
 }), async (ctx) => {
-    try {
-        const file = ctx.request.files?.imagen;
-        
-        let image_url = null;
+  try {
+    const file = ctx.request.files?.imagen;
+    let image_url = null;
 
-        if (file){
-            const result = await cloudinary.uploader.upload(file.filepath,{
-                folder: 'productos'
-            });
-
-            fs.unlinkSync(file.filepath);
-            image_url = result.secure_url;
-        }
-
-        console.log(ctx.request.body);
-        const nuevoProducto = await producto.create({
-            ...ctx.request.body,
-            image_url});
-
-        if (nuevoProducto.discount_percentage > 0) {
-            let precio_retail = nuevoProducto.retail_price;
-            let precio_wholesale = nuevoProducto.wholesale_price;
-            let porcentaje_descuento = nuevoProducto.discount_percentage;
-            let porcentaje_restante = (100 - porcentaje_descuento);
-            let precio_final_retail = Math.floor((precio_retail * (porcentaje_restante / 100)));
-            let precio_final_wholesale = Math.floor((precio_wholesale * (porcentaje_restante / 100)));
-
-            await nuevoProducto.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
-        }
-
-        ctx.status = 201;
-        ctx.body = nuevoProducto;
-    } catch (error) {
-        console.error('Error al crear producto:', error);
-        ctx.status = 500;
-        ctx.body = { error: error.message };
+    // 1. Procesar imagen si viene y es válida
+    if (file && file.filepath && fs.existsSync(file.filepath)) {
+      try {
+        const result = await cloudinary.uploader.upload(file.filepath, {
+          folder: 'productos'
+        });
+        fs.unlinkSync(file.filepath);
+        image_url = result.secure_url;
+      } catch (cloudErr) {
+        console.error("❌ Error al subir imagen a Cloudinary:", cloudErr);
+        throw new Error("Falló la subida de imagen a Cloudinary.");
+      }
     }
+
+    // 2. Extraer y castear datos del formulario
+    const {
+      product_cod,
+      product_name,
+      description,
+      retail_price,
+      wholesale_price,
+      stock,
+      discount_percentage,
+      isActive,
+      featured,
+      category_id,
+      brand_id
+    } = ctx.request.body;
+
+    if (!product_name || !retail_price || !wholesale_price || !stock) {
+      ctx.status = 400;
+      ctx.body = { error: "Faltan campos obligatorios." };
+      return;
+    }
+
+    // 3. Crear producto en DB
+    const nuevoProducto = await producto.create({
+      product_cod,
+      product_name,
+      description,
+      retail_price: parseFloat(retail_price),
+      wholesale_price: parseFloat(wholesale_price),
+      stock: parseInt(stock),
+      discount_percentage: parseFloat(discount_percentage) || 0,
+      isActive: isActive === 'true',
+      featured: featured === 'true',
+      category_id: category_id || null,
+      brand_id: brand_id || null,
+      image_url
+    });
+
+    // 4. Aplicar descuento si corresponde
+    if (nuevoProducto.discount_percentage && nuevoProducto.discount_percentage > 0) {
+      const porcentaje_restante = (100 - nuevoProducto.discount_percentage) / 100;
+      const precio_final_retail = Math.floor(nuevoProducto.retail_price * porcentaje_restante);
+      const precio_final_wholesale = Math.floor(nuevoProducto.wholesale_price * porcentaje_restante);
+
+      await nuevoProducto.update({
+        retail_price_sale: precio_final_retail,
+        wholesale_price_sale: precio_final_wholesale
+      });
+    }
+
+    ctx.status = 201;
+    ctx.body = nuevoProducto;
+
+  } catch (error) {
+    console.error('🔥 Error al crear producto:', error);
+    ctx.status = 500;
+    ctx.body = {
+      error: 'Error interno del servidor',
+      message: error.message
+    };
+  }
 });
 
 
