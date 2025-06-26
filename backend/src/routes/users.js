@@ -219,7 +219,7 @@ router.patch('/profile', authMiddleware, async (ctx) => {
 
 router.get('/profile', authMiddleware, async (ctx) => {
   try {
-    const userId = ctx.user.id;
+    const userId = ctx.state.user.id;
 
     const user = await User.findByPk(userId, {
       attributes: { exclude: ['password'] }
