@@ -60,7 +60,7 @@ export default function Navbar() {
                 <Link
                   key={item.title}
                   to={item.to}
-                  className={`relative text-[#F5F5F5] ${hoverText} px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 ${hoverBg} group`}
+                  className={`relative text-[#F5F5F5] ${hoverText} px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 group`}
                 >
                   <span className="relative z-10">{item.title}</span>
                   <span className={`absolute bottom-0 left-0 h-0.5 w-0 ${underlineColor} group-hover:w-full transition-all duration-300`}></span>
@@ -79,7 +79,7 @@ export default function Navbar() {
                   {/* User Profile Link */}
                   <Link
                     to="/users/profile"
-                    className={`flex items-center space-x-2 text-[#F5F5F5] ${hoverText} px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${hoverBg} group`}
+                    className={`flex items-center space-x-2 text-[#F5F5F5] ${hoverText} px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 group`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -161,7 +161,7 @@ export default function Navbar() {
               key={item.title}
               to={item.to}
               onClick={() => setIsMenuOpen(false)}
-              className={`text-[#F5F5F5] ${hoverText} ${hoverBg} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300`}
+              className={`text-[#F5F5F5] ${hoverText} block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300`}
             >
               {item.title}
             </Link>
@@ -179,7 +179,7 @@ export default function Navbar() {
                 <Link
                   to="/perfil"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`w-full text-[#F5F5F5] ${hoverText} ${hoverBg} px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 shadow-lg flex items-center justify-center space-x-2`}
+                  className={`w-full text-[#F5F5F5] ${hoverText} px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 shadow-lg flex items-center justify-center space-x-2`}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
