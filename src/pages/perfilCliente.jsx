@@ -443,7 +443,7 @@ export default function PerfilCliente() {
             <h2 className="text-xl font-bold text-gray-800 mb-4">Detalles del Pedido</h2>
             <div className="space-y-2 text-sm">
               <p><strong>ID:</strong> {selectedPedido.id}</p>
-              <p><strong>Código:</strong> {formatPrice(selectedPedido.cod_pedido)}</p>
+              <p><strong>Código:</strong> {selectedPedido.cod_pedido}</p>
               <p><strong>Fecha:</strong> {new Date(selectedPedido.createdAt).toLocaleDateString('es-CL')}</p>
               <p><strong>Estado:</strong> {selectedPedido.state}</p>
               <p><strong>Total:</strong> {formatPrice(selectedPedido.precio_total)}</p>
