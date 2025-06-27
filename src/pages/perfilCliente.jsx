@@ -5,9 +5,6 @@ import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import OrderCard from '../components/orderCard'
 
-
-
-
 // 🎨 Componente de Loading mejorado
 const LoadingSpinner = ({ message = "Cargando..." }) => (
   <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -136,21 +133,30 @@ const useUserData = (isLoggedIn, user) => {
   return { formData, setFormData, loading };
 };
 
-// 🎨 Hook personalizado para pedidos
+// 🎨 Hook personalizado para pedidos - CORREGIDO
 const usePedidos = (isLoggedIn, user) => {
   const [pedidos, setPedidos] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { getValidToken } = useAuthToken();
 
   const fetchOrders = useCallback(async () => {
+    if (!isLoggedIn || !user) {
+      setPedidos([]);
+      return;
+    }
+
     try {
+      setLoading(true);
       const token = getValidToken();
 
       if (!token) {
         console.error('No se pueden obtener pedidos: token inválido');
+        setPedidos([]);
         return;
       }
 
-      // Usar el endpoint específico para pedidos del usuario
+      console.log('🔄 Obteniendo pedidos para usuario:', user.id || user.email);
+
       const res = await axios.get("https://autoparts-i2gt.onrender.com/pedidos/usuario", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,29 +164,34 @@ const usePedidos = (isLoggedIn, user) => {
         },
       });
 
-      console.log('Pedidos obtenidos:', res.data?.length || 0);
+      console.log('✅ Respuesta del servidor:', res.data);
+      console.log('📦 Pedidos obtenidos:', res.data?.length || 0);
+
       setPedidos(res.data || []);
     } catch (error) {
-      console.error("Error al obtener pedidos:", error);
+      console.error("❌ Error al obtener pedidos:", error);
+      console.error("❌ Status:", error.response?.status);
+      console.error("❌ Mensaje:", error.response?.data);
 
       // Si hay error de autenticación, limpiar pedidos
       if (error.response?.status === 401) {
-        console.error('Token de autenticación inválido');
+        console.error('🔒 Token de autenticación inválido');
         setPedidos([]);
       }
+    } finally {
+      setLoading(false);
     }
-  }, [getValidToken, user]);
+  }, [getValidToken, isLoggedIn]); // ✅ Removido `user` de aquí
 
   useEffect(() => {
-    if (isLoggedIn && user) {
-      fetchOrders();
-    }
-  }, [isLoggedIn, user, fetchOrders]);
+    fetchOrders();
+  }, [fetchOrders, user]); // ✅ `user` solo aquí para disparar cuando cambie
 
-  return { pedidos };
+  return { pedidos, loading, refetch: fetchOrders };
 };
 // 🎨 Componente principal mejorado
 export default function PerfilCliente() {
+
   const { user, isLoggedIn } = useAuth();
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [saving, setSaving] = useState(false);
