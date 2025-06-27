@@ -137,7 +137,7 @@ const useUserData = (isLoggedIn, user) => {
 };
 
 // 🎨 Hook personalizado para pedidos
-const usePedidos = (isLoggedIn) => {
+const usePedidos = (isLoggedIn, user) => {
   const [pedidos, setPedidos] = useState([]);
   const { getValidToken } = useAuthToken();
 
@@ -150,27 +150,35 @@ const usePedidos = (isLoggedIn) => {
         return;
       }
 
-      const res = await axios.get("https://autoparts-i2gt.onrender.com/pedidos", {
+      // Usar el endpoint específico para pedidos del usuario
+      const res = await axios.get("https://autoparts-i2gt.onrender.com/pedidos/usuario", {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
+
+      console.log('Pedidos obtenidos:', res.data?.length || 0);
       setPedidos(res.data || []);
     } catch (error) {
       console.error("Error al obtener pedidos:", error);
+
+      // Si hay error de autenticación, limpiar pedidos
+      if (error.response?.status === 401) {
+        console.error('Token de autenticación inválido');
+        setPedidos([]);
+      }
     }
-  }, [getValidToken]);
+  }, [getValidToken, user]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && user) {
       fetchOrders();
     }
-  }, [isLoggedIn, fetchOrders]);
+  }, [isLoggedIn, user, fetchOrders]);
 
   return { pedidos };
 };
-
 // 🎨 Componente principal mejorado
 export default function PerfilCliente() {
   const { user, isLoggedIn } = useAuth();
