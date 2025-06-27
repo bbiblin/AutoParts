@@ -23,18 +23,18 @@ export default function PerfilCliente() {
   // ✅ Función para obtener el token válido
   const getValidToken = () => {
     const cookieToken = Cookies.get('authToken');
-    
+
     if (!cookieToken) {
       console.error('No hay token en cookies');
       return null;
     }
-    
+
     // Verificar que el token no esté vacío o sea "undefined"
     if (cookieToken === 'undefined' || cookieToken === 'null' || cookieToken.trim() === '') {
       console.error('Token inválido en cookies:', cookieToken);
       return null;
     }
-    
+
     return cookieToken;
   };
 
@@ -57,7 +57,7 @@ export default function PerfilCliente() {
   const fetchUserData = async () => {
     try {
       const token = getValidToken();
-      
+
       if (!token) {
         console.error('No se puede obtener datos del usuario: token inválido');
         // Usar datos del contexto como fallback
@@ -75,16 +75,16 @@ export default function PerfilCliente() {
       }
 
       console.log('Haciendo petición a /users/profile con token válido');
-      
+
       const res = await axios.get("https://autoparts-i2gt.onrender.com/users/profile", {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
-      
+
       console.log('Respuesta del servidor:', res.data);
-      
+
       const userData = res.data.user || res.data;
       setFormData({
         email: userData.email || "",
@@ -97,7 +97,7 @@ export default function PerfilCliente() {
     } catch (error) {
       console.error("Error al obtener datos del usuario:", error);
       console.error("Error response:", error.response?.data);
-      
+
       // ✅ FALLBACK: Usar datos del contexto si falla la petición
       if (user) {
         console.log('Usando datos del contexto como fallback');
@@ -116,7 +116,7 @@ export default function PerfilCliente() {
   const fetchOrders = async () => {
     try {
       const token = getValidToken();
-      
+
       if (!token) {
         console.error('No se pueden obtener pedidos: token inválido');
         setLoading(false);
@@ -124,7 +124,7 @@ export default function PerfilCliente() {
       }
 
       const res = await axios.get("https://autoparts-i2gt.onrender.com/pedidos", {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
@@ -150,7 +150,7 @@ export default function PerfilCliente() {
     }
 
     const token = getValidToken();
-    
+
     if (!token) {
       alert('Error: No se puede actualizar el perfil. Token de sesión inválido.');
       return;
@@ -169,12 +169,12 @@ export default function PerfilCliente() {
       console.log('Actualizando perfil con datos:', updateData);
 
       await axios.patch("https://autoparts-i2gt.onrender.com/users/profile", updateData, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
       });
-      
+
       alert("Datos actualizados correctamente");
       // Limpiar contraseña después de actualizar
       setFormData(prev => ({ ...prev, password: "" }));
@@ -374,18 +374,17 @@ export default function PerfilCliente() {
                     </div>
                   ) : (
                     <div className="space-y-4 max-h-96 overflow-y-auto">
-                      {pedidos.map((order) => (
+                      {pedidos.map((pedido) => (
                         <div key={pedido.id} className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                           <div className="flex justify-between items-start mb-2">
                             <div className="font-semibold text-gray-900">
                               Pedido #{pedido.id}
                             </div>
-                            <span className={`px-2 py-1 text-xs rounded-full ${
-                              pedido.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            <span className={`px-2 py-1 text-xs rounded-full ${pedido.status === 'completed' ? 'bg-green-100 text-green-800' :
                               pedido.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              pedido.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
+                                pedido.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                  'bg-gray-100 text-gray-800'
+                              }`}>
                               {pedido.status}
                             </span>
                           </div>
