@@ -79,7 +79,7 @@ export default function Navbar() {
                 <div className="flex items-center space-x-3">
                   {/* User Profile Link */}
                   <Link
-                    to="/perfil"
+                    to="/users/profile"
                     className={`flex items-center space-x-2 text-[#F5F5F5] ${hoverText} px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${hoverBg} group`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

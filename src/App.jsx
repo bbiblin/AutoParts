@@ -24,7 +24,6 @@ import PerfilCliente from './pages/perfilCliente';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import ProtectedRoute from './components/protectedRoute';
-import OrderCard from './components/orderCard';
 import '../src/index.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useAuth } from './contexts/authContext';
