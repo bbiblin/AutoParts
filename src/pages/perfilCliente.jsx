@@ -431,143 +431,192 @@ export default function PerfilCliente() {
           </div>
         </div>
       )}
-
       {selectedPedido && (
-        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl relative">
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-80 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-hidden rounded-lg shadow-2xl">
+
             {/* Header */}
-            <div className="sticky top-0 bg-gray-800 text-white p-6 rounded-t-xl">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 text-gray-300 hover:text-white transition-colors duration-200 hover:bg-gray-700 rounded-full p-2"
-              >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <h2 className="text-2xl font-bold mb-2">Detalles del Pedido</h2>
-              <p className="text-gray-300 text-sm">Información completa de tu orden</p>
+            <div className="bg-gray-800 px-8 py-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold text-white">Pedido #{selectedPedido.id}</h1>
+                  <p className="text-gray-300 text-sm mt-1">Código: {selectedPedido.cod_pedido}</p>
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="text-gray-400 hover:text-white p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {/* Content */}
-            <div className="p-6">
-              {/* Order Info Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-900">
-                  <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-blue-900 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">ID Pedido</span>
-                  </div>
-                  <p className="text-lg font-bold text-gray-800">#{selectedPedido.id}</p>
-                </div>
+            <div className="overflow-y-auto max-h-[calc(95vh-140px)]">
 
-                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-700">
-                  <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-gray-700 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Código</span>
-                  </div>
-                  <p className="text-lg font-bold text-gray-800">{selectedPedido.cod_pedido}</p>
-                </div>
+              {/* Order Summary */}
+              <div className="bg-gray-50 px-8 py-6 border-b border-gray-200">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-900">
-                  <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-blue-900 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Fecha</span>
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 uppercase tracking-wider mb-2">Fecha</div>
+                    <div className="text-lg font-semibold text-gray-900">
+                      {new Date(selectedPedido.createdAt).toLocaleDateString('es-CL')}
+                    </div>
                   </div>
-                  <p className="text-lg font-bold text-gray-800">
-                    {new Date(selectedPedido.createdAt).toLocaleDateString('es-CL')}
-                  </p>
-                </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-red-700">
-                  <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-red-700 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Estado</span>
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 uppercase tracking-wider mb-2">Estado</div>
+                    <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${selectedPedido.state === 'completado'
+                      ? 'bg-blue-900 text-white'
+                      : selectedPedido.state === 'pendiente'
+                        ? 'bg-red-700 text-white'
+                        : selectedPedido.state === 'cancelado'
+                          ? 'bg-gray-700 text-white'
+                          : 'bg-gray-600 text-white'
+                      }`}>
+                      {selectedPedido.state.toUpperCase()}
+                    </span>
                   </div>
-                  <span className={`inline-flex px-3 py-1 rounded-md text-sm font-medium ${selectedPedido.state === 'completado'
-                    ? 'bg-blue-900 text-white'
-                    : selectedPedido.state === 'pendiente'
-                      ? 'bg-red-700 text-white'
-                      : selectedPedido.state === 'cancelado'
-                        ? 'bg-gray-700 text-white'
-                        : 'bg-gray-600 text-white'
-                    }`}>
-                    {selectedPedido.state}
-                  </span>
-                </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-700 md:col-span-2 lg:col-span-1">
-                  <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-gray-700 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Total</span>
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 uppercase tracking-wider mb-2">Total</div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      {formatPrice(selectedPedido.precio_total)}
+                    </div>
                   </div>
-                  <p className="text-2xl font-bold text-gray-800">{formatPrice(selectedPedido.precio_total)}</p>
+
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 uppercase tracking-wider mb-2">Productos</div>
+                    <div className="text-lg font-semibold text-gray-900">
+                      {selectedPedido.detalles_pedido?.length || 0} items
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
-              {/* Products Section */}
-              <div className="bg-gray-100 rounded-lg p-6 border border-gray-300">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Products Table */}
+              <div className="px-8 py-6">
+                <div className="mb-6">
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-800">Productos del Pedido</h3>
+                    Detalles de Productos
+                  </h2>
                 </div>
 
                 {selectedPedido.detalles_pedido?.length > 0 ? (
-                  <div className="space-y-4">
-                    {selectedPedido.detalles_pedido.map((detalle, idx) => (
-                      <div key={idx} className="bg-white p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow duration-200">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-gray-800 text-lg mb-2">
-                              {detalle.product?.product_name}
-                            </h4>
-                            <div className="flex items-center space-x-6 text-sm text-gray-600">
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+
+                    {/* Table Header */}
+                    <div className="bg-gray-800 px-6 py-4">
+                      <div className="grid grid-cols-12 gap-4 text-sm font-medium text-white uppercase tracking-wider">
+                        <div className="col-span-6">Producto</div>
+                        <div className="col-span-2 text-center">Cantidad</div>
+                        <div className="col-span-2 text-center">Precio Unit.</div>
+                        <div className="col-span-2 text-right">Subtotal</div>
+                      </div>
+                    </div>
+
+                    {/* Table Body */}
+                    <div className="divide-y divide-gray-200">
+                      {selectedPedido.detalles_pedido.map((detalle, idx) => (
+                        <div key={idx} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+                          <div className="grid grid-cols-12 gap-4 items-center">
+
+                            <div className="col-span-6">
                               <div className="flex items-center">
-                                <span className="w-2 h-2 bg-blue-900 rounded-full mr-2"></span>
-                                <span className="font-medium">Cantidad:</span>
-                                <span className="ml-1 font-semibold text-gray-800">{detalle.cantidad}</span>
+                                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
+                                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <h3 className="font-medium text-gray-900">
+                                    {detalle.product?.product_name || 'Producto sin nombre'}
+                                  </h3>
+                                  <p className="text-sm text-gray-500">SKU: {detalle.product?.id || 'N/A'}</p>
+                                </div>
                               </div>
                             </div>
+
+                            <div className="col-span-2 text-center">
+                              <span className="inline-flex items-center px-3 py-1 bg-blue-900 text-white text-sm font-medium rounded-full">
+                                {detalle.cantidad}
+                              </span>
+                            </div>
+
+                            <div className="col-span-2 text-center">
+                              <span className="text-gray-900 font-medium">
+                                {formatPrice(detalle.subtotal / detalle.cantidad)}
+                              </span>
+                            </div>
+
+                            <div className="col-span-2 text-right">
+                              <span className="text-lg font-bold text-gray-900">
+                                {formatPrice(detalle.subtotal)}
+                              </span>
+                            </div>
+
                           </div>
-                          <div className="text-right">
-                            <p className="text-sm text-gray-500 mb-1">Subtotal</p>
-                            <p className="text-xl font-bold text-gray-800">{formatPrice(detalle.subtotal)}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Table Footer */}
+                    <div className="bg-gray-50 px-6 py-4 border-t-2 border-gray-200">
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-gray-600">
+                          Total de {selectedPedido.detalles_pedido.length} producto(s)
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-600 mb-1">Total del Pedido</div>
+                          <div className="text-2xl font-bold text-gray-900">
+                            {formatPrice(selectedPedido.precio_total)}
                           </div>
                         </div>
                       </div>
-                    ))}
+                    </div>
+
                   </div>
                 ) : (
-                  <div className="text-center py-12">
-                    <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="text-center py-16 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                    <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                     </svg>
-                    <p className="text-gray-500 text-lg">Este pedido no tiene productos detallados</p>
-                    <p className="text-gray-400 text-sm mt-2">Los detalles del producto no están disponibles</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Sin productos</h3>
+                    <p className="text-gray-500">Este pedido no tiene productos detallados</p>
                   </div>
                 )}
               </div>
 
-              {/* Footer */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <div className="flex justify-end">
-                  <button
-                    onClick={closeModal}
-                    className="px-6 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    Cerrar
-                  </button>
-                </div>
+            </div>
+
+            {/* Footer */}
+            <div className="bg-white px-8 py-4 border-t border-gray-200 flex justify-between items-center">
+              <div className="text-sm text-gray-500">
+                Creado el {new Date(selectedPedido.createdAt).toLocaleString('es-CL')}
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cerrar
+                </button>
+                <button className="px-6 py-2 bg-blue-900 text-white font-medium rounded-lg hover:bg-blue-800 transition-colors">
+                  Imprimir
+                </button>
               </div>
             </div>
+
           </div>
         </div>
       )}
-
       {/* 🎨 CSS personalizado para scrollbar */}
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
