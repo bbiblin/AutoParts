@@ -380,12 +380,8 @@ export default function PerfilCliente() {
                             <div className="font-semibold text-gray-900">
                               Pedido #{pedido.id}
                             </div>
-                            <span className={`px-2 py-1 text-xs rounded-full ${pedido.status === 'completed' ? 'bg-green-100 text-green-800' :
-                              pedido.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                pedido.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                                  'bg-gray-100 text-gray-800'
-                              }`}>
-                              {pedido.status}
+                            <span className="text-sm font-medium text-gray-700">
+                              Estado: {pedido.status}
                             </span>
                           </div>
                           <div className="text-sm text-gray-600 mb-1">
