@@ -197,7 +197,8 @@ export default function PerfilCliente() {
   const [saving, setSaving] = useState(false);
   const { getValidToken } = useAuthToken();
   const { formData, setFormData, loading } = useUserData(isLoggedIn, user);
-  const { pedidos } = usePedidos(isLoggedIn);
+
+  const { pedidos } = usePedidos(isLoggedIn, user);
 
 
   const openPedidoDetails = (pedido) => {
