@@ -436,7 +436,7 @@ export default function PerfilCliente() {
           <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-hidden rounded-lg shadow-2xl">
 
             {/* Header */}
-            <div className="bg-brand-darBlue px-8 py-6 border-b border-gray-200">
+            <div className="bg-gray-700 px-8 py-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-2xl font-bold text-white">Pedido #{selectedPedido.id}</h1>
