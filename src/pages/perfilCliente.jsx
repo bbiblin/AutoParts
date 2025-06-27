@@ -433,82 +433,82 @@ export default function PerfilCliente() {
       )}
 
       {selectedPedido && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl relative transform transition-all duration-300 ease-in-out">
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-70 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl relative">
             {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-2xl">
+            <div className="sticky top-0 bg-gray-800 text-white p-6 rounded-t-xl">
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4 text-white hover:text-gray-200 transition-colors duration-200 hover:bg-white hover:bg-opacity-20 rounded-full p-2"
+                className="absolute top-4 right-4 text-gray-300 hover:text-white transition-colors duration-200 hover:bg-gray-700 rounded-full p-2"
               >
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
               <h2 className="text-2xl font-bold mb-2">Detalles del Pedido</h2>
-              <p className="text-blue-100 text-sm">Información completa de tu orden</p>
+              <p className="text-gray-300 text-sm">Información completa de tu orden</p>
             </div>
 
             {/* Content */}
             <div className="p-6">
               {/* Order Info Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-900">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">ID Pedido</span>
+                    <div className="w-3 h-3 bg-blue-900 rounded-full mr-2"></div>
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">ID Pedido</span>
                   </div>
                   <p className="text-lg font-bold text-gray-800">#{selectedPedido.id}</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-700">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-purple-600 uppercase tracking-wide">Código</span>
+                    <div className="w-3 h-3 bg-gray-700 rounded-full mr-2"></div>
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Código</span>
                   </div>
                   <p className="text-lg font-bold text-gray-800">{selectedPedido.cod_pedido}</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-900">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-green-600 uppercase tracking-wide">Fecha</span>
+                    <div className="w-3 h-3 bg-blue-900 rounded-full mr-2"></div>
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Fecha</span>
                   </div>
                   <p className="text-lg font-bold text-gray-800">
                     {new Date(selectedPedido.createdAt).toLocaleDateString('es-CL')}
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-red-700">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-orange-600 uppercase tracking-wide">Estado</span>
+                    <div className="w-3 h-3 bg-red-700 rounded-full mr-2"></div>
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Estado</span>
                   </div>
-                  <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${selectedPedido.state === 'completado'
-                    ? 'bg-green-100 text-green-800'
+                  <span className={`inline-flex px-3 py-1 rounded-md text-sm font-medium ${selectedPedido.state === 'completado'
+                    ? 'bg-blue-900 text-white'
                     : selectedPedido.state === 'pendiente'
-                      ? 'bg-yellow-100 text-yellow-800'
+                      ? 'bg-red-700 text-white'
                       : selectedPedido.state === 'cancelado'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-blue-100 text-blue-800'
+                        ? 'bg-gray-700 text-white'
+                        : 'bg-gray-600 text-white'
                     }`}>
                     {selectedPedido.state}
                   </span>
                 </div>
 
-                <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200 md:col-span-2 lg:col-span-1">
+                <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-700 md:col-span-2 lg:col-span-1">
                   <div className="flex items-center mb-2">
-                    <div className="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div>
-                    <span className="text-xs font-medium text-emerald-600 uppercase tracking-wide">Total</span>
+                    <div className="w-3 h-3 bg-gray-700 rounded-full mr-2"></div>
+                    <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Total</span>
                   </div>
                   <p className="text-2xl font-bold text-gray-800">{formatPrice(selectedPedido.precio_total)}</p>
                 </div>
               </div>
 
               {/* Products Section */}
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div className="bg-gray-100 rounded-lg p-6 border border-gray-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
@@ -519,7 +519,7 @@ export default function PerfilCliente() {
                 {selectedPedido.detalles_pedido?.length > 0 ? (
                   <div className="space-y-4">
                     {selectedPedido.detalles_pedido.map((detalle, idx) => (
-                      <div key={idx} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                      <div key={idx} className="bg-white p-5 rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow duration-200">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <h4 className="font-semibold text-gray-800 text-lg mb-2">
@@ -527,7 +527,7 @@ export default function PerfilCliente() {
                             </h4>
                             <div className="flex items-center space-x-6 text-sm text-gray-600">
                               <div className="flex items-center">
-                                <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                                <span className="w-2 h-2 bg-blue-900 rounded-full mr-2"></span>
                                 <span className="font-medium">Cantidad:</span>
                                 <span className="ml-1 font-semibold text-gray-800">{detalle.cantidad}</span>
                               </div>
@@ -557,7 +557,7 @@ export default function PerfilCliente() {
                 <div className="flex justify-end">
                   <button
                     onClick={closeModal}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="px-6 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
                   >
                     Cerrar
                   </button>
