@@ -47,9 +47,12 @@ const OrderCard = ({ pedido, formatPrice }) => (
         <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
         <span className="font-bold text-gray-800">Pedido #{pedido.id}</span>
       </div>
-      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${pedido.state === 'completado' ? 'bg-green-100 text-green-800' :
-        pedido.state === 'pendiente' ? 'bg-red-100 text-red-700' :
-          'bg-blue-100 text-blue-700'
+
+      <span className={`text-xs font-semibold px-3 py-1 rounded-md ${pedido.state === 'pagado' ? 'bg-green-100 text-green-800' :
+        pedido.state === 'cotización enviada' ? 'bg-blue-100 text-blue-700' :
+          pedido.state === 'rechazado' ? 'bg-red-100 text-red-700' :
+            pedido.state === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+              'bg-gray-100 text-gray-700'
         }`}>
         {pedido.state}
       </span>
@@ -279,7 +282,7 @@ export default function PerfilCliente() {
             {/* 🎨 Información Personal mejorada */}
             <div className="xl:col-span-2">
               <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-gray-700 px-8 py-6">
+                <div className="bg-brand-darBlue px-8 py-6">
                   <h2 className="text-2xl font-bold text-white flex items-center">
                     <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -347,7 +350,7 @@ export default function PerfilCliente() {
                     <button
                       type="submit"
                       disabled={saving}
-                      className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full bg-red-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       {saving ? (
                         <>
@@ -374,7 +377,7 @@ export default function PerfilCliente() {
             {/* 🎨 Historial de Pedidos mejorado */}
             <div className="xl:col-span-1">
               <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 sticky top-8 overflow-hidden">
-                <div className="bg-gradient-to-r from-gray-700 to-red-600 px-6 py-5">
+                <div className="bg-gray-700 px-6 py-5">
                   <h2 className="text-xl font-bold text-white flex items-center">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -399,7 +402,7 @@ export default function PerfilCliente() {
                       </p>
                       <Link
                         to="/productos"
-                        className="inline-flex items-center bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="inline-flex items-center bg-red-700 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -456,12 +459,10 @@ export default function PerfilCliente() {
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(to bottom, #3b82f6, #dc2626);
+          background: #2563EB;
           border-radius: 10px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(to bottom, #2563eb, #b91c1c);
-        }
+      
       `}</style>
     </div>
   );
