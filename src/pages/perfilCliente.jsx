@@ -436,7 +436,7 @@ export default function PerfilCliente() {
           <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-hidden rounded-lg shadow-2xl">
 
             {/* Header */}
-            <div className="bg-gray-800 px-8 py-6 border-b border-gray-200">
+            <div className="bg-brand-darBlue px-8 py-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-2xl font-bold text-white">Pedido #{selectedPedido.id}</h1>
@@ -469,7 +469,7 @@ export default function PerfilCliente() {
 
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 uppercase tracking-wider mb-2">Estado</div>
-                    <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${selectedPedido.state === 'completado'
+                    <span className={`inline-block px-4 py-2 rounded-md text-sm font-semibold ${selectedPedido.state === 'completado'
                       ? 'bg-blue-900 text-white'
                       : selectedPedido.state === 'pendiente'
                         ? 'bg-red-700 text-white'
@@ -539,7 +539,7 @@ export default function PerfilCliente() {
                                   <h3 className="font-medium text-gray-900">
                                     {detalle.product?.product_name || 'Producto sin nombre'}
                                   </h3>
-                                  <p className="text-sm text-gray-500">SKU: {detalle.product?.id || 'N/A'}</p>
+                                  <p className="text-sm text-gray-500">Código: {detalle.product?.product_cod || 'N/A'}</p>
                                 </div>
                               </div>
                             </div>
@@ -607,9 +607,6 @@ export default function PerfilCliente() {
                   className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Cerrar
-                </button>
-                <button className="px-6 py-2 bg-blue-900 text-white font-medium rounded-lg hover:bg-blue-800 transition-colors">
-                  Imprimir
                 </button>
               </div>
             </div>
