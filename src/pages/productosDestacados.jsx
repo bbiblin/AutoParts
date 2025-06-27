@@ -72,12 +72,12 @@ export default function ProductosDestacados() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-white to-[#f1f5f9]">
-            
+
             <div className="bg-gradient-to-r from-[#697fb3] via-[#1e3a8a] to-[#222952] text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/20 to-[#9333ea]/20"></div>
                 <div className="max-w-7xl mx-auto px-6 py-16 relative">
                     <div className="text-center">
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#ffff] bg-clip-text text-transparent">
+                        <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white bg-clip-text text-transparent">
                             Productos Destacados
                         </h1>
                         <p className="text-xl text-[#dbeafe] max-w-3xl mx-auto leading-relaxed">
@@ -88,10 +88,10 @@ export default function ProductosDestacados() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                
+
                 <div className="mb-8">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-3xl font-bold bg-brand-darBlue bg-clip-text text-transparent flex items-center">
+                        <h2 className="text-3xl font-bold bg-gray-900 bg-clip-text text-transparent flex items-center">
                             <div className="w-8 h-8 bg-gradient-to-r from-[#ffe843] to-[#ff7a43] rounded-full flex items-center justify-center mr-3">
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -107,7 +107,7 @@ export default function ProductosDestacados() {
                     </div>
                 </div>
 
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {productos.map((producto, index) => (
                         <div
@@ -115,14 +115,14 @@ export default function ProductosDestacados() {
                             className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-slate-100 hover:border-slate-200 transform hover:-translate-y-2"
                             style={{ animationDelay: `${index * 100}ms` }}
                         >
-                            
+
                             <div className="absolute top-4 left-4 z-10">
                                 <div className="bg-gradient-to-r from-[#ffe843] to-[#ff7a43] text-[#FFFF] px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
                                     ⭐ Destacado
                                 </div>
                             </div>
 
-                            
+
                             {isDistributor && (
                                 <div className=" absolute top-16 left-4 z-10">
                                     <div className="bg-gradient-to-r from-[#a1e139] to-[#5ff495] text-[#FFFF] px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
@@ -131,7 +131,7 @@ export default function ProductosDestacados() {
                                 </div>
                             )}
 
-                            
+
                             <Link to={`/detalles_producto/${producto.id}`} className="block relative overflow-hidden">
                                 <div className="aspect-w-1 aspect-h-1 w-full">
                                     <img
@@ -143,7 +143,7 @@ export default function ProductosDestacados() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </Link>
 
-                            
+
                             <div className="p-6 flex flex-col h-auto">
                                 <Link to={`/detalles_producto/${producto.id}`}>
                                     <h2 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors duration-300 mb-3 line-clamp-2 leading-tight">
@@ -155,10 +155,10 @@ export default function ProductosDestacados() {
                                     {producto.description}
                                 </p>
 
-                                
+
                                 <div className="mb-4">
                                     {isDistributor ? (
-                                        
+
                                         <div className="space-y-1">
                                             <div className="flex items-center space-x-2">
                                                 <span className="text-2xl font-bold text-green-600">
@@ -173,7 +173,7 @@ export default function ProductosDestacados() {
                                             </div>
                                         </div>
                                     ) : (
-                                        
+
                                         producto.discount_percentage > 0 ? (
                                             <div className="space-y-1">
                                                 <div className="flex items-center space-x-3">
@@ -196,7 +196,7 @@ export default function ProductosDestacados() {
                                     )}
                                 </div>
 
-                                
+
                                 <div className="mb-6">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-sm font-medium text-slate-600">Stock disponible</span>
@@ -216,9 +216,9 @@ export default function ProductosDestacados() {
                                     </div>
                                 </div>
 
-                                
+
                                 <div className="space-y-3">
-                                    
+
                                     <Link
                                         to={`/detalles_producto/${producto.id}`}
                                         className="w-full bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 text-slate-700 font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg border border-slate-200 hover:border-slate-300 flex items-center justify-center group"
@@ -230,19 +230,19 @@ export default function ProductosDestacados() {
                                         Ver Detalles
                                     </Link>
 
-                                    
+
                                     {isLoggedIn ? (
                                         producto.stock > 0 ? (
                                             <AddToCartButton
-                                            product={producto}
-                                            className="w-full bg-brand-darBlue hover:from-[#1d4ed8]  text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                                        />
+                                                product={producto}
+                                                className="w-full bg-brand-darBlue hover:from-[#1d4ed8]  text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                                            />
                                         ) : (
                                             <p className="text-[#64748b] text-sm mb-3">
-                                            No hay stock del producto.
+                                                No hay stock del producto.
                                             </p>
                                         )
-                                        
+
                                     ) : (
                                         <div className="text-center">
                                             <p className="text-slate-500 text-sm mb-3">
@@ -262,7 +262,7 @@ export default function ProductosDestacados() {
                     ))}
                 </div>
 
-                
+
                 <div className="text-center mt-16">
                     <div className="bg-gradient-to-r from-[#eff6ff] to-[#faf5ff] rounded-3xl p-8 border border-[#b5bec9]">
                         <h3 className="text-2xl font-bold text-[#1e293b] mb-4">

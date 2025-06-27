@@ -60,7 +60,7 @@ export default function Productos() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/20 to-[#9333ea]/20"></div>
         <div className="max-w-7xl mx-auto px-6 py-16 relative">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#ffffff] bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white bg-clip-text text-transparent">
               Catálogo de Productos
             </h1>
             <p className="text-xl text-[#dbeafe] max-w-3xl mx-auto leading-relaxed">
@@ -244,7 +244,7 @@ export default function Productos() {
                       {Math.round(
                         ((product.retail_price - product.retail_price_sale) /
                           product.retail_price) *
-                          100
+                        100
                       )}
                       % OFF
                     </div>
@@ -295,7 +295,7 @@ export default function Productos() {
                                 ((product.retail_price -
                                   product.retail_price_sale) /
                                   product.retail_price) *
-                                  100
+                                100
                               )}
                               % OFF
                             </span>
@@ -325,26 +325,24 @@ export default function Productos() {
                         Stock disponible
                       </span>
                       <span
-                        className={`text-sm font-bold ${
-                          product.stock > 10
-                            ? "text-[#16a34a]"
-                            : product.stock > 0
+                        className={`text-sm font-bold ${product.stock > 10
+                          ? "text-[#16a34a]"
+                          : product.stock > 0
                             ? "text-[#ca8a04]"
                             : "text-[#dc2626]"
-                        }`}
+                          }`}
                       >
                         {product.stock} unidades
                       </span>
                     </div>
                     <div className="w-full bg-[#e2e8f0] rounded-md h-2">
                       <div
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          product.stock > 10
-                            ? "bg-[#22c55e]"
-                            : product.stock > 0
+                        className={`h-2 rounded-sm transition-all duration-500 ${product.stock > 10
+                          ? "bg-[#22c55e]"
+                          : product.stock > 0
                             ? "bg-[#eab308]"
                             : "bg-[#ef4444]"
-                        }`}
+                          }`}
                         style={{
                           width: `${Math.min(
                             (product.stock / 20) * 100,
