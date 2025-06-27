@@ -6,13 +6,13 @@ import Cookies from 'js-cookie';
 
 // 🎨 Componente de Loading mejorado
 const LoadingSpinner = ({ message = "Cargando..." }) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+  <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
     <div className="text-center">
       <div className="relative">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-300 border-t-blue-600 mx-auto"></div>
         <div className="animate-pulse absolute inset-0 rounded-full bg-blue-100 opacity-20"></div>
       </div>
-      <p className="mt-6 text-gray-600 font-medium">{message}</p>
+      <p className="mt-6 text-gray-800 font-medium">{message}</p>
     </div>
   </div>
 );
@@ -31,7 +31,7 @@ const FormInput = ({ label, name, type = "text", value, onChange, required = fal
       onChange={onChange}
       required={required}
       placeholder={placeholder}
-      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400 bg-white/80 backdrop-blur-sm"
+      className="w-full px-4 py-3 border border-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-600 bg-white backdrop-blur-sm"
     />
     {helperText && (
       <p className="text-xs text-gray-500 mt-1">{helperText}</p>
@@ -41,15 +41,15 @@ const FormInput = ({ label, name, type = "text", value, onChange, required = fal
 
 // 🎨 Componente de Card de Pedido mejorado
 const OrderCard = ({ pedido, formatPrice }) => (
-  <div className="bg-white/80 backdrop-blur-sm p-5 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-300 hover:border-blue-200">
+  <div className="bg-white backdrop-blur-sm p-5 rounded-xl border border-gray-300 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 hover:border-blue-400">
     <div className="flex justify-between items-start mb-3">
       <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-        <span className="font-bold text-gray-900">Pedido #{pedido.id}</span>
+        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+        <span className="font-bold text-gray-800">Pedido #{pedido.id}</span>
       </div>
       <span className={`text-xs font-semibold px-3 py-1 rounded-full ${pedido.state === 'completado' ? 'bg-green-100 text-green-800' :
-        pedido.state === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
-          'bg-blue-100 text-blue-800'
+        pedido.state === 'pendiente' ? 'bg-red-100 text-red-700' :
+          'bg-blue-100 text-blue-700'
         }`}>
         {pedido.state}
       </span>
@@ -57,7 +57,7 @@ const OrderCard = ({ pedido, formatPrice }) => (
     <div className="space-y-2 text-sm">
       <div className="flex justify-between">
         <span className="text-gray-600">Fecha:</span>
-        <span className="font-medium">{new Date(pedido.createdAt).toLocaleDateString('es-CL')}</span>
+        <span className="font-medium text-gray-800">{new Date(pedido.createdAt).toLocaleDateString('es-CL')}</span>
       </div>
       <div className="flex justify-between">
         <span className="text-gray-600">Total:</span>
@@ -257,20 +257,20 @@ export default function PerfilCliente() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300">
       {isLoggedIn ? (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* 🎨 Header mejorado */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl mb-6 shadow-lg">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-gray-700 rounded-2xl mb-6 shadow-lg">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
               Mi Perfil
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
               Gestiona tu información personal y mantén un seguimiento de todos tus pedidos
             </p>
           </div>
@@ -278,8 +278,8 @@ export default function PerfilCliente() {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
             {/* 🎨 Información Personal mejorada */}
             <div className="xl:col-span-2">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+              <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-gray-700 px-8 py-6">
                   <h2 className="text-2xl font-bold text-white flex items-center">
                     <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -347,7 +347,7 @@ export default function PerfilCliente() {
                     <button
                       type="submit"
                       disabled={saving}
-                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       {saving ? (
                         <>
@@ -373,8 +373,8 @@ export default function PerfilCliente() {
 
             {/* 🎨 Historial de Pedidos mejorado */}
             <div className="xl:col-span-1">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 sticky top-8 overflow-hidden">
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-5">
+              <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 sticky top-8 overflow-hidden">
+                <div className="bg-gradient-to-r from-gray-700 to-red-600 px-6 py-5">
                   <h2 className="text-xl font-bold text-white flex items-center">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -386,20 +386,20 @@ export default function PerfilCliente() {
                 <div className="p-6">
                   {pedidos.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-20 h-20 bg-gradient-to-r from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-20 h-20 bg-gradient-to-r from-gray-300 to-gray-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg className="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
                         No hay pedidos aún
                       </h3>
-                      <p className="text-gray-500 mb-6">
+                      <p className="text-gray-600 mb-6">
                         ¡Explora nuestro catálogo y realiza tu primer pedido!
                       </p>
                       <Link
                         to="/productos"
-                        className="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="inline-flex items-center bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -422,20 +422,20 @@ export default function PerfilCliente() {
       ) : (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-20">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl mb-8 shadow-2xl">
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-600 to-gray-700 rounded-3xl mb-8 shadow-2xl">
               <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-6">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent mb-6">
               Accede a tu perfil
             </h2>
-            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto">
               Inicia sesión para acceder a tu información personal y gestionar tus pedidos
             </p>
             <Link
               to="/users/login"
-              className="inline-flex items-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
+              className="inline-flex items-center bg-gradient-to-r from-blue-600 to-red-600 text-white px-10 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
             >
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -456,11 +456,11 @@ export default function PerfilCliente() {
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(to bottom, #3b82f6, #6366f1);
+          background: linear-gradient(to bottom, #3b82f6, #dc2626);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(to bottom, #2563eb, #4f46e5);
+          background: linear-gradient(to bottom, #2563eb, #b91c1c);
         }
       `}</style>
     </div>
