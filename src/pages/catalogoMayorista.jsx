@@ -43,7 +43,7 @@ export default function Productos() {
       setLoading(false);
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     getProducts();

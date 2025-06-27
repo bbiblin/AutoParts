@@ -5,15 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import OrderCard from '../components/orderCard'
 
-const [selectedPedido, setSelectedPedido] = useState(null);
 
-const openPedidoDetails = (pedido) => {
-  setSelectedPedido(pedido);
-};
-
-const closeModal = () => {
-  setSelectedPedido(null);
-};
 
 
 // 🎨 Componente de Loading mejorado
@@ -182,10 +174,20 @@ const usePedidos = (isLoggedIn) => {
 // 🎨 Componente principal mejorado
 export default function PerfilCliente() {
   const { user, isLoggedIn } = useAuth();
+  const [selectedPedido, setSelectedPedido] = useState(null);
   const [saving, setSaving] = useState(false);
   const { getValidToken } = useAuthToken();
   const { formData, setFormData, loading } = useUserData(isLoggedIn, user);
   const { pedidos } = usePedidos(isLoggedIn);
+
+
+  const openPedidoDetails = (pedido) => {
+    setSelectedPedido(pedido);
+  };
+
+  const closeModal = () => {
+    setSelectedPedido(null);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

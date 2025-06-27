@@ -20,9 +20,7 @@ export default function OrderCard({ pedido, formatPrice, onClick }) {
                                 ? "bg-red-100 text-red-700"
                                 : pedido.state === "pending"
                                     ? "bg-yellow-100 text-yellow-700"
-                                    : "bg-gray-100 text-gray-700"
-                        }`}
-                >
+                                    : "bg-gray-100 text-gray-700"}`}>
                     {pedido.state}
                 </span>
             </div>
