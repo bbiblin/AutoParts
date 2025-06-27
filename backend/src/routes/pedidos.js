@@ -1,8 +1,7 @@
 const Router = require('@koa/router');
 const router = new Router();
 const { pedidos, cart_item, detalle_pedido, producto, User } = require('../models');
-const { authenticateToken } = require('../middleware/auth'); // Ajusta la ruta según tu estructura
-
+const authenticateToken = require('../middleware/auth');
 
 
 //GET de todos los pedidos
