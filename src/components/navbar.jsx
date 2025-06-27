@@ -20,7 +20,6 @@ export default function Navbar() {
 
   // Colores dinámicos basados en tipo de usuario
   const navbarBg = isDistributor ? 'bg-[#D72638]' : 'bg-[#1F3A93]';
-  const hoverBg = isDistributor ? 'hover:bg-red-700' : 'hover:bg-blue-800';
   const hoverText = isDistributor ? 'hover:text-red-200' : 'hover:text-blue-300';
   const underlineColor = isDistributor ? 'bg-white' : 'bg-[#BB2F3D]';
 
