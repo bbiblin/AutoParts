@@ -381,7 +381,7 @@ export default function PerfilCliente() {
                               Pedido #{pedido.id}
                             </div>
                             <span className="text-sm font-medium text-gray-700">
-                              Estado: {pedido.status}
+                              Estado: {pedido.state}
                             </span>
                           </div>
                           <div className="text-sm text-gray-600 mb-1">
