@@ -545,7 +545,7 @@ export default function PerfilCliente() {
                             </div>
 
                             <div className="col-span-2 text-center">
-                              <span className="inline-flex items-center px-3 py-1 bg-blue-900 text-white text-sm font-medium rounded-full">
+                              <span className="inline-flex items-center px-3 py-1  text-gray-900 text-sm font-medium">
                                 {detalle.cantidad}
                               </span>
                             </div>
