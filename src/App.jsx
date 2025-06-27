@@ -24,6 +24,7 @@ import PerfilCliente from './pages/perfilCliente';
 import { AuthProvider } from './contexts/authContext';
 import { CartProvider } from './contexts/cartContext';
 import ProtectedRoute from './components/protectedRoute';
+import OrderCard from './components/orderCard';
 import '../src/index.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useAuth } from './contexts/authContext';
@@ -37,10 +38,10 @@ function AppContent() {
     <>
       {/* Solo mostrar Navbar si no es admin */}
       {!isAdmin && <Navbar />}
-      
-      {isAdmin && <AdminNavBar/>}
-    
-      
+
+      {isAdmin && <AdminNavBar />}
+
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/productos" element={<Productos />} />
@@ -57,9 +58,9 @@ function AppContent() {
         {isAdmin && <Route path="/adminBrands" element={<AdminBrands />} />}
 
 
-        
-        {!isAdmin && 
-          <Route 
+
+        {!isAdmin &&
+          <Route
             path="/cart"
             element={
               isAdmin ? (
@@ -98,10 +99,10 @@ function AppContent() {
               </ProtectedRoute>
             )
           }
-        /> 
+        />
         <Route path="/confirmarOrden" element={<ConfirmarOrden />} />
       </Routes>
-      
+
       {/* Solo mostrar Footer si no es admin */}
       {!isAdmin && <Footer />}
     </>
@@ -111,7 +112,7 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      
+
       <CartProvider>
         <AppContent />
       </CartProvider>

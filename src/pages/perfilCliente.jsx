@@ -3,6 +3,18 @@ import axios from "axios";
 import { useAuth } from "../contexts/authContext";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
+import OrderCard from '../components/orderCard'
+
+const [selectedPedido, setSelectedPedido] = useState(null);
+
+const openPedidoDetails = (pedido) => {
+  setSelectedPedido(pedido);
+};
+
+const closeModal = () => {
+  setSelectedPedido(null);
+};
+
 
 // 🎨 Componente de Loading mejorado
 const LoadingSpinner = ({ message = "Cargando..." }) => (
@@ -36,37 +48,6 @@ const FormInput = ({ label, name, type = "text", value, onChange, required = fal
     {helperText && (
       <p className="text-xs text-gray-500 mt-1">{helperText}</p>
     )}
-  </div>
-);
-
-// 🎨 Componente de Card de Pedido mejorado
-const OrderCard = ({ pedido, formatPrice }) => (
-  <div className="bg-white backdrop-blur-sm p-5 rounded-xl border border-gray-300 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 hover:border-blue-400">
-    <div className="flex justify-between items-start mb-3">
-      <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-        <span className="font-bold text-gray-800">Pedido #{pedido.id}</span>
-      </div>
-
-      <span className={`text-xs font-semibold px-3 py-1 rounded-md ${pedido.state === 'pagado' ? 'bg-green-100 text-green-800' :
-        pedido.state === 'cotización enviada' ? 'bg-blue-100 text-blue-700' :
-          pedido.state === 'rechazado' ? 'bg-red-100 text-red-700' :
-            pedido.state === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-              'bg-gray-100 text-gray-700'
-        }`}>
-        {pedido.state}
-      </span>
-    </div>
-    <div className="space-y-2 text-sm">
-      <div className="flex justify-between">
-        <span className="text-gray-600">Fecha:</span>
-        <span className="font-medium text-gray-800">{new Date(pedido.createdAt).toLocaleDateString('es-CL')}</span>
-      </div>
-      <div className="flex justify-between">
-        <span className="text-gray-600">Total:</span>
-        <span className="font-bold text-blue-600">{formatPrice(pedido.precio_total)}</span>
-      </div>
-    </div>
   </div>
 );
 
@@ -413,7 +394,7 @@ export default function PerfilCliente() {
                   ) : (
                     <div className="space-y-4 max-h-96 overflow-y-auto custom-scrollbar">
                       {pedidos.map((pedido) => (
-                        <OrderCard key={pedido.id} pedido={pedido} formatPrice={formatPrice} />
+                        <OrderCard key={pedido.id} pedido={pedido} formatPrice={formatPrice} onClick={openPedidoDetails} />
                       ))}
                     </div>
                   )}
@@ -448,6 +429,43 @@ export default function PerfilCliente() {
           </div>
         </div>
       )}
+
+      {selectedPedido && (
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white w-full max-w-2xl p-6 rounded-lg shadow-lg relative">
+            <button onClick={closeModal} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Detalles del Pedido</h2>
+            <div className="space-y-2 text-sm">
+              <p><strong>ID:</strong> {selectedPedido.id}</p>
+              <p><strong>Fecha:</strong> {new Date(selectedPedido.createdAt).toLocaleDateString('es-CL')}</p>
+              <p><strong>Estado:</strong> {selectedPedido.state}</p>
+              <p><strong>Total:</strong> {formatPrice(selectedPedido.precio_total)}</p>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">Productos:</h3>
+              {selectedPedido.detalles_pedido?.length > 0 ? (
+                <ul className="space-y-2">
+                  {selectedPedido.detalles_pedido.map((detalle, idx) => (
+                    <li key={idx} className="border p-2 rounded-md bg-gray-50 text-sm">
+                      <p><strong>Producto:</strong> {detalle.product?.product_name}</p>
+                      <p><strong>Cantidad:</strong> {detalle.cantidad}</p>
+                      <p><strong>Subtotal:</strong> {formatPrice(detalle.subtotal)}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">Este pedido no tiene productos detallados.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* 🎨 CSS personalizado para scrollbar */}
       <style jsx>{`
