@@ -10,57 +10,108 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
   if (!pedido) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white w-full sm:w-auto max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl p-6 shadow-xl transition-all">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-gray-800">Detalle del Pedido</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-red-600 transition"
-            aria-label="Cerrar modal"
-          >
-            ✕
-          </button>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+      <div className="bg-white w-full sm:w-auto sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl shadow-2xl transition-all transform animate-fadeInUp">
+        {/* Header del modal con diseño mejorado */}
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200 rounded-t-3xl sm:rounded-t-3xl">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-gray-700 rounded-xl flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800">Detalle del Pedido</h3>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-all duration-200"
+              aria-label="Cerrar modal"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <p className="text-gray-700 text-sm mb-2">
-          Código: <span className="font-medium">{pedido.cod_pedido || pedido.codigo}</span>
-        </p>
-        <p className="text-gray-700 text-sm mb-2">
-          Fecha: {new Date(pedido.createdAt || pedido.fecha).toLocaleDateString()}
-        </p>
-        <p className="text-gray-700 text-sm mb-2">Estado: {pedido.state || pedido.status}</p>
-        <p className="text-gray-700 text-sm mb-4">
-          Total: <span className="font-bold">{formatPrice(pedido.precio_total || pedido.total)}</span>
-        </p>
+        {/* Contenido del modal */}
+        <div className="p-8">
+          {/* Información básica en tarjetas */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+              <p className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1">Código</p>
+              <p className="text-lg font-bold text-blue-800">{pedido.cod_pedido || pedido.codigo}</p>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+              <p className="text-xs font-medium text-green-600 uppercase tracking-wide mb-1">Fecha</p>
+              <p className="text-lg font-bold text-green-800">
+                {new Date(pedido.createdAt || pedido.fecha).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+              <p className="text-xs font-medium text-purple-600 uppercase tracking-wide mb-1">Estado</p>
+              <p className="text-lg font-bold text-purple-800">{pedido.state || pedido.status}</p>
+            </div>
+            <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl border border-red-200">
+              <p className="text-xs font-medium text-red-600 uppercase tracking-wide mb-1">Total</p>
+              <p className="text-lg font-bold text-red-800">{formatPrice(pedido.precio_total || pedido.total)}</p>
+            </div>
+          </div>
 
-        <h4 className="text-gray-800 font-semibold mb-2">Productos:</h4>
-        <ul className="space-y-2">
-          {pedido.detalles_pedido?.length > 0 ? (
-            pedido.detalles_pedido.map((item, i) => (
-              <li key={i} className="text-sm text-gray-700 border-b pb-2">
-                {item.product?.product_name || item.producto?.nombre || "Producto"} x{item.cantidad} -{" "}
-                {formatPrice(item.subtotal || item.precio)}
-              </li>
-            ))
-          ) : (
-            <li className="text-sm text-gray-500 italic">No hay productos en este pedido</li>
-          )}
-        </ul>
+          {/* Lista de productos mejorada */}
+          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+            <div className="flex items-center space-x-2 mb-4">
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <h4 className="text-lg font-semibold text-gray-800">Productos incluidos</h4>
+            </div>
+
+            {pedido.detalles_pedido?.length > 0 ? (
+              <div className="space-y-3">
+                {pedido.detalles_pedido.map((item, i) => (
+                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-center">
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-800">
+                          {item.product?.product_name || item.producto?.nombre || "Producto"}
+                        </p>
+                        <p className="text-sm text-gray-500">Cantidad: {item.cantidad}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-gray-800">{formatPrice(item.subtotal || item.precio)}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-4.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H7" />
+                </svg>
+                <p className="text-gray-500 italic">No hay productos en este pedido</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-// Spinner de carga
+// Spinner de carga mejorado
 const LoadingSpinner = ({ message = "Cargando..." }) => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
     <div className="text-center">
-      <div className="relative">
+      <div className="relative mb-8">
         <div className="animate-spin h-16 w-16 border-4 border-gray-300 border-t-blue-600 rounded-full mx-auto"></div>
         <div className="absolute inset-0 bg-blue-100 opacity-20 rounded-full animate-pulse"></div>
       </div>
-      <p className="mt-6 font-medium text-gray-800">{message}</p>
+      <div className="bg-white px-6 py-3 rounded-full shadow-lg border border-gray-200">
+        <p className="font-medium text-gray-800">{message}</p>
+      </div>
     </div>
   </div>
 );
@@ -263,63 +314,75 @@ export default function PerfilCliente() {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300">
       {isLoggedIn ? (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-gray-700 rounded-2xl mb-6 shadow-lg">
-              <svg
-                className="w-10 h-10 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
+          {/* Header mejorado */}
+          <div className="text-center mb-16">
+            <div className="relative inline-block mb-8">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-gray-700 rounded-3xl blur-lg opacity-20 scale-110"></div>
+              <div className="relative inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-600 to-gray-700 rounded-3xl shadow-xl">
+                <svg
+                  className="w-12 h-12 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent mb-4">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent mb-6 tracking-tight">
               Mi Perfil
             </h1>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Gestiona tu información personal y mantén un seguimiento de todos tus pedidos
-            </p>
+            <div className="max-w-3xl mx-auto">
+              <p className="text-xl text-gray-700 leading-relaxed">
+                Gestiona tu información personal y mantén un seguimiento de todos tus pedidos
+              </p>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-gray-700 rounded-full mx-auto mt-6"></div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Información Personal */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+            {/* Información Personal mejorada */}
             <div className="xl:col-span-2">
-              <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 overflow-hidden">
-                <div className="bg-brand-darBlue px-8 py-6">
-                  <h2 className="text-2xl font-bold text-white flex items-center">
-                    <svg
-                      className="w-6 h-6 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      />
-                    </svg>
-                    Información Personal
-                  </h2>
+              <div className="bg-white backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200 overflow-hidden hover:shadow-3xl transition-all duration-300">
+                <div className="bg-gradient-to-r from-brand-darBlue to-gray-800 px-8 py-8">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+                      <svg
+                        className="w-6 h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-white">Información Personal</h2>
+                      <p className="text-blue-100 opacity-90">Actualiza tus datos cuando lo necesites</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-8">
-                  <form onSubmit={handleSave} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-10">
+                  <form onSubmit={handleSave} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <FormInput
                         label="Nombre de Usuario"
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
                         required
+                        icon="user"
                       />
                       <FormInput
                         label="Nombre Completo"
@@ -327,6 +390,7 @@ export default function PerfilCliente() {
                         value={formData.name}
                         onChange={handleChange}
                         required
+                        icon="identification"
                       />
                     </div>
 
@@ -337,9 +401,10 @@ export default function PerfilCliente() {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      icon="mail"
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <FormInput
                         label="Teléfono"
                         name="phone"
@@ -347,6 +412,7 @@ export default function PerfilCliente() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+56 9 1234 5678"
+                        icon="phone"
                       />
                       <FormInput
                         label="Dirección"
@@ -354,28 +420,32 @@ export default function PerfilCliente() {
                         value={formData.address}
                         onChange={handleChange}
                         placeholder="Tu dirección completa"
+                        icon="location"
                       />
                     </div>
 
-                    <FormInput
-                      label="Nueva Contraseña"
-                      name="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="••••••••"
-                      helperText="Solo completa si deseas cambiar tu contraseña actual"
-                    />
+                    <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200">
+                      <FormInput
+                        label="Nueva Contraseña"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="••••••••"
+                        helperText="Solo completa si deseas cambiar tu contraseña actual"
+                        icon="lock"
+                      />
+                    </div>
 
                     <button
                       type="submit"
                       disabled={saving}
-                      className="w-full bg-red-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="w-full bg-red-700 text-white px-8 py-5 rounded-2xl font-semibold hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg"
                     >
                       {saving ? (
                         <>
                           <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            className="animate-spin -ml-1 mr-3 h-6 w-6 text-white"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -399,7 +469,7 @@ export default function PerfilCliente() {
                       ) : (
                         <>
                           <svg
-                            className="w-5 h-5 mr-2"
+                            className="w-6 h-6 mr-3"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -420,63 +490,79 @@ export default function PerfilCliente() {
               </div>
             </div>
 
-            {/* Historial de Pedidos */}
+            {/* Historial de Pedidos mejorado */}
             <div className="xl:col-span-1">
-              <div className="bg-white backdrop-blur-sm rounded-2xl shadow-xl border border-gray-300 sticky top-8 overflow-hidden">
-                <div className="bg-gray-700 px-6 py-5">
-                  <h2 className="text-xl font-bold text-white flex items-center">
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                      />
-                    </svg>
-                    Mis Pedidos
-                  </h2>
+              <div className="bg-white backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200 sticky top-8 overflow-hidden hover:shadow-3xl transition-all duration-300">
+                <div className="bg-gradient-to-r from-gray-700 to-gray-800 px-8 py-8">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+                      <svg
+                        className="w-6 h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-white">Mis Pedidos</h2>
+                      <p className="text-gray-300 text-sm">Historial completo</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-6">
+                <div className="p-8">
                   {pedidosLoading ? (
-                    <LoadingSpinner message="Cargando pedidos..." />
+                    <div className="flex flex-col items-center justify-center py-12">
+                      <div className="animate-spin h-10 w-10 border-4 border-gray-300 border-t-blue-600 rounded-full mb-4"></div>
+                      <p className="text-gray-600">Cargando pedidos...</p>
+                    </div>
                   ) : pedidos.length === 0 ? (
-                    <div className="text-center py-12">
-                      <div className="w-20 h-20 bg-gradient-to-r from-gray-300 to-gray-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <svg
-                          className="w-10 h-10 text-gray-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                          />
-                        </svg>
+                    <div className="text-center py-16">
+                      <div className="relative mb-8">
+                        <div className="w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+                          <svg
+                            className="w-12 h-12 text-gray-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1.5}
+                              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                            />
+                          </svg>
+                        </div>
+                        <div className="absolute inset-0 bg-gray-300 opacity-20 rounded-3xl blur-xl"></div>
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">No hay pedidos aún</h3>
-                      <p className="text-gray-600 mb-4">Cuando realices un pedido, aparecerá aquí.</p>
+                      <h3 className="text-xl font-semibold text-gray-800 mb-3">No hay pedidos aún</h3>
+                      <p className="text-gray-600 mb-8 leading-relaxed">
+                        Cuando realices tu primer pedido, aparecerá aquí para que puedas hacer seguimiento.
+                      </p>
                       <Link
                         to="/"
-                        className="inline-block px-6 py-3 bg-red-700 text-white rounded-xl shadow hover:bg-red-600 transition"
+                        className="inline-flex items-center px-8 py-4 bg-red-700 text-white rounded-2xl shadow-lg hover:bg-red-600 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-0.5 font-medium"
                       >
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
                         Comprar ahora
                       </Link>
                     </div>
                   ) : (
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto">
-                      {pedidos.map((pedido) => (
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                      {pedidos.map((pedido, index) => (
                         <div
                           key={pedido.id || pedido._id}
-                          className="cursor-pointer hover:shadow-lg border rounded-xl p-4 transition"
+                          className="cursor-pointer hover:shadow-xl border border-gray-200 rounded-2xl p-5 transition-all duration-300 hover:border-gray-300 transform hover:-translate-y-1 bg-gradient-to-r from-white to-gray-50"
                           onClick={() => openPedidoDetails(pedido)}
                           role="button"
                           tabIndex={0}
@@ -484,6 +570,7 @@ export default function PerfilCliente() {
                             if (e.key === "Enter" || e.key === " ") openPedidoDetails(pedido);
                           }}
                           aria-label={`Ver detalles del pedido ${pedido.cod_pedido || pedido.codigo}`}
+                          style={{ animationDelay: `${index * 100}ms` }}
                         >
                           <OrderCard pedido={pedido} formatPrice={formatPrice} />
                         </div>
@@ -500,13 +587,23 @@ export default function PerfilCliente() {
         </div>
       ) : (
         <div className="min-h-screen flex items-center justify-center px-4">
-          <div className="bg-white rounded-xl p-8 max-w-lg text-center shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">No has iniciado sesión</h2>
-            <p className="mb-6 text-gray-700">Por favor, inicia sesión para acceder a tu perfil.</p>
+          <div className="bg-white rounded-3xl p-12 max-w-md text-center shadow-2xl border border-gray-200">
+            <div className="w-20 h-20 bg-gradient-to-r from-red-100 to-red-200 rounded-3xl flex items-center justify-center mx-auto mb-8">
+              <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">No has iniciado sesión</h2>
+            <p className="mb-8 text-gray-600 leading-relaxed">
+              Para acceder a tu perfil y ver tu historial de pedidos, necesitas iniciar sesión primero.
+            </p>
             <Link
               to="/login"
-              className="inline-block bg-red-700 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition"
+              className="inline-flex items-center bg-red-700 text-white px-8 py-4 rounded-2xl hover:bg-red-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
               Iniciar sesión
             </Link>
           </div>
@@ -516,29 +613,87 @@ export default function PerfilCliente() {
   );
 }
 
-// Componente Input reutilizable para formularios
-function FormInput({ label, name, type = "text", value, onChange, placeholder, required = false, helperText }) {
+// Componente Input reutilizable mejorado para formularios
+function FormInput({ label, name, type = "text", value, onChange, placeholder, required = false, helperText, icon }) {
+  const getIcon = () => {
+    const iconClasses = "w-5 h-5 text-gray-400 group-focus-within:text-red-600 transition-colors";
+
+    switch (icon) {
+      case "user":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        );
+      case "identification":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+          </svg>
+        );
+      case "mail":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        );
+      case "phone":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+        );
+      case "location":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        );
+      case "lock":
+        return (
+          <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div>
+    <div className="group">
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-1 select-none"
+        className="block text-sm font-semibold text-gray-700 mb-3 select-none flex items-center space-x-2"
       >
-        {label}
+        {icon && getIcon()}
+        <span>{label}</span>
+        {required && <span className="text-red-500">*</span>}
       </label>
-      <input
-        type={type}
-        id={name}
-        name={name}
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-700 focus:ring-1 focus:ring-red-700"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        autoComplete={type === "password" ? "new-password" : "off"}
-        spellCheck="false"
-      />
-      {helperText && <p className="text-xs text-gray-400 mt-1">{helperText}</p>}
+      <div className="relative">
+        <input
+          type={type}
+          id={name}
+          name={name}
+          className="block w-full px-4 py-4 rounded-2xl border-2 border-gray-200 shadow-sm focus:border-red-600 focus:ring-4 focus:ring-red-100 transition-all duration-200 text-gray-800 placeholder-gray-400 bg-white hover:border-gray-300"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          autoComplete={type === "password" ? "new-password" : "off"}
+          spellCheck="false"
+        />
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 opacity-0 group-focus-within:opacity-5 transition-opacity duration-200 pointer-events-none"></div>
+      </div>
+      {helperText && (
+        <p className="text-sm text-gray-500 mt-2 flex items-center space-x-1">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{helperText}</span>
+        </p>
+      )}
     </div>
   );
 }
