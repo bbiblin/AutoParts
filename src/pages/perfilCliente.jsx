@@ -36,68 +36,69 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
         </div>
 
         {/* Contenido del modal */}
-        <div className="p-8">
-          {/* Información básica en tarjetas */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
-              <p className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1">Código</p>
-              <p className="text-lg font-bold text-blue-800">{pedido.cod_pedido || pedido.codigo}</p>
-            </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
-              <p className="text-xs font-medium text-green-600 uppercase tracking-wide mb-1">Fecha</p>
-              <p className="text-lg font-bold text-green-800">
-                {new Date(pedido.createdAt || pedido.fecha).toLocaleDateString()}
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
-              <p className="text-xs font-medium text-purple-600 uppercase tracking-wide mb-1">Estado</p>
-              <p className="text-lg font-bold text-purple-800">{pedido.state || pedido.status}</p>
-            </div>
-            <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl border border-red-200">
-              <p className="text-xs font-medium text-red-600 uppercase tracking-wide mb-1">Total</p>
-              <p className="text-lg font-bold text-red-800">{formatPrice(pedido.precio_total || pedido.total)}</p>
-            </div>
+        <div className="p-6 space-y-4">
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+            <p className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1">Código</p>
+            <p className="text-base font-semibold text-blue-800">{pedido.cod_pedido || pedido.codigo}</p>
           </div>
 
-          {/* Lista de productos mejorada */}
-          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-            <div className="flex items-center space-x-2 mb-4">
-              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-              <h4 className="text-lg font-semibold text-gray-800">Productos incluidos</h4>
-            </div>
+          <div className="bg-green-50 border border-green-200 p-4 rounded-xl">
+            <p className="text-xs font-medium text-green-600 uppercase tracking-wide mb-1">Fecha</p>
+            <p className="text-base font-semibold text-green-800">
+              {new Date(pedido.createdAt || pedido.fecha).toLocaleDateString()}
+            </p>
+          </div>
 
-            {pedido.detalles_pedido?.length > 0 ? (
-              <div className="space-y-3">
-                {pedido.detalles_pedido.map((item, i) => (
-                  <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-center">
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-800">
-                          {item.product?.product_name || item.producto?.nombre || "Producto"}
-                        </p>
-                        <p className="text-sm text-gray-500">Cantidad: {item.cantidad}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-gray-800">{formatPrice(item.subtotal || item.precio)}</p>
-                      </div>
+          <div className="bg-purple-50 border border-purple-200 p-4 rounded-xl">
+            <p className="text-xs font-medium text-purple-600 uppercase tracking-wide mb-1">Estado</p>
+            <p className="text-base font-semibold text-purple-800">{pedido.state || pedido.status}</p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 p-4 rounded-xl">
+            <p className="text-xs font-medium text-red-600 uppercase tracking-wide mb-1">Total</p>
+            <p className="text-base font-semibold text-red-800">{formatPrice(pedido.precio_total || pedido.total)}</p>
+          </div>
+        </div>
+
+        {/* Lista de productos mejorada */}
+        <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+          <div className="flex items-center space-x-2 mb-4">
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <h4 className="text-lg font-semibold text-gray-800">Productos incluidos</h4>
+          </div>
+
+          {pedido.detalles_pedido?.length > 0 ? (
+            <div className="space-y-3">
+              {pedido.detalles_pedido.map((item, i) => (
+                <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-800">
+                        {item.product?.product_name || item.producto?.nombre || "Producto"}
+                      </p>
+                      <p className="text-sm text-gray-500">Cantidad: {item.cantidad}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-gray-800">{formatPrice(item.subtotal || item.precio)}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-4.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H7" />
-                </svg>
-                <p className="text-gray-500 italic">No hay productos en este pedido</p>
-              </div>
-            )}
-          </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-4.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H7" />
+              </svg>
+              <p className="text-gray-500 italic">No hay productos en este pedido</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
+    </div >
   );
 };
 
