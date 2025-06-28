@@ -60,6 +60,7 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
           </div>
         </div>
 
+
         {/* Lista de productos mejorada */}
         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center space-x-2 mb-4">
@@ -98,7 +99,6 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
         </div>
       </div>
     </div>
-    </div >
   );
 };
 
