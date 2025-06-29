@@ -7,15 +7,12 @@ const cors = require('@koa/cors');
 const router = require('./routes.js');
 const orm = require('./models');
 
-const app = new Koa(); // ✅ Primero instanciar
+const app = new Koa();
 
-// Inyectar ORM en contexto
 app.context.orm = orm;
 
-// ✅ CORS completo y correcto
 app.use(cors({
   origin: '*', // o 'https://autoparts-frontend.onrender.com'
-  credentials: true,
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
