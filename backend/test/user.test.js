@@ -28,7 +28,6 @@ jest.mock('jsonwebtoken', () => ({
 
 jest.mock('../src/middleware/auth', () => {
     return jest.fn((ctx, next) => {
-        // Mock del middleware de autenticación
         ctx.state = { user: { id: 1, email: 'test@test.com' } };
         return next();
     });
