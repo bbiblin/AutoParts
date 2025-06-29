@@ -10,8 +10,13 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-        "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
+    "db:migrate:test": "NODE_ENV=test npx sequelize-cli db:migrate",
+    "db:seed:test": "NODE_ENV=test npx sequelize-cli db:seed:all",
+    "db:reset:test": "NODE_ENV=test npx sequelize-cli db:drop && npm run db:create:test && npm run db:migrate:test",
+    "test:clean": "npm run db:reset:test && npm run db:seed:test && npm run test",
+    "test": "NODE_ENV=test vitest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -45,12 +50,15 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.9.0",
+    "@vitest/ui": "3.2.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
+    "supertest": "^7.1.1",
     "tailwindcss": "^3.4.0",
     "vite": "^6.3.5",
     "vitest": "^3.2.4"

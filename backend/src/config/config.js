@@ -12,10 +12,11 @@ module.exports = {
   test: {
     username: "bbiblin",
     password: "12345678",
-    database: "AutoParts",
+    database: "autoparts_test",
     host: "localhost",
-    dialect: "postgres",
     port: "5432",
+    dialect: "postgres",
+    logging: false, // Evita logs durante tests
   },
   production: {
     username: process.env.DB_USER,

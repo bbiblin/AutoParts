@@ -26,7 +26,7 @@ router.post('/register', async (ctx) => {
   try {
     const { email, password, username, name, address, phone, isDistribuitor } = ctx.request.body;
     let { admin } = ctx.request.body;
-    if (!admin){
+    if (!admin) {
       admin = false;
     }
 
@@ -124,7 +124,7 @@ router.post('/login', async (ctx) => {
           username: user.username,
           isDistribuitor: user.isDistribuitor,
         },
-        process.env.JWT_SECRET || 'clave', 
+        process.env.JWT_SECRET || 'clave',
         { expiresIn: '2h' }
       );
 
@@ -154,7 +154,7 @@ router.patch('/profile', authMiddleware, async (ctx) => {
 
     // Campos que el usuario NO puede modificar desde su perfil
     const restrictedFields = ['id', 'admin', 'isDistribuitor', 'createdAt'];
-    
+
     // Remover campos restringidos
     restrictedFields.forEach(field => {
       if (updateData.hasOwnProperty(field)) {
@@ -172,11 +172,11 @@ router.patch('/profile', authMiddleware, async (ctx) => {
 
     // Si se quiere actualizar el email, verificar que no esté en uso
     if (updateData.email && updateData.email !== existingUser.email) {
-      const emailInUse = await User.findOne({ 
-        where: { 
+      const emailInUse = await User.findOne({
+        where: {
           email: updateData.email,
           id: { [require('sequelize').Op.ne]: userId }
-        } 
+        }
       });
       if (emailInUse) {
         ctx.status = 409;
@@ -242,24 +242,24 @@ router.get('/profile', authMiddleware, async (ctx) => {
 
 
 router.delete('/:id', async (ctx) => {
-    try {
-        const deleted_user = await User.destroy({ where: { id: ctx.params.id } });
-        if (deleted_user) {
-            ctx.status = 200;
-            const msg = " Usuario eliminado correctamente";
-            ctx.body = { message: msg };
-            console.log(msg);
-        }
-        else {
-            ctx.status = 404;
-            ctx.body = { error: 'Usuario no encontrado' };
-        }
+  try {
+    const deleted_user = await User.destroy({ where: { id: ctx.params.id } });
+    if (deleted_user) {
+      ctx.status = 200;
+      const msg = " Usuario eliminado correctamente";
+      ctx.body = { message: msg };
+      console.log(msg);
     }
-    catch (error) {
-        console.error(error);
-        ctx.status = 500;
-        ctx.body = { error: error.message };
+    else {
+      ctx.status = 404;
+      ctx.body = { error: 'Usuario no encontrado' };
     }
+  }
+  catch (error) {
+    console.error(error);
+    ctx.status = 500;
+    ctx.body = { error: error.message };
+  }
 });
 
 
