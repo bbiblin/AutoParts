@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CategoriesList from '../components/categoriesList';
 import AddToCartButton from '../components/addToCartButton';
-// import SearchBar from '../components/SearchBar'; // Comentado - verificar si existe
+import SearchBar from '../components/searchBar';
 import { useAuth } from '../contexts/authContext';
 import { Link } from "react-router-dom";
 
