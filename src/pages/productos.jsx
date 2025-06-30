@@ -312,18 +312,10 @@ export default function Productos() {
                     </div>
                     <div className="w-full bg-[#e2e8f0] rounded-md h-2">
                       <div
-                        className={`h-2 rounded-sm transition-all duration-500 ${product.stock > 10
-                          ? "bg-[#22c55e]"
-                          : product.stock > 0
-                            ? "bg-[#eab308]"
-                            : "bg-[#ef4444]"
+                        className={`h-2 rounded-sm transition-all duration-500 ${product.stock > 10 ? 'bg-[#22c55e]' :
+                          product.stock > 0 ? 'bg-[#eab308]' : 'bg-[#ef4444]'
                           }`}
-                        style={{
-                          width: `${Math.min(
-                            (product.stock / 20) * 100,
-                            100
-                          )}%`,
-                        }}
+                        style={{ width: `${Math.min((product.stock / 20) * 100, 100)}%` }}
                       ></div>
                     </div>
                   </div>
@@ -335,24 +327,9 @@ export default function Productos() {
                       to={`/detalles_producto/${product.id}`}
                       className="w-full bg-gradient-to-r from-[#f1f5f9] to-[#e2e8f0] hover:from-[#e2e8f0] hover:to-[#cbd5e1] text-[#334155] font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg border border-[#e2e8f0] hover:border-[#cbd5e1] flex items-center justify-center group"
                     >
-                      <svg
-                        className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        />
+                      <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
                       Ver Detalles
                     </Link>
@@ -399,18 +376,8 @@ export default function Productos() {
                   className="inline-flex items-center bg-gradient-to-r from-[#f1f5f9] to-[#e2e8f0] hover:from-[#e2e8f0] hover:to-[#cbd5e1] text-[#334155] font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   Ver Destacados
-                  <svg
-                    className="ml-2 w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
+                  <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </Link>
               </div>

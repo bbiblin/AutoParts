@@ -242,7 +242,7 @@ export default function Productos() {
                     </div>
                     <div className="w-full bg-[#e2e8f0] rounded-md h-2">
                       <div
-                        className={`h-2 rounded-full transition-all duration-500 ${product.stock > 10 ? 'bg-[#22c55e]' :
+                        className={`h-2 rounded-sm transition-all duration-500 ${product.stock > 10 ? 'bg-[#22c55e]' :
                           product.stock > 0 ? 'bg-[#eab308]' : 'bg-[#ef4444]'
                           }`}
                         style={{ width: `${Math.min((product.stock / 20) * 100, 100)}%` }}
