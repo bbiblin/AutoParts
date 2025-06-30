@@ -14,6 +14,9 @@ export default function AdminProductos() {
   const [productToDelete, setProductToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  const [marcas, setMarcas] = useState([]);
+
 
   const [formData, setFormData] = useState({
     product_cod: '',
@@ -35,7 +38,7 @@ export default function AdminProductos() {
       setLoading(true);
       const response = await axios.get('https://autoparts-i2gt.onrender.com/productos', {
         params: { admin: true }
-    });
+      });
       if (response) {
         setProductos(response.data);
         setFilteredProductos(response.data);
@@ -55,7 +58,7 @@ export default function AdminProductos() {
 
   // Filtrar productos
   useEffect(() => {
-    let filtered = productos.filter(producto => 
+    let filtered = productos.filter(producto =>
       producto.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       producto.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -67,11 +70,28 @@ export default function AdminProductos() {
     setFilteredProductos(filtered);
   }, [productos, searchTerm, categoryFilter]);
 
+  useEffect(() => {
+    const fetchCategoriasYMarcas = async () => {
+      try {
+        const [resCategorias, resMarcas] = await Promise.all([
+          axios.get('https://autoparts-i2gt.onrender.com/categories'),
+          axios.get('https://autoparts-i2gt.onrender.com/brands')
+        ]);
+        setCategorias(resCategorias.data || []);
+        setMarcas(resMarcas.data || []);
+      } catch (error) {
+        console.error('Error al cargar categorías o marcas:', error);
+      }
+    };
+    fetchCategoriasYMarcas();
+  }, []);
+
+
   // Abrir modal
   const openModal = (mode, product = null) => {
     setModalMode(mode);
     setSelectedProduct(product);
-    
+
     if (mode === 'add') {
       setFormData({
         product_cod: '',
@@ -103,7 +123,7 @@ export default function AdminProductos() {
         brand_id: product.brand_id?.toString() || ''
       });
     }
-    
+
     setShowModal(true);
   };
 
@@ -137,95 +157,95 @@ export default function AdminProductos() {
   };
 
   const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setFormData((prev) => ({
-      ...prev,
-      imagen: file
-    }));
-  }
-};
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        imagen: file
+      }));
+    }
+  };
 
   // Guardar producto
-// Función handleSave mejorada con mejor manejo de errores
-const handleSave = async () => {
-  
-  if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
-    alert('Por favor completa todos los campos obligatorios');
-    return;
-  }
+  // Función handleSave mejorada con mejor manejo de errores
+  const handleSave = async () => {
 
-  setSaving(true);
-  try {
-    const data = new FormData();
-
-    // Agregar todos los campos
-    data.append('product_cod', formData.product_cod);
-    data.append('product_name', formData.product_name);
-    data.append('description', formData.description);
-    data.append('retail_price', formData.retail_price);
-    data.append('wholesale_price', formData.wholesale_price);
-    data.append('stock', formData.stock);
-    data.append('discount_percentage', formData.discount_percentage || '0');
-    data.append('isActive', formData.isActive);
-    data.append('featured', formData.featured);
-    data.append('category_id', formData.category_id || '');
-    data.append('brand_id', formData.brand_id || '');
-
-    if (formData.imagen) {
-      data.append('imagen', formData.imagen);
+    if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
+      alert('Por favor completa todos los campos obligatorios');
+      return;
     }
 
-    // Configuración de axios mejorada
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      timeout: 30000, // 30 segundos
-      withCredentials: false
-    };
+    setSaving(true);
+    try {
+      const data = new FormData();
 
-    let response;
-    if (modalMode === 'add') {
-      console.log('Enviando datos:', Object.fromEntries(data.entries()));
-      response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, config);
-    } else if (modalMode === 'edit') {
-      response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, config);
-    }
+      // Agregar todos los campos
+      data.append('product_cod', formData.product_cod);
+      data.append('product_name', formData.product_name);
+      data.append('description', formData.description);
+      data.append('retail_price', formData.retail_price);
+      data.append('wholesale_price', formData.wholesale_price);
+      data.append('stock', formData.stock);
+      data.append('discount_percentage', formData.discount_percentage || '0');
+      data.append('isActive', formData.isActive);
+      data.append('featured', formData.featured);
+      data.append('category_id', formData.category_id || '');
+      data.append('brand_id', formData.brand_id || '');
 
-    console.log('Respuesta del servidor:', response);
+      if (formData.imagen) {
+        data.append('imagen', formData.imagen);
+      }
 
-    if (response && response.status >= 200 && response.status < 300) {
-      await fetchProductos();
-      closeModal();
-      alert('Producto guardado exitosamente');
-    } else {
-      console.error('Respuesta inesperada:', response);
-      alert("No se pudo guardar el producto");
+      // Configuración de axios mejorada
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 30000, // 30 segundos
+        withCredentials: false
+      };
+
+      let response;
+      if (modalMode === 'add') {
+        console.log('Enviando datos:', Object.fromEntries(data.entries()));
+        response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, config);
+      } else if (modalMode === 'edit') {
+        response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, config);
+      }
+
+      console.log('Respuesta del servidor:', response);
+
+      if (response && response.status >= 200 && response.status < 300) {
+        await fetchProductos();
+        closeModal();
+        alert('Producto guardado exitosamente');
+      } else {
+        console.error('Respuesta inesperada:', response);
+        alert("No se pudo guardar el producto");
+      }
+    } catch (error) {
+      console.error('Error completo:', error);
+      console.error('Error response:', error.response);
+      console.error('Error request:', error.request);
+      console.error('Error config:', error.config);
+
+      // Manejo de errores más específico
+      if (error.code === 'ERR_NETWORK') {
+        alert('Error de conexión: No se puede conectar con el servidor. Verifica tu conexión a internet.');
+      } else if (error.response) {
+        // El servidor respondió con un código de error
+        alert(`Error del servidor (${error.response.status}): ${error.response.data?.error || error.response.statusText}`);
+      } else if (error.request) {
+        // La petición se hizo pero no hubo respuesta
+        alert('No se recibió respuesta del servidor. Verifica que el servidor esté funcionando.');
+      } else {
+        // Algo más salió mal
+        alert(`Error inesperado: ${error.message}`);
+      }
+    } finally {
+      setSaving(false);
     }
-  } catch (error) {
-    console.error('Error completo:', error);
-    console.error('Error response:', error.response);
-    console.error('Error request:', error.request);
-    console.error('Error config:', error.config);
-    
-    // Manejo de errores más específico
-    if (error.code === 'ERR_NETWORK') {
-      alert('Error de conexión: No se puede conectar con el servidor. Verifica tu conexión a internet.');
-    } else if (error.response) {
-      // El servidor respondió con un código de error
-      alert(`Error del servidor (${error.response.status}): ${error.response.data?.error || error.response.statusText}`);
-    } else if (error.request) {
-      // La petición se hizo pero no hubo respuesta
-      alert('No se recibió respuesta del servidor. Verifica que el servidor esté funcionando.');
-    } else {
-      // Algo más salió mal
-      alert(`Error inesperado: ${error.message}`);
-    }
-  } finally {
-    setSaving(false);
-  }
-};
+  };
 
   // Confirmar eliminación
   const confirmDelete = (product) => {
@@ -239,7 +259,7 @@ const handleSave = async () => {
       const response = await axios.delete(`https://autoparts-i2gt.onrender.com/productos/${productToDelete.id}`);
 
       if (response) {
-        fetchProductos(); 
+        fetchProductos();
         setShowDeleteConfirm(false);
         setProductToDelete(null);
       } else {
@@ -257,7 +277,7 @@ const handleSave = async () => {
       const response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${productId}/descuento`);
 
       if (response) {
-        fetchProductos(); 
+        fetchProductos();
         alert('Descuento aplicado correctamente');
       } else {
         const error = response;
@@ -317,7 +337,7 @@ const handleSave = async () => {
                 <p className="text-gray-600">Administra el catálogo de productos</p>
               </div>
             </div>
-            
+
             <button
               onClick={() => openModal('add')}
               className="bg-brand-darBlue text-[#ffff] px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
@@ -341,7 +361,7 @@ const handleSave = async () => {
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-            
+
             <input
               type="number"
               placeholder="Filtrar por categoría ID"
@@ -418,7 +438,7 @@ const handleSave = async () => {
                           <div className="text-xs text-gray-500">
                             {priceInfo.hasDiscount ? (
                               <>
-                                Mayorista: <span className="line-through text-gray-500">{priceInfo.wholesale}</span> | 
+                                Mayorista: <span className="line-through text-gray-500">{priceInfo.wholesale}</span> |
                                 <span className="font-semibold text-green-600">{priceInfo.wholesale_sale}</span>
                               </>
                             ) : (
@@ -429,22 +449,20 @@ const handleSave = async () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          producto.stock > 10 
-                            ? 'bg-green-100 text-green-800' 
-                            : producto.stock > 0 
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${producto.stock > 10
+                          ? 'bg-green-100 text-green-800'
+                          : producto.stock > 0
                             ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-red-100 text-red-800'
-                        }`}>
+                          }`}>
                           {producto.stock} unidades
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          producto.isActive 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${producto.isActive
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                          }`}>
                           {producto.isActive ? 'Activo' : 'Inactivo'}
                         </span>
                       </td>
@@ -517,8 +535,8 @@ const handleSave = async () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {modalMode === 'add' ? 'Nuevo Producto' : 
-                   modalMode === 'edit' ? 'Editar Producto' : 'Detalles del Producto'}
+                  {modalMode === 'add' ? 'Nuevo Producto' :
+                    modalMode === 'edit' ? 'Editar Producto' : 'Detalles del Producto'}
                 </h3>
                 <button
                   onClick={closeModal}
@@ -561,7 +579,7 @@ const handleSave = async () => {
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Imagen 
+                    Imagen
                   </label>
                   <input
                     type="file"
@@ -656,34 +674,46 @@ const handleSave = async () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ID Categoría
+                    Categoría
                   </label>
-                  <input
-                    type="number"
+                  <select
                     name="category_id"
-                    min={0}
                     value={formData.category_id}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
-                    placeholder="ID de categoría"
-                  />
+                  >
+                    <option value="">Selecciona una categoría</option>
+                    {categorias.map(cat => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     ID Marca
                   </label>
-                  <input
-                    type="number"
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Marca
+                  </label>
+                  <select
                     name="brand_id"
-                    min={0}
                     value={formData.brand_id}
                     onChange={handleInputChange}
                     disabled={modalMode === 'view'}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
-                    placeholder="ID de marca"
-                  />
+                  >
+                    <option value="">Selecciona una marca</option>
+                    {marcas.map(brand => (
+                      <option key={brand.id} value={brand.id}>
+                        {brand.name}
+                      </option>
+                    ))}
+                  </select>
+
                 </div>
 
                 <div className="md:col-span-2">
