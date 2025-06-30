@@ -60,7 +60,7 @@ export default function Productos() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/20 to-[#9333ea]/20"></div>
         <div className="max-w-7xl mx-auto px-6 py-16 relative">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#ffff] bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white bg-clip-text">
               Catálogo de Mayorista
             </h1>
             <p className="text-xl text-[#dbeafe] max-w-3xl mx-auto leading-relaxed">
@@ -71,8 +71,7 @@ export default function Productos() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Barra de búsqueda */}
-        {/* <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> */}
+        {<SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
 
         {/* Filter Section */}
         <div className="bg-white rounded-3xl shadow-2xl border border-[#e2e8f0] mb-12 overflow-hidden backdrop-blur-sm">

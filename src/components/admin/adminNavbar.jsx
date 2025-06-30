@@ -16,12 +16,12 @@ export default function AdminNavbar() {
 
   // Items de navegación para admin
   const navItems = [
-    { title: "Inicio", to: "/adminHome"},
-    { title: "Productos", to: "/adminProductos"},
-    { title: "Categorías", to: "/adminCategories"},
-    { title: "Marcas", to: "/adminBrands"},
-    { title: "Usuarios", to: "/adminUsuarios"},
-    { title: "Pedidos", to: "/adminPedidos"},
+    { title: "Inicio", to: "/adminHome" },
+    { title: "Productos", to: "/adminProductos" },
+    { title: "Categorías", to: "/adminCategories" },
+    { title: "Marcas", to: "/adminBrands" },
+    { title: "Usuarios", to: "/adminUsuarios" },
+    { title: "Pedidos", to: "/adminPedidos" },
   ];
 
   return (
@@ -44,7 +44,7 @@ export default function AdminNavbar() {
                 <Link
                   key={item.title}
                   to={item.to}
-                  className="relative text-[#FFFF] hover:text-[#979797] px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-300 hover:bg-slate-700 group flex items-center space-x-2"
+                  className="relative text-[#FFFF] hover:text-[#979797] px-3 py-2 rounded-lg text-sm font-medium group flex items-center space-x-2"
                 >
                   <span className="relative z-10">{item.title}</span>
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
@@ -60,7 +60,7 @@ export default function AdminNavbar() {
                 <Link
                   key={item.title}
                   to={item.to}
-                  className="relative text-[#ffff] hover:text-[#979797] px-2 py-2 rounded-lg text-xs font-medium transition-colors duration-300 hover:bg-slate-700 group flex flex-col items-center space-y-1"
+                  className="relative text-[#ffff] hover:text-[#979797] px-2 py-2 rounded-lg text-xs font-medium  group flex flex-col items-center space-y-1"
                   title={item.title}
                 >
                   <span className="text-base">{item.icon}</span>
@@ -68,9 +68,9 @@ export default function AdminNavbar() {
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-blue-400 group-hover:w-full transition-all duration-300"></span>
                 </Link>
               ))}
-              
+
               <div className="relative group">
-                <button className="text-[#ffff] hover:text-[#979797]  px-2 py-2 rounded-lg text-xs font-medium transition-colors duration-300 hover:bg-slate-700 flex flex-col items-center space-y-1">
+                <button className="text-[#ffff] hover:text-[#979797]  px-2 py-2 rounded-lg text-xs font-medium  flex flex-col items-center space-y-1">
                   <span className="text-base">⋯</span>
                   <span className="text-xs">Más</span>
                 </button>
@@ -92,12 +92,11 @@ export default function AdminNavbar() {
 
           {/* Desktop User Section */}
           <div className="hidden lg:flex items-center space-x-4">
-          
+
 
             {/* Información del usuario */}
             <div className="flex items-center space-x-3 rounded-lg px-4 py-2">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-[#FFFF]font-bold">
-              </div>
+
               <div className="flex flex-col">
                 <span className="text-[#FFFF] text-sM font-bold">
                   {user?.username || 'Administrador'}
@@ -117,7 +116,7 @@ export default function AdminNavbar() {
 
           {/* Mobile/Tablet menu button */}
           <div className="lg:hidden flex items-center space-x-2">
-           
+
             <button
               onClick={toggleMenu}
               className="text-[#ffff] hover:[#979797]  focus:outline-none p-2 rounded-lg transition-colors duration-300"

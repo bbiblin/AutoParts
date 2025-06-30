@@ -8,9 +8,9 @@ import SearchBar from "../components/searchBar"; // Importa el nuevo componente
 
 export default function Productos() {
   const [allProducts, setAllProducts] = useState([]);
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useAuth();
