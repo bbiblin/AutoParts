@@ -27,7 +27,6 @@ app.use(router.routes());
 describe('Category Routes', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        // Mock console logs
         jest.spyOn(console, 'error').mockImplementation(() => { });
         jest.spyOn(console, 'log').mockImplementation(() => { });
     });
