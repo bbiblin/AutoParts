@@ -73,7 +73,6 @@ router.post('/enviarEmail', async (ctx) => {
             ]
         });
 
-        // ⬇️ AQUI se crea el transporter para que el mock funcione
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {

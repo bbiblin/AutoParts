@@ -694,9 +694,6 @@ export default function AdminProductos() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    ID Marca
-                  </label>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Marca
                   </label>
                   <select
@@ -713,7 +710,6 @@ export default function AdminProductos() {
                       </option>
                     ))}
                   </select>
-
                 </div>
 
                 <div className="md:col-span-2">
