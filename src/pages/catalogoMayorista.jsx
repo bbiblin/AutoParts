@@ -51,7 +51,7 @@ export default function Productos() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-white to-[#f1f5f9]">
