@@ -686,7 +686,7 @@ export default function AdminProductos() {
                     <option value="">Selecciona una categoría</option>
                     {categorias.map(cat => (
                       <option key={cat.id} value={cat.id}>
-                        {cat.name}
+                        {cat.cate_name}
                       </option>
                     ))}
                   </select>
@@ -709,7 +709,7 @@ export default function AdminProductos() {
                     <option value="">Selecciona una marca</option>
                     {marcas.map(brand => (
                       <option key={brand.id} value={brand.id}>
-                        {brand.name}
+                        {brand.brand_name}
                       </option>
                     ))}
                   </select>
