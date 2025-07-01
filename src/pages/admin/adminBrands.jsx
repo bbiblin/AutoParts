@@ -52,15 +52,15 @@ export default function AdminBrands() {
     setFormData(
       brand
         ? {
-            brand_name: brand.brand_name || '',
-            brand_code: brand.brand_code || '',
-            origin_country: brand.origin_country || '',
-          }
+          brand_name: brand.brand_name || '',
+          brand_code: brand.brand_code || '',
+          origin_country: brand.origin_country || '',
+        }
         : {
-            brand_name: '',
-            brand_code: '',
-            origin_country: '',
-          }
+          brand_name: '',
+          brand_code: '',
+          origin_country: '',
+        }
     );
     setShowModal(true);
   };
@@ -178,11 +178,19 @@ export default function AdminBrands() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-brand-darBlue text-xs text-[#b8b8b8] uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-3 text-left">ID</th>
-                <th className="px-6 py-3 text-left">Nombre</th>
-                <th className="px-6 py-3 text-left">Código</th>
-                <th className="px-6 py-3 text-left">País de Origen</th>
-                <th className="px-6 py-3 text-right">Acciones</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Nombre
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  Código
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  País de origen
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Acciones
+                </th>
+
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

@@ -36,7 +36,7 @@ export default function AdminUsuarios() {
 
   // Filtrar usuarios
   useEffect(() => {
-    let filtered = usuarios.filter(usuario => 
+    let filtered = usuarios.filter(usuario =>
       usuario.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       usuario.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       usuario.email?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -79,7 +79,7 @@ export default function AdminUsuarios() {
       const response = await axios.delete(`https://autoparts-i2gt.onrender.com/users/${userToDelete.id}`);
 
       if (response) {
-        fetchUsuarios(); 
+        fetchUsuarios();
         setShowDeleteConfirm(false);
         setUserToDelete(null);
       } else {
@@ -143,7 +143,7 @@ export default function AdminUsuarios() {
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-            
+
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
@@ -193,7 +193,7 @@ export default function AdminUsuarios() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                            <div className="h-10 w-10 rounded-sm bg-gray-200 flex items-center justify-center">
                               <Users className="h-5 w-5 text-gray-600" />
                             </div>
                           </div>
@@ -225,7 +225,7 @@ export default function AdminUsuarios() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${roleInfo.color}`}>
+                        <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-sm ${roleInfo.color}`}>
                           {getRoleIcon(usuario)}
                           <span className="ml-1">{roleInfo.label}</span>
                         </span>
@@ -257,7 +257,7 @@ export default function AdminUsuarios() {
                             onClick={() => confirmDelete(usuario)}
                             className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
                             title="Eliminar"
-                            disabled={usuario.admin} 
+                            disabled={usuario.admin}
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -301,7 +301,7 @@ export default function AdminUsuarios() {
                 {/* Información personal */}
                 <div className="space-y-4">
                   <h4 className="text-sm font-medium text-gray-900 border-b pb-2">Información Personal</h4>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Nombre completo
@@ -342,7 +342,7 @@ export default function AdminUsuarios() {
                 {/* Información del sistema */}
                 <div className="space-y-4">
                   <h4 className="text-sm font-medium text-gray-900 border-b pb-2">Información del Sistema</h4>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       ID de usuario
@@ -358,19 +358,19 @@ export default function AdminUsuarios() {
                     </label>
                     <div className="flex items-center space-x-2">
                       {getUserRole(selectedUser).label === 'Administrador' && (
-                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-sm bg-purple-100 text-purple-800">
                           <Shield className="h-3 w-3 mr-1" />
                           Administrador
                         </span>
                       )}
                       {getUserRole(selectedUser).label === 'Distribuidor' && (
-                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-sm bg-blue-100 text-blue-800">
                           <UserCheck className="h-3 w-3 mr-1" />
                           Distribuidor
                         </span>
                       )}
                       {getUserRole(selectedUser).label === 'Usuario' && (
-                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-sm bg-gray-100 text-gray-800">
                           <Users className="h-3 w-3 mr-1" />
                           Usuario
                         </span>
@@ -384,11 +384,11 @@ export default function AdminUsuarios() {
                     </label>
                     <div className="space-y-2">
                       <div className="flex items-center">
-                        <div className={`h-2 w-2 rounded-full mr-2 ${selectedUser.admin ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                        <div className={`h-2 w-2 rounded-sm mr-2 ${selectedUser.admin ? 'bg-green-500' : 'bg-gray-300'}`}></div>
                         <span className="text-sm text-gray-700">Administrador</span>
                       </div>
                       <div className="flex items-center">
-                        <div className={`h-2 w-2 rounded-full mr-2 ${selectedUser.isDistribuitor ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                        <div className={`h-2 w-2 rounded-sm mr-2 ${selectedUser.isDistribuitor ? 'bg-green-500' : 'bg-gray-300'}`}></div>
                         <span className="text-sm text-gray-700">Distribuidor</span>
                       </div>
                     </div>
@@ -424,7 +424,7 @@ export default function AdminUsuarios() {
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-[#d83535] mb-4">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-sm bg-[#d83535] mb-4">
                 <Trash2 className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">

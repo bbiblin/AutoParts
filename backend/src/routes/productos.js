@@ -24,96 +24,95 @@ router.get('/destacados', async (ctx) => {
 
 
 router.post('/', koaBody({
-  multipart: true,
-  formidable: {
-    uploadDir: os.tmpdir(),
-    keepExtensions: true,
-    maxFileSize: 10 * 1024 * 1024 // 10MB
-  }
+    multipart: true,
+    formidable: {
+        uploadDir: os.tmpdir(),
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024 // 10MB
+    }
 }), async (ctx) => {
-  try {
-    const file = ctx.request.files?.imagen;
-    let image_url = null;
+    try {
+        const file = ctx.request.files?.imagen;
+        let image_url = null;
 
-    // 1. Procesar imagen si viene y es válida
-    if (file && file.filepath && fs.existsSync(file.filepath)) {
-      try {
-        const result = await cloudinary.uploader.upload(file.filepath, {
-          folder: 'productos'
+        // 1. Procesar imagen si viene y es válida
+        if (file && file.filepath && fs.existsSync(file.filepath)) {
+            try {
+                const result = await cloudinary.uploader.upload(file.filepath, {
+                    folder: 'productos'
+                });
+                fs.unlinkSync(file.filepath);
+                image_url = result.secure_url;
+            } catch (cloudErr) {
+                console.error("❌ Error al subir imagen a Cloudinary:", cloudErr);
+                throw new Error("Falló la subida de imagen a Cloudinary.");
+            }
+        }
+
+        // 2. Extraer y castear datos del formulario
+        const {
+            product_cod,
+            product_name,
+            description,
+            retail_price,
+            wholesale_price,
+            stock,
+            discount_percentage,
+            isActive,
+            featured,
+            category_id,
+            brand_id
+        } = ctx.request.body;
+
+        if (!product_name || !retail_price || !wholesale_price || !stock) {
+            ctx.status = 400;
+            ctx.body = { error: "Faltan campos obligatorios." };
+            return;
+        }
+
+        // 3. Crear producto en DB
+        const nuevoProducto = await producto.create({
+            product_cod,
+            product_name,
+            description,
+            retail_price: parseFloat(retail_price),
+            wholesale_price: parseFloat(wholesale_price),
+            stock: parseInt(stock),
+            discount_percentage: parseFloat(discount_percentage) || 0,
+            isActive: isActive === 'true',
+            featured: featured === 'true',
+            category_id: category_id || null,
+            brand_id: brand_id || null,
+            image_url
         });
-        fs.unlinkSync(file.filepath);
-        image_url = result.secure_url;
-      } catch (cloudErr) {
-        console.error("❌ Error al subir imagen a Cloudinary:", cloudErr);
-        throw new Error("Falló la subida de imagen a Cloudinary.");
-      }
+
+        // 4. Aplicar descuento si corresponde
+        if (nuevoProducto.discount_percentage && nuevoProducto.discount_percentage > 0) {
+            const porcentaje_restante = (100 - nuevoProducto.discount_percentage) / 100;
+            const precio_final_retail = Math.floor(nuevoProducto.retail_price * porcentaje_restante);
+            const precio_final_wholesale = Math.floor(nuevoProducto.wholesale_price * porcentaje_restante);
+
+            await nuevoProducto.update({
+                retail_price_sale: precio_final_retail,
+                wholesale_price_sale: precio_final_wholesale
+            });
+        }
+
+        ctx.status = 201;
+        ctx.body = nuevoProducto;
+
+    } catch (error) {
+        console.error('🔥 Error al crear producto:', error);
+        ctx.status = 500;
+        ctx.body = {
+            error: 'Error interno del servidor',
+            message: error.message
+        };
     }
-
-    // 2. Extraer y castear datos del formulario
-    const {
-      product_cod,
-      product_name,
-      description,
-      retail_price,
-      wholesale_price,
-      stock,
-      discount_percentage,
-      isActive,
-      featured,
-      category_id,
-      brand_id
-    } = ctx.request.body;
-
-    if (!product_name || !retail_price || !wholesale_price || !stock) {
-      ctx.status = 400;
-      ctx.body = { error: "Faltan campos obligatorios." };
-      return;
-    }
-
-    // 3. Crear producto en DB
-    const nuevoProducto = await producto.create({
-      product_cod,
-      product_name,
-      description,
-      retail_price: parseFloat(retail_price),
-      wholesale_price: parseFloat(wholesale_price),
-      stock: parseInt(stock),
-      discount_percentage: parseFloat(discount_percentage) || 0,
-      isActive: isActive === 'true',
-      featured: featured === 'true',
-      category_id: category_id || null,
-      brand_id: brand_id || null,
-      image_url
-    });
-
-    // 4. Aplicar descuento si corresponde
-    if (nuevoProducto.discount_percentage && nuevoProducto.discount_percentage > 0) {
-      const porcentaje_restante = (100 - nuevoProducto.discount_percentage) / 100;
-      const precio_final_retail = Math.floor(nuevoProducto.retail_price * porcentaje_restante);
-      const precio_final_wholesale = Math.floor(nuevoProducto.wholesale_price * porcentaje_restante);
-
-      await nuevoProducto.update({
-        retail_price_sale: precio_final_retail,
-        wholesale_price_sale: precio_final_wholesale
-      });
-    }
-
-    ctx.status = 201;
-    ctx.body = nuevoProducto;
-
-  } catch (error) {
-    console.error('🔥 Error al crear producto:', error);
-    ctx.status = 500;
-    ctx.body = {
-      error: 'Error interno del servidor',
-      message: error.message
-    };
-  }
 });
 
 
 
-// GET para productos
 router.get('/', async (ctx) => {
     try {
         let allProducts = [];
@@ -121,7 +120,7 @@ router.get('/', async (ctx) => {
         let admin = ctx.request.query.admin;
         if (!admin) {
             if (ctx.query.category_id && !ctx.query.brand_id) {
-            allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id, isActive: true } });
+                allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id, isActive: true } });
             }
             else if (!ctx.query.category_id && ctx.query.brand_id) {
                 allProducts = await producto.findAll({
@@ -135,15 +134,15 @@ router.get('/', async (ctx) => {
 
             }
             else {
-                allProducts = await producto.findAll({where: {isActive: true}});
+                allProducts = await producto.findAll({ where: { isActive: true } });
             }
         } else {
             if (ctx.query.category_id && !ctx.query.brand_id) {
-            allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id }});
+                allProducts = await producto.findAll({ where: { category_id: ctx.query.category_id } });
             }
             else if (!ctx.query.category_id && ctx.query.brand_id) {
                 allProducts = await producto.findAll({
-                    where: { brand_id: ctx.query.brand_id}
+                    where: { brand_id: ctx.query.brand_id }
                 });
             }
             else if (ctx.query.category_id && ctx.query.brand_id) {
@@ -229,8 +228,8 @@ router.patch('/:id', koaBody({
 
         const file = ctx.request.files?.imagen;
 
-        if (file){
-            const result = await cloudinary.uploader.upload(file.filepath,{
+        if (file) {
+            const result = await cloudinary.uploader.upload(file.filepath, {
                 folder: 'productos'
             });
             fs.unlinkSync(file.filepath);
@@ -258,9 +257,9 @@ router.patch('/:id', koaBody({
     } catch (error) {
         console.error('Error al actualizar producto:', error);
         ctx.status = 500;
-        ctx.body = { 
+        ctx.body = {
             error: 'Error interno del servidor',
-            message: error.message 
+            message: error.message
         };
     }
 });

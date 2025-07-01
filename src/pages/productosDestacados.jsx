@@ -208,7 +208,7 @@ export default function ProductosDestacados() {
                                     </div>
                                     <div className="w-full bg-slate-200 rounded-full h-2">
                                         <div
-                                            className={`h-2 rounded-full transition-all duration-500 ${producto.stock > 10 ? 'bg-green-500' :
+                                            className={`h-2 rounded-sm transition-all duration-500 ${producto.stock > 10 ? 'bg-green-500' :
                                                 producto.stock > 0 ? 'bg-yellow-500' : 'bg-red-500'
                                                 }`}
                                             style={{ width: `${Math.min((producto.stock / 20) * 100, 100)}%` }}
