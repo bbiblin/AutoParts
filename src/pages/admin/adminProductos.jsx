@@ -398,7 +398,7 @@ export default function AdminProductos() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Descuento
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
@@ -449,7 +449,7 @@ export default function AdminProductos() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${producto.stock > 10
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-sm ${producto.stock > 10
                           ? 'bg-green-100 text-green-800'
                           : producto.stock > 0
                             ? 'bg-yellow-100 text-yellow-800'
@@ -459,7 +459,7 @@ export default function AdminProductos() {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${producto.isActive
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-sm ${producto.isActive
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
                           }`}>
@@ -469,7 +469,7 @@ export default function AdminProductos() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center space-x-2">
                           {producto.discount_percentage > 0 ? (
-                            <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                            <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-sm bg-red-100 text-red-800">
                               {producto.discount_percentage}% OFF
                             </span>
                           ) : (
@@ -770,7 +770,7 @@ export default function AdminProductos() {
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-sm bg-red-100 mb-4">
                 <Trash2 className="h-6 w-6 text-red-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">

@@ -91,10 +91,29 @@ export default function AdminPedidos() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-brand-darBlue text-xs text-[#b8b8b8] uppercase tracking-wider">
                 <tr>
-                  {['ID', 'Código', 'Cliente', 'Fecha', 'Estado', 'Total', 'Acciones'].map((h) => (
-                    <th key={h} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{h}</th>
-                  ))}
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Código
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Cliente
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
+                    Fecha
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
+                    Estado
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
+                    Total
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
+                    Acciones
+                  </th>
                 </tr>
+
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredPedidos.map((pedido) => (

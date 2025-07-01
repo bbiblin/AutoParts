@@ -179,6 +179,9 @@ export default function AdminBrands() {
             <thead className="bg-brand-darBlue text-xs text-[#b8b8b8] uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   Nombre
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
@@ -187,7 +190,7 @@ export default function AdminBrands() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                   País de origen
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
                   Acciones
                 </th>
 

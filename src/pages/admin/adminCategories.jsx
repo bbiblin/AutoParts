@@ -26,7 +26,7 @@ export default function AdminCategories() {
       setLoading(true);
       const response = await axios.get('https://autoparts-i2gt.onrender.com/categories');
       if (response) {
-        
+
         setCategorias(response.data);
         setFilteredCategorias(response.data);
       } else {
@@ -45,7 +45,7 @@ export default function AdminCategories() {
 
   // Filtrar categorías
   useEffect(() => {
-    let filtered = categorias.filter(categoria => 
+    let filtered = categorias.filter(categoria =>
       categoria.cate_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       categoria.cate_descr?.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -57,7 +57,7 @@ export default function AdminCategories() {
   const openModal = (mode, category = null) => {
     setModalMode(mode);
     setSelectedCategory(category);
-    
+
     if (mode === 'add') {
       setFormData({
         cate_name: '',
@@ -69,7 +69,7 @@ export default function AdminCategories() {
         cate_descr: category.cat_descr || ''
       });
     }
-    
+
     setShowModal(true);
   };
 
@@ -177,7 +177,7 @@ export default function AdminCategories() {
                 <p className="text-gray-600">Administra las categorías de productos</p>
               </div>
             </div>
-            
+
             <button
               onClick={() => openModal('add')}
               className="bg-brand-darBlue text-[#ffff] px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
@@ -215,16 +215,16 @@ export default function AdminCategories() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-brand-darBlue text-[#b8b8b8] uppercase tracking-wider">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     ID
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Nombre
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Descripción
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
@@ -240,7 +240,7 @@ export default function AdminCategories() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <div className="h-10 w-10 rounded-sm bg-blue-100 flex items-center justify-center">
                             <Tag className="h-5 w-5 text-blue-600" />
                           </div>
                         </div>
@@ -310,8 +310,8 @@ export default function AdminCategories() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {modalMode === 'add' ? 'Nueva Categoría' : 
-                   modalMode === 'edit' ? 'Editar Categoría' : 'Detalles de la Categoría'}
+                  {modalMode === 'add' ? 'Nueva Categoría' :
+                    modalMode === 'edit' ? 'Editar Categoría' : 'Detalles de la Categoría'}
                 </h3>
                 <button
                   onClick={closeModal}
@@ -382,7 +382,7 @@ export default function AdminCategories() {
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-brand-redDark mb-4">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-sm bg-brand-redDark mb-4">
                 <Trash2 className="h-6 w-6 text-red-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
