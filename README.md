@@ -1,7 +1,7 @@
 
 
 ***Proyecto Integración de Plataformas***  
-Vista externa: https://vercel.com/belens-projects-0ff2b268/kitty-repuestos/Gj168KbVpNFuqviBYFyvdBv9Qxym 
+Vista externa: https://kitty-repuestos-a92jwd62n-belens-projects-0ff2b268.vercel.app
 Deploy: https://autoparts-frontend.onrender.com/  
 Caso semestral: AutoParts  
 Tecnologías utilizadas: React, Node.Js, PostgreSQL, Koa (para las rutas), Sequelizer  
