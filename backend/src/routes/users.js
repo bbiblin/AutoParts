@@ -108,7 +108,7 @@ router.post('/login', async (ctx) => {
     });
 
     if (!user) {
-      ctx.status = 401;
+      ctx.status = 404;
       ctx.body = { error: 'Credenciales inválidas' };
       return;
     }

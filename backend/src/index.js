@@ -8,12 +8,7 @@ const PORT = process.env.PORT || 5374;
 const app = new Koa();
 
 // ✅ CORS explícito para evitar errores de red en solicitudes multipart/form-data
-app.use(cors({
-  origin: 'https://autoparts-frontend.onrender.com', // Cambia según tu dominio
-  allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(bodyParser());
 app.use(Logger());

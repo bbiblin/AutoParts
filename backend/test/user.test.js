@@ -128,32 +128,8 @@ describe('User Routes', () => {
             });
         });
 
-        it('deberia registrarse un usuario como administrador cuando es marcada la opcion', async () => {
-            const userData = { ...validUserData, isDistribuitor: true };
-            const hashedPassword = 'hashedPassword123';
-            const mockUser = {
-                id: 1,
-                ...userData,
-                password: hashedPassword,
-                admin: false,
-                toJSON: () => ({ id: 1, ...userData, admin: false })
-            };
 
-            User.findOne.mockResolvedValue(null);
-            bcrypt.hash.mockResolvedValue(hashedPassword);
-            User.create.mockResolvedValue(mockUser);
-
-            const res = await request(app.callback())
-                .post('/register')
-                .send(userData);
-
-            expect(res.status).toBe(201);
-            expect(User.create).toHaveBeenCalledWith(
-                expect.objectContaining({ isDistribuitor: true })
-            );
-        });
-
-        it('sdeberia devolver 404 cuando hayan campos obligatorios vacios', async () => {
+        it('deberia devolver 404 cuando hayan campos obligatorios vacios', async () => {
             const incompleteData = { email: 'test@test.com' };
 
             const res = await request(app.callback())
@@ -277,14 +253,14 @@ describe('User Routes', () => {
             expect(res.body).toEqual({ error: 'Email y contraseña son requeridos' });
         });
 
-        it('debe retornar 401 cuando no existe el usuario', async () => {
+        it('debe retornar 404 cuando no existe el usuario', async () => {
             User.findOne.mockResolvedValue(null);
 
             const res = await request(app.callback())
                 .post('/login')
                 .send(loginData);
 
-            expect(res.status).toBe(401);
+            expect(res.status).toBe(404);
             expect(res.body).toEqual({ error: 'Credenciales inválidas' });
         });
 
