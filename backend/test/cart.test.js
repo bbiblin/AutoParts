@@ -120,6 +120,45 @@ describe('Cart Routes', () => {
 
             expect(res.status).toBe(500);
         });
+        it('no agrega producto si el stock es 0', async () => {
+            const product = { id: 10, retail_price: 20, stock: 0 };
+            producto.findByPk.mockResolvedValue(product);
+            cart.findOne.mockResolvedValue({ id: 1 });
+            cart_item.findOne.mockResolvedValue(null);
+
+            const res = await request(app.callback())
+                .post('/add')
+                .send({ product_id: 10, quantity: 1 });
+
+            expect(res.body.success).toBe(false);
+            expect(res.body.message).toBe('Producto no agregado al carrito');
+        });
+
+        it('no incrementa si cantidad excede el stock disponible', async () => {
+            const product = { id: 10, retail_price: 20, stock: 2 };
+            const cartItem = { quantity: 2, save: jest.fn() };
+
+            producto.findByPk.mockResolvedValue(product);
+            cart.findOne.mockResolvedValue({ id: 1 });
+            cart_item.findOne.mockResolvedValue(cartItem);
+
+            const res = await request(app.callback())
+                .post('/add')
+                .send({ product_id: 10, quantity: 1 });
+
+            expect(res.body.success).toBe(false);
+            expect(res.body.message).toBe('Producto no agregado al carrito');
+        });
+
+        it('retorna error si la cantidad es inválida', async () => {
+            const res = await request(app.callback())
+                .post('/add')
+                .send({ product_id: 10, quantity: 0 });
+
+            expect(res.status).toBe(400);
+            expect(res.body.success).toBe(false);
+            expect(res.body.message).toContain('Datos inválidos');
+        });
     });
 
     describe('PUT /update/:itemId', () => {
@@ -158,6 +197,33 @@ describe('Cart Routes', () => {
 
             expect(res.status).toBe(400);
         });
+
+        it('retorna error si cantidad no es válida', async () => {
+            const res = await request(app.callback())
+                .put('/update/5')
+                .send({ quantity: -1 });
+
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('Cantidad inválida');
+        });
+
+        it('retorna 404 si el producto no existe al actualizar', async () => {
+            const mockItem = {
+                product_id: 99,
+                cart: { user_id: 1 }
+            };
+
+            cart_item.findOne.mockResolvedValue(mockItem);
+            producto.findByPk.mockResolvedValue(null);
+
+            const res = await request(app.callback())
+                .put('/update/5')
+                .send({ quantity: 1 });
+
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe('No existe el producto');
+        });
+
     });
 
     describe('DELETE /remove/:itemId', () => {
