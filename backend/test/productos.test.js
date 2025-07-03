@@ -201,17 +201,6 @@ describe('Product Routes', () => {
             expect(res.body).toEqual({ error: 'Faltan campos obligatorios.' });
         });
 
-        it('debe manejar errores de subida a clodinary', async () => {
-            const mockFile = {
-                filepath: '/tmp/test-image.jpg'
-            };
-
-            fs.existsSync.mockReturnValue(true);
-            cloudinary.uploader.upload.mockRejectedValue(new Error('Cloudinary error'));
-
-            // This would be tested in integration tests with actual file uploads
-            expect(true).toBe(true); // Placeholder for cloudinary error handling
-        });
 
         it('debe manejar errores en la base de datos durante la creación de productos', async () => {
             producto.create.mockRejectedValue(new Error('Database error'));
@@ -293,6 +282,39 @@ describe('Product Routes', () => {
             expect(res.body).toEqual(allProducts);
             expect(producto.findAll).toHaveBeenCalledWith();
         });
+        it('debe retornar productos filtrados por category_id cuando admin=true', async () => {
+            const filtered = [{ id: 1, product_name: 'Admin Cat Product', category_id: 1 }];
+            producto.findAll.mockResolvedValue(filtered);
+
+            const res = await request(app.callback()).get('/?admin=true&category_id=1');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(filtered);
+            expect(producto.findAll).toHaveBeenCalledWith({ where: { category_id: '1' } });
+        });
+
+        it('debe retornar productos filtrados por brand_id cuando admin=true', async () => {
+            const filtered = [{ id: 1, product_name: 'Admin Brand Product', brand_id: 2 }];
+            producto.findAll.mockResolvedValue(filtered);
+
+            const res = await request(app.callback()).get('/?admin=true&brand_id=2');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(filtered);
+            expect(producto.findAll).toHaveBeenCalledWith({ where: { brand_id: '2' } });
+        });
+
+        it('debe retornar productos filtrados por brand_id y category_id cuando admin=true', async () => {
+            const filtered = [{ id: 1, product_name: 'Admin BrandCat Product', category_id: 1, brand_id: 2 }];
+            producto.findAll.mockResolvedValue(filtered);
+
+            const res = await request(app.callback()).get('/?admin=true&brand_id=2&category_id=1');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(filtered);
+            expect(producto.findAll).toHaveBeenCalledWith({ where: { brand_id: '2', category_id: '1' } });
+        });
+
 
         it('debe manejar errores en la base de datos al momento de obtener los productos', async () => {
             producto.findAll.mockRejectedValue(new Error('Database error'));

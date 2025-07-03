@@ -391,6 +391,18 @@ describe('User Routes', () => {
             );
         });
 
+        it('debe permitir actualizar otros campos sin cambiar el email', async () => {
+            const mockUser = { id: 1, email: 'test@test.com', name: 'Test User' };
+            User.findByPk.mockResolvedValueOnce(mockUser);
+            User.update.mockResolvedValue([1]);
+            User.findByPk.mockResolvedValueOnce({ ...mockUser, name: 'Nuevo nombre' });
+
+            const res = await request(app.callback()).patch('/profile').send({ name: 'Nuevo nombre' });
+
+            expect(res.status).toBe(200);
+            expect(res.body.user.name).toBe('Nuevo nombre');
+        });
+
         it('se deben manejar errores durante la actualizacion del perfil', async () => {
             User.findByPk.mockRejectedValue(new Error('Database error'));
 
