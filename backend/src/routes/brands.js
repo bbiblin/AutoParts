@@ -48,7 +48,6 @@ router.get('/:id', async (ctx) => {
 //PATCH (update) de marca
 router.patch("/:id", async (ctx) => {
   try {
-    console.log(ctx.request.body);
 
     const existingBrand = await brand.findByPk(ctx.params.id);
     if (!existingBrand) {
@@ -75,7 +74,6 @@ router.patch("/:id", async (ctx) => {
 //POST marca
 router.post("/", async (ctx) => {
   try {
-    console.log(ctx.request.body);
 
     const existingBrand = await brand.findOne({
       where: { brand_name: ctx.request.body.brand_name },

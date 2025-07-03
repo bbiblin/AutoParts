@@ -58,7 +58,6 @@ describe('Product Routes', () => {
 
     afterEach(() => {
         console.error.mockRestore();
-        console.log.mockRestore();
     });
 
     describe('GET /destacados', () => {

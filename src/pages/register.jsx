@@ -107,14 +107,11 @@ export default function Register() {
       if (validateForm()) {
         // Preparar datos para enviar (sin confirmPassword)
         const { confirmPassword, ...userData } = formData;
-        console.log("Registro exitoso:", userData);
         const response = await axios.post('https://autoparts-i2gt.onrender.com/users/register', userData);
 
         if (response) {
-          console.log("El usuario ha sido registrado correctamente");
           navigate("/users/login");
         } else {
-          console.log("Registro fallido");
         }
       }
     } catch (error) {

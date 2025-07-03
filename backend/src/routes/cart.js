@@ -8,7 +8,6 @@ const authenticateToken = require('../middleware/auth');
 router.get('/', authenticateToken, async (ctx) => {
     try {
         const user = ctx.state.user;
-        console.log('user id:', user.id);
 
         let carrito = await cart.findOne({
             where: { user_id: user.id },
@@ -32,8 +31,6 @@ router.get('/', authenticateToken, async (ctx) => {
             carrito.cart_items = [];
         }
 
-        console.log('Carrito encontrado:', carrito.id);
-        console.log('Items del carrito:', carrito.cart_items?.length || 0);
 
         ctx.body = {
             success: true,
@@ -56,7 +53,6 @@ router.post('/add', authenticateToken, async (ctx) => {
         const { product_id, quantity = 1 } = ctx.request.body;
 
         if (!ctx.state.user) {
-            console.log('❌ No hay usuario en ctx.state');
             ctx.status = 401;
             ctx.body = { success: false, message: 'Usuario no autenticado' };
             return;
@@ -155,7 +151,6 @@ router.put('/update/:itemId', authenticateToken, async (ctx) => {
         const { quantity } = ctx.request.body;
         const userId = ctx.state.user.id;
 
-        console.log('Actualizando item:', itemId, 'nueva cantidad:', quantity);
 
         if (!quantity || quantity < 0) {
             ctx.status = 400;
@@ -239,8 +234,6 @@ router.delete('/remove/:itemId', authenticateToken, async (ctx) => {
         const { itemId } = ctx.params;
         const userId = ctx.state.user.id;
 
-        console.log('Eliminando item:', itemId, 'para usuario:', userId);
-
         // Verificar que el item pertenece al usuario
         const cartItem = await cart_item.findOne({
             where: { id: itemId },
@@ -284,7 +277,6 @@ router.delete('/clear', authenticateToken, async (ctx) => {
     try {
         const userId = ctx.state.user.id;
 
-        console.log('Limpiando carrito para usuario:', userId);
 
         const carrito = await cart.findOne({ where: { user_id: userId } });
         if (!carrito) {

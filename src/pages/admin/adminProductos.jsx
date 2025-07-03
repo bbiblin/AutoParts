@@ -207,13 +207,10 @@ export default function AdminProductos() {
 
       let response;
       if (modalMode === 'add') {
-        console.log('Enviando datos:', Object.fromEntries(data.entries()));
         response = await axios.post('https://autoparts-i2gt.onrender.com/productos', data, config);
       } else if (modalMode === 'edit') {
         response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${selectedProduct.id}`, data, config);
       }
-
-      console.log('Respuesta del servidor:', response);
 
       if (response && response.status >= 200 && response.status < 300) {
         await fetchProductos();

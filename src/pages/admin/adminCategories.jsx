@@ -108,10 +108,8 @@ export default function AdminCategories() {
 
       let response;
       if (modalMode === 'add') {
-        console.log(categoryData);
         response = await axios.post('https://autoparts-i2gt.onrender.com/categories', categoryData);
       } else if (modalMode === 'edit') {
-        console.log(categoryData);
         response = await axios.patch(`https://autoparts-i2gt.onrender.com/categories/${selectedCategory.id}`, categoryData);
       }
 

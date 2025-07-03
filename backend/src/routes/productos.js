@@ -199,7 +199,6 @@ router.delete('/:id', async (ctx) => {
             ctx.status = 200;
             const msg = " Producto eliminado correctamente";
             ctx.body = { message: msg };
-            console.log(msg);
         }
         else {
             ctx.status = 404;
@@ -238,7 +237,6 @@ router.patch('/:id', koaBody({
 
         const prod = await producto.findByPk(ctx.params.id);
         prod.update(ctx.request.body);
-        console.log(ctx.request.body.image_url);
 
         if (prod.discount_percentage > 0) {
             let precio_retail = prod.retail_price;
@@ -250,7 +248,6 @@ router.patch('/:id', koaBody({
 
             await prod.update({ retail_price_sale: precio_final_retail, wholesale_price_sale: precio_final_wholesale });
         }
-        console.log(prod);
         ctx.status = 200;
         ctx.body = prod;
 

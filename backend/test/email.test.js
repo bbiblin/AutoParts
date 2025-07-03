@@ -92,7 +92,6 @@ describe('POST /enviarEmail', () => {
                 nombre: 'Test',
                 user_id: 1
             });
-        console.log('Error body:', res.body);
 
         // ✅ Aserciones
         expect(res.status).toBe(200);

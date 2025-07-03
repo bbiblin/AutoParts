@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const { pedidos, detalle_pedido, cart, cart_item, producto } = require('../models');
 const WebpayPlus = require('transbank-sdk').WebpayPlus;
-const { Options, IntegrationApiKeys, Environment, IntegrationCommerceCodes } = require("transbank-sdk"); 
+const { Options, IntegrationApiKeys, Environment, IntegrationCommerceCodes } = require("transbank-sdk");
 
 const router = new Router();
 
@@ -9,10 +9,7 @@ const router = new Router();
  * Crear pedido desde carrito y generar transacción WebPay
  */
 router.post('/create-order', async (ctx) => {
-    console.log("Llamando a crear orden");
     try {
-        console.log('Endpoint /create-order llamado');
-        console.log('Body recibido:', ctx.request.body);
         const { user_id, shipping_cost = 0, origen = 'web' } = ctx.request.body;
 
 
@@ -46,7 +43,7 @@ router.post('/create-order', async (ctx) => {
             } else {
                 return total + (item.precio_unitario * item.quantity);
             }
-            
+
         }, 0);
 
         const totalAmount = subtotal + shipping_cost;
@@ -72,24 +69,24 @@ router.post('/create-order', async (ctx) => {
         for (const item of userCart.cart_items) {
             if (item.product.discount_percentage > 0) {
                 await detalle_pedido.create({
-                pedido_id: nuevoPedido.id,
-                product_id: item.product_id,
-                cantidad: item.quantity,
-                precio_unitario: item.product.retail_price_sale,
-                subtotal: item.product.retail_price_sale * item.quantity,
-                descuento_linea: 0
-            });
+                    pedido_id: nuevoPedido.id,
+                    product_id: item.product_id,
+                    cantidad: item.quantity,
+                    precio_unitario: item.product.retail_price_sale,
+                    subtotal: item.product.retail_price_sale * item.quantity,
+                    descuento_linea: 0
+                });
             } else {
                 await detalle_pedido.create({
-                pedido_id: nuevoPedido.id,
-                product_id: item.product_id,
-                cantidad: item.quantity,
-                precio_unitario: item.precio_unitario,
-                subtotal: item.precio_unitario * item.quantity,
-                descuento_linea: 0
-            });
+                    pedido_id: nuevoPedido.id,
+                    product_id: item.product_id,
+                    cantidad: item.quantity,
+                    precio_unitario: item.precio_unitario,
+                    subtotal: item.precio_unitario * item.quantity,
+                    descuento_linea: 0
+                });
             }
-            
+
         }
 
         // Generar session_id único
@@ -97,7 +94,7 @@ router.post('/create-order', async (ctx) => {
 
         // Crear transacción WebPay
         const webpayTransaction = new WebpayPlus.Transaction(new Options(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, Environment.Integration));
-        
+
         const returnUrl = "https://autoparts-frontend.onrender.com/webpay/confirm"
         const response = await webpayTransaction.create(codPedido, sessionId, totalAmount, returnUrl);
 
@@ -121,9 +118,6 @@ router.post('/create-order', async (ctx) => {
                 buyOrder: codPedido
             }
         };
-
-        console.log('Resp webpay: ' + response)
-        console.log('Body retorno webpay: ' + ctx.body);
 
     } catch (error) {
         console.error('Error creating order:', error);
@@ -157,17 +151,19 @@ router.post('/confirm', async (ctx) => {
         const response = await tx.commit(token_ws);
 
         if (response.status === 'AUTHORIZED') {
-            const pedido = await pedidos.findOne({ where: {
-                cod_pedido: response.buy_order
-            }, include: [{ model: detalle_pedido, as: 'detalles_pedido', include: [{
-                model: producto,
-                as: 'product'
-            }] }]
+            const pedido = await pedidos.findOne({
+                where: {
+                    cod_pedido: response.buy_order
+                }, include: [{
+                    model: detalle_pedido, as: 'detalles_pedido', include: [{
+                        model: producto,
+                        as: 'product'
+                    }]
+                }]
             });
 
             if (pedido) {
                 for (const item of pedido.detalles_pedido) {
-                    console.log('Producto:', item.product);
                     const product = item.product;
                     const nuevaCantidad = product.stock - item.cantidad;
                     await product.update({ stock: nuevaCantidad });
@@ -175,17 +171,20 @@ router.post('/confirm', async (ctx) => {
 
                 await pedido.update({ state: 'pagado' }); // opcional: marcar como pagado
             }
-        } else if (response.status === 'FAILED'){
-            const pedido = await pedidos.findOne({ where: {
-                cod_pedido: response.buy_order
-            }, include: [{ model: detalle_pedido, as: 'detalles_pedido', include: [{
-                model: producto,
-                as: 'product'
-            }] }]
+        } else if (response.status === 'FAILED') {
+            const pedido = await pedidos.findOne({
+                where: {
+                    cod_pedido: response.buy_order
+                }, include: [{
+                    model: detalle_pedido, as: 'detalles_pedido', include: [{
+                        model: producto,
+                        as: 'product'
+                    }]
+                }]
             });
 
-            await pedido.update({ state: 'Rechazado' }); 
-            
+            await pedido.update({ state: 'Rechazado' });
+
         }
         ctx.body = { webpay: response };
     } catch (error) {

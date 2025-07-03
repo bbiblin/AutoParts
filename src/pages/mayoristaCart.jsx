@@ -50,8 +50,6 @@ export default function CartPage() {
     }, 0);
 
     const handleQuantityChange = (itemId, newQuantity) => {
-        console.log('Changing quantity for ID:', itemId, 'to:', newQuantity);
-        console.log('Current cart items:', cartItems);
         if (newQuantity >= 0) {
             updateQuantity(itemId, newQuantity);
         }
@@ -64,7 +62,6 @@ export default function CartPage() {
         setIsProcessing(true);
         try {
             const user_id = Cookies.get('user_id');
-            console.log('Procesando compra para usuario:', user_id);
 
             const response = await axios.post("https://autoparts-i2gt.onrender.com/email/enviarEmail", {
                 email: user.email,
@@ -72,7 +69,6 @@ export default function CartPage() {
                 user_id: user.id
 
             });
-            console.log(response.data.estado);
             if (response.data.estado == "aceptado") {
                 setEstado("aceptado");
                 setIsProcessing(false);

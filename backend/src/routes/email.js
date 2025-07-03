@@ -2,6 +2,8 @@ const nodemailer = require("nodemailer");
 const Router = require('koa-router');
 const router = new Router();
 const { pedidos, detalle_pedido, cart, cart_item, producto } = require('../models');
+require("dotenv").config();
+
 
 router.post('/enviarEmail', async (ctx) => {
     try {
@@ -76,13 +78,13 @@ router.post('/enviarEmail', async (ctx) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "autopartscorreo@gmail.com",
-                pass: "bswf yqvq brlb bdoc",
+                user: process.env.USER_EMAIL,
+                pass: process.env.PASS_EMAIL,
             },
         });
 
         const info = await transporter.sendMail({
-            from: "autopartscorreo@gmail.com",
+            from: process.env.USER_EMAIL,
             to: email,
             subject: "Nueva Cotización - AutoParts",
             text: `
@@ -149,14 +151,10 @@ router.post('/enviarEmail', async (ctx) => {
             await pedido.update({ state: 'cotización enviada' });
         }
 
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
         ctx.status = 200;
         ctx.body = { estado: "aceptado" };
     } catch (error) {
-        console.error("❌ ERROR DETECTADO EN /enviarEmail:");
-        console.error(error);
         ctx.status = 500;
         ctx.body = {
             estado: "error",

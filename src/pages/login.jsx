@@ -56,14 +56,10 @@ export default function Login() {
         email: formData.email,
         password: formData.password,
       };
-
-      console.log("Data: ", userData);
       const response = await axios.post("https://autoparts-i2gt.onrender.com/users/login", userData);
 
       if (response.data) {
-        console.log("Response:", response.data);
 
-        // Usar la función login del contexto con navigate
         login(
           response.data.user,
           response.data.token,
@@ -72,7 +68,7 @@ export default function Login() {
         const tokensito = localStorage.getItem("authToken");
         setToken(tokensito);
 
-       
+
       }
     } catch (error) {
       console.error("Ha ocurrido un error", error);
@@ -96,7 +92,7 @@ export default function Login() {
         }`}
     >
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-[#1E1E1E] mb-2">
             Iniciar Sesión
@@ -106,14 +102,14 @@ export default function Login() {
           </p>
         </div>
 
-        
+
         {error && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
 
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
@@ -157,7 +153,7 @@ export default function Login() {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center">
-            
+
 
             </label>
           </div>
@@ -181,14 +177,14 @@ export default function Login() {
           </button>
         </form>
 
-        
+
         <div className="my-6 flex items-center">
           <div className="flex-1 border-t border-gray-300"></div>
           <span className="px-4 text-sm text-[#555555]">o</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
-        
+
         <div className="text-center">
           <p className="text-sm text-[#555555]">
             ¿No tienes una cuenta?{" "}
@@ -201,7 +197,7 @@ export default function Login() {
           </p>
         </div>
 
-        
+
         <div className="mt-8 text-center">
           <Link
             to="/"

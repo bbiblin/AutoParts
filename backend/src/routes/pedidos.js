@@ -48,7 +48,6 @@ router.get('/', async (ctx) => {
 router.get('/usuario', authenticateToken, async (ctx) => {
   try {
     const user = ctx.state.user;
-    console.log('user id:', user.id);
 
     const userPedidos = await pedidos.findAll({
       where: {
@@ -73,7 +72,6 @@ router.get('/usuario', authenticateToken, async (ctx) => {
       order: [['createdAt', 'DESC']] // Pedidos más recientes primero
     });
 
-    console.log('Pedidos encontrados:', userPedidos.length);
 
     ctx.status = 200;
     ctx.body = userPedidos;
@@ -98,7 +96,6 @@ router.delete('/:id', async (ctx) => {
       ctx.status = 200;
       const msg = " Pedido eliminado correctamente";
       ctx.body = { message: msg };
-      console.log(msg);
     }
     else {
       ctx.status = 404;

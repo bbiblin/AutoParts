@@ -116,7 +116,6 @@ router.post('/login', async (ctx) => {
     const validPass = await bcrypt.compare(password, user.password); // se compara la contraseña encriptada con la contraseña desencriptada para permitir que el usuario inicie sesión con su contraseña.
 
     if (validPass) {
-      console.log("Login exitoso");
       const token = jwt.sign(
         {
           id: user.id,
@@ -135,7 +134,6 @@ router.post('/login', async (ctx) => {
       ctx.status = 200;
       ctx.body = { user: userResponse, token };
     } else {
-      console.log("Contraseña inválida");
       ctx.status = 401;
       ctx.body = { error: 'Credenciales inválidas' };
     }
@@ -248,7 +246,6 @@ router.delete('/:id', async (ctx) => {
       ctx.status = 200;
       const msg = " Usuario eliminado correctamente";
       ctx.body = { message: msg };
-      console.log(msg);
     }
     else {
       ctx.status = 404;
