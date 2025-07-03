@@ -1,4 +1,3 @@
-// App.jsx
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Productos from './pages/productos';
@@ -35,7 +34,6 @@ function AppContent() {
 
   return (
     <>
-      {/* Solo mostrar Navbar si no es admin */}
       {!isAdmin && <Navbar />}
 
       {isAdmin && <AdminNavBar />}
@@ -102,7 +100,6 @@ function AppContent() {
         <Route path="/confirmarOrden" element={<ConfirmarOrden />} />
       </Routes>
 
-      {/* Solo mostrar Footer si no es admin */}
       {!isAdmin && <Footer />}
     </>
   );

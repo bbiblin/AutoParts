@@ -1,4 +1,3 @@
-// migrations/XXXXXX-add-quantity-to-cart-items.js
 'use strict';
 
 module.exports = {

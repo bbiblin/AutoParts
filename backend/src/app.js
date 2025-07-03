@@ -12,17 +12,15 @@ const app = new Koa();
 app.context.orm = orm;
 
 app.use(cors({
-  origin: '*', // o 'https://autoparts-frontend.onrender.com'
+  origin: '*',
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
-// Otros middlewares
 app.use(bodyParser());
 app.use(KoaLogger());
 app.use(koaBody());
 
-// Rutas
 app.use(router.routes());
 app.use(router.allowedMethods());
 

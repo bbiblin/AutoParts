@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'cart',
     tableName: 'carts',
-    createdAt: 'createdAt', // o el nombre real de tu columna
-    updatedAt: 'updatedAt', // o el nombre real de tu columna
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
   });
   return cart;
 };

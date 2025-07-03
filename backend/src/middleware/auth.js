@@ -20,7 +20,7 @@ module.exports = async (ctx, next) => {
         const SECRET = process.env.JWT_SECRET || 'clave'
         const decoded = jwt.verify(token, SECRET);
 
-        ctx.state.user = decoded; // Guardamos el usuario decodificado
+        ctx.state.user = decoded;
 
         await next();
     } catch (err) {

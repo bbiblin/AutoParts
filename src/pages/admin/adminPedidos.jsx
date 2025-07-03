@@ -56,7 +56,7 @@ export default function AdminPedidos() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex items-center space-x-3">
           <Truck className="h-8 w-8 text-blue-600" />
           <div>
@@ -65,7 +65,7 @@ export default function AdminPedidos() {
           </div>
         </div>
 
-        {/* Filtro */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
@@ -85,7 +85,7 @@ export default function AdminPedidos() {
           </div>
         </div>
 
-        {/* Tabla */}
+
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -141,7 +141,7 @@ export default function AdminPedidos() {
           </div>
         </div>
 
-        {/* Modal de detalles */}
+
         {selectedPedido && (
           <div className="fixed inset-0 z-50 bg-brand-darBlue bg-opacity-40 flex items-center justify-center">
             <div className="bg-[#ffff] w-full max-w-2xl p-6 rounded-lg shadow-lg relative">

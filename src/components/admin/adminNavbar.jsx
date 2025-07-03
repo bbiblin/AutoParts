@@ -14,7 +14,6 @@ export default function AdminNavbar() {
     setIsMenuOpen(false);
   };
 
-  // Items de navegación para admin
   const navItems = [
     { title: "Inicio", to: "/adminHome" },
     { title: "Productos", to: "/adminProductos" },
@@ -94,7 +93,6 @@ export default function AdminNavbar() {
           <div className="hidden lg:flex items-center space-x-4">
 
 
-            {/* Información del usuario */}
             <div className="flex items-center space-x-3 rounded-lg px-4 py-2">
 
               <div className="flex flex-col">
@@ -105,7 +103,6 @@ export default function AdminNavbar() {
               </div>
             </div>
 
-            {/* Botón de logout */}
             <button
               onClick={handleLogout}
               className="bg-brand-redDark text-[#ffff] px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2"

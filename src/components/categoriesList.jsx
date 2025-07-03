@@ -2,11 +2,11 @@ import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Search } from 'lucide-react'; // Asegúrate de tener esto instalado
 
-export default function CategoriesList({ 
-  valueCategory, 
-  valueBrand, 
-  onChangeCategory, 
-  onChangeBrand,  
+export default function CategoriesList({
+  valueCategory,
+  valueBrand,
+  onChangeCategory,
+  onChangeBrand,
 }) {
   const [allCategories, setAllCategories] = useState([]);
   const [allBrands, setAllBrands] = useState([]);
@@ -37,9 +37,7 @@ export default function CategoriesList({
   return (
     <div className="space-y-6">
 
-      {/* Filtros de categoría y marca */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Categoría */}
         <div className="space-y-2">
           <label className="text-sm font-semibold text-gray-700 flex items-center">
             <svg className="w-4 h-4 mr-2 text-[#BB2F3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +59,6 @@ export default function CategoriesList({
           </select>
         </div>
 
-        {/* Marca */}
         <div className="space-y-2">
           <label className="text-sm font-semibold text-gray-700 flex items-center">
             <svg className="w-4 h-4 mr-2 text-[#BB2F3D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

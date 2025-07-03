@@ -6,7 +6,6 @@ export default function Footer() {
     // Determinar si es distribuidor
     const isDistributor = user?.isDistribuitor;
 
-    // Colores dinámicos basados en tipo de usuario
     const footerBg = isDistributor ? 'bg-[#D72638]' : 'bg-[#1F3A93]';
     const hoverColor = isDistributor ? 'hover:text-red-200' : 'hover:text-[#535d73]';
     const borderColor = isDistributor ? 'border-red-700' : 'border-gray-700';
@@ -15,7 +14,6 @@ export default function Footer() {
         <footer className={`${footerBg} text-gray-300 py-10 px-6 mt-10 transition-colors duration-500`}>
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
 
-                {/* Marca */}
                 <div>
                     <h2 className="text-xl font-bold text-[#F5F5F5] mb-4">
                         AutoParts
@@ -33,7 +31,6 @@ export default function Footer() {
                     </p>
                 </div>
 
-                {/* Enlaces rápidos */}
                 <div>
                     <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">Enlaces</h3>
                     <ul className="space-y-2 text-sm text-[#F5F5F5]">
@@ -49,7 +46,6 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Contacto */}
                 <div>
                     <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">Contáctanos</h3>
                     <p className="text-sm text-[#F5F5F5]">📞 +56 9 1234 5678</p>
@@ -59,7 +55,6 @@ export default function Footer() {
                     <p className="text-sm text-[#F5F5F5]">📍 Santiago, Chile</p>
                 </div>
 
-                {/* Redes sociales */}
                 <div>
                     <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">Síguenos</h3>
                     <div className="flex space-x-4">

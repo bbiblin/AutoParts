@@ -7,7 +7,7 @@ export default function AdminBrands() {
   const [filteredBrands, setFilteredBrands] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState('add'); // 'add', 'edit', 'view'
+  const [modalMode, setModalMode] = useState('add');
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [brandToDelete, setBrandToDelete] = useState(null);
@@ -159,7 +159,6 @@ export default function AdminBrands() {
           </button>
         </div>
 
-        {/* Filtro */}
         <div className="bg-[#ffff] p-4 rounded-lg shadow mb-4 flex items-center gap-4">
           <div className="relative w-full">
             <Search className="absolute left-3 top-2.5 text-gray-400 h-5 w-5" />
@@ -173,7 +172,7 @@ export default function AdminBrands() {
           </div>
         </div>
 
-        {/* Tabla */}
+
         <div className="bg-[#ffff] rounded-lg shadow overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-brand-darBlue text-xs text-[#b8b8b8] uppercase tracking-wider">
@@ -222,7 +221,7 @@ export default function AdminBrands() {
           </table>
         </div>
 
-        {/* Modal */}
+
         {showModal && (
           <div className="fixed inset-0 z-50 bg-brand-darBlue bg-opacity-50 flex justify-center items-center p-4">
             <div className="bg-[#ffff] rounded-lg w-full max-w-md p-6">
@@ -281,7 +280,7 @@ export default function AdminBrands() {
           </div>
         )}
 
-        {/* Confirmación de eliminación */}
+
         {showDeleteConfirm && (
           <div className="fixed inset-0 z-50 bg-brand-darBlue bg-opacity-50 flex justify-center items-center p-4">
             <div className="bg-[#ffff] rounded-lg w-full max-w-md p-6 text-center">

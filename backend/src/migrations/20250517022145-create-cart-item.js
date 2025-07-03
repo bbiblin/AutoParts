@@ -22,7 +22,7 @@ module.exports = {
       product_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'productos', // revisa el nombre exacto de esta tabla
+          model: 'productos',
           key: 'id'
         },
         allowNull: false,

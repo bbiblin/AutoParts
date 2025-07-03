@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       field: 'product_id'
     },
 
-    quantity: {  // ← AGREGAR ESTE CAMPO
+    quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1

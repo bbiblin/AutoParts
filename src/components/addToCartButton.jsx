@@ -11,7 +11,6 @@ const AddToCartButton = ({ product, quantity = 1, className = "", variant = "pri
             setIsLoading(true);
             await addToCart(product, quantity);
 
-            // Mostrar confirmación visual
             setIsAdded(true);
             setTimeout(() => setIsAdded(false), 2000);
 

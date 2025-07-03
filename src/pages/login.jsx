@@ -18,7 +18,6 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, isLoggedIn, user } = useAuth();
 
-  // Redirigir si ya está logueado
   useEffect(() => {
     if (isLoggedIn && user) {
       if (user.isAdmin === true) {
@@ -73,7 +72,6 @@ export default function Login() {
     } catch (error) {
       console.error("Ha ocurrido un error", error);
 
-      // Mostrar mensaje de error más específico
       if (error.response) {
         setError(error.response.data.message || "Credenciales incorrectas");
       } else if (error.request) {

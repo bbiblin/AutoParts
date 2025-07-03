@@ -18,7 +18,6 @@ const CartIcon = ({ className = "" }) => {
                     className={`relative p-2 text-[#F5F5F5] hover:text-blue-300 transition-colors duration-300 ${className}`}
                     aria-label="Ver carrito de compras"
                 >
-                    {/* Icono del carrito */}
                     <svg
                         className="w-6 h-6"
                         fill="none"
@@ -34,7 +33,6 @@ const CartIcon = ({ className = "" }) => {
                         />
                     </svg>
 
-                    {/* Badge con contador */}
                     {itemCount > 0 && (
                         <span className="absolute -top-1 -right-1 bg-[#D72638] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px] transform transition-transform duration-300 hover:scale-110">
                             {itemCount > 99 ? '99+' : itemCount}
@@ -47,7 +45,6 @@ const CartIcon = ({ className = "" }) => {
                     className={`relative p-2 text-[#F5F5F5] hover:text-blue-300 transition-colors duration-300 ${className}`}
                     aria-label="Ver carrito de compras"
                 >
-                    {/* Icono del carrito */}
                     <svg
                         className="w-6 h-6"
                         fill="none"
@@ -63,7 +60,6 @@ const CartIcon = ({ className = "" }) => {
                         />
                     </svg>
 
-                    {/* Badge con contador */}
                     {itemCount > 0 && (
                         <span className="absolute -top-1 -right-1 bg-[#D72638] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px] transform transition-transform duration-300 hover:scale-110">
                             {itemCount > 99 ? '99+' : itemCount}

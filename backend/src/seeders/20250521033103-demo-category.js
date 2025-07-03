@@ -6,7 +6,6 @@ const { url } = require('koa-router');
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('categories', [{
-      //Motores y componentes
       cate_name: 'Filtros de aceite',
       cat_descr: 'Filtros de aceite de diferentes marcas',
 

@@ -120,7 +120,7 @@ describe('Category Routes', () => {
         };
 
         it('debe crear una categoría exitosamente', async () => {
-            category.findOne.mockResolvedValue(null); // No existe categoría con ese nombre
+            category.findOne.mockResolvedValue(null);
             category.create.mockResolvedValue(mockCategory);
 
             const res = await request(app.callback())
@@ -342,12 +342,11 @@ describe('Category Routes', () => {
 
         it('debe manejar cuando destroy no elimina ningún registro', async () => {
             category.findByPk.mockResolvedValue(mockCategory);
-            category.destroy.mockResolvedValue(0); // No se eliminó ningún registro
+            category.destroy.mockResolvedValue(0);
 
             const res = await request(app.callback()).delete('/1');
 
             expect(res.status).toBe(200);
-            // El código actual no maneja este caso, pero debería retornar success: true
             expect(res.body.success).toBe(true);
         });
     });

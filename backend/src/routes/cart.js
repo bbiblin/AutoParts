@@ -1,4 +1,3 @@
-// routes/cartRoutes.js
 const Router = require('@koa/router');
 const router = new Router();
 const { cart, cart_item, producto, User } = require('../models');
@@ -110,7 +109,6 @@ router.post('/add', authenticateToken, async (ctx) => {
             cartItem.quantity += quantity;
             await cartItem.save();
         } else {
-            // Si no existe, crear nuevo item
             if (productFound.stock === 0) {
                 ctx.status = 400;
                 ctx.body = {

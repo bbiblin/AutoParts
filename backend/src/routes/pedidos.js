@@ -69,7 +69,7 @@ router.get('/usuario', authenticateToken, async (ctx) => {
           ]
         }
       ],
-      order: [['createdAt', 'DESC']] // Pedidos más recientes primero
+      order: [['createdAt', 'DESC']]
     });
 
 

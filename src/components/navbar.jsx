@@ -18,12 +18,10 @@ export default function Navbar() {
   // Determinar si es distribuidor
   const isDistributor = user?.isDistribuitor;
 
-  // Colores dinámicos basados en tipo de usuario
   const navbarBg = isDistributor ? 'bg-[#D72638]' : 'bg-[#1F3A93]';
   const hoverText = isDistributor ? 'hover:text-red-200' : 'hover:text-blue-300';
   const underlineColor = isDistributor ? 'bg-white' : 'bg-[#BB2F3D]';
 
-  // Generar items dinámicamente según tipo de usuario
   const navItems = [
     { title: "Inicio", to: "/" },
     {
@@ -38,7 +36,7 @@ export default function Navbar() {
     <nav className={`${navbarBg} shadow-lg border-b border-[#F5F5F5] sticky top-0 z-50 backdrop-blur-sm bg-opacity-95 transition-colors duration-500`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+
           <div className="flex-shrink-0">
             <Link
               to="/"
@@ -53,7 +51,6 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navItems.map((item) => (
@@ -69,14 +66,12 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Auth Section + Cart */}
           <div className="hidden md:flex items-center space-x-4">
             <CartIcon />
 
             {isLoggedIn ? (
               <>
                 <div className="flex items-center space-x-3">
-                  {/* User Profile Link */}
                   <Link
                     to="/users/profile"
                     className={`flex items-center space-x-2 text-[#F5F5F5] ${hoverText} px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 group`}
@@ -87,7 +82,6 @@ export default function Navbar() {
                     <span>Mi Perfil</span>
                   </Link>
 
-                  {/* Welcome Message */}
                   <div className="text-[#F5F5F5] text-sm font-medium">
                     ¡Hola, {user.username}!
                   </div>
@@ -123,7 +117,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <CartIcon />
             <button
@@ -148,7 +141,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div
         className={`md:hidden transform transition-all duration-300 ease-in-out ${isMenuOpen
           ? "max-h-96 opacity-100 translate-y-0"
@@ -167,7 +159,6 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Mobile Auth Section */}
           <div className="pt-4 space-y-3 border-t border-[#F5F5F5] mt-4">
             {isLoggedIn ? (
               <>
@@ -175,7 +166,6 @@ export default function Navbar() {
                   <div>¡Hola, {user.username}!</div>
                 </div>
 
-                {/* Mobile Profile Link */}
                 <Link
                   to="/perfil"
                   onClick={() => setIsMenuOpen(false)}

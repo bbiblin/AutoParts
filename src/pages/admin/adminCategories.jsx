@@ -8,7 +8,7 @@ export default function AdminCategories() {
   const [filteredCategorias, setFilteredCategorias] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState('add'); // 'add', 'edit', 'view'
+  const [modalMode, setModalMode] = useState('add');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
@@ -20,7 +20,6 @@ export default function AdminCategories() {
     cate_descr: ''
   });
 
-  // Cargar categorías desde la API
   const fetchCategorias = async () => {
     try {
       setLoading(true);
@@ -43,7 +42,6 @@ export default function AdminCategories() {
     fetchCategorias();
   }, []);
 
-  // Filtrar categorías
   useEffect(() => {
     let filtered = categorias.filter(categoria =>
       categoria.cate_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +51,6 @@ export default function AdminCategories() {
     setFilteredCategorias(filtered);
   }, [categorias, searchTerm]);
 
-  // Abrir modal
   const openModal = (mode, category = null) => {
     setModalMode(mode);
     setSelectedCategory(category);
@@ -73,7 +70,6 @@ export default function AdminCategories() {
     setShowModal(true);
   };
 
-  // Cerrar modal
   const closeModal = () => {
     setShowModal(false);
     setSelectedCategory(null);
@@ -83,7 +79,6 @@ export default function AdminCategories() {
     });
   };
 
-  // Manejar cambios en el formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -92,7 +87,6 @@ export default function AdminCategories() {
     }));
   };
 
-  // Guardar categoría
   const handleSave = async () => {
     if (!formData.cate_name.trim()) {
       alert('Por favor completa el nombre de la categoría');
@@ -114,7 +108,7 @@ export default function AdminCategories() {
       }
 
       if (response) {
-        fetchCategorias(); // Recargar categorías
+        fetchCategorias();
         closeModal();
       } else {
         alert("No se pudo guardar la categoría");
@@ -139,7 +133,7 @@ export default function AdminCategories() {
       const response = await axios.delete(`https://autoparts-i2gt.onrender.com/categories/${categoryToDelete.id}`);
 
       if (response) {
-        fetchCategorias(); // Recargar categorías
+        fetchCategorias();
         setShowDeleteConfirm(false);
         setCategoryToDelete(null);
       } else {
@@ -165,7 +159,7 @@ export default function AdminCategories() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex items-center space-x-3">
@@ -186,7 +180,7 @@ export default function AdminCategories() {
           </div>
         </div>
 
-        {/* Filtros */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
@@ -207,7 +201,7 @@ export default function AdminCategories() {
           </div>
         </div>
 
-        {/* Tabla de categorías */}
+
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -301,7 +295,7 @@ export default function AdminCategories() {
         )}
       </div>
 
-      {/* Modal */}
+
       {showModal && (
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -375,7 +369,7 @@ export default function AdminCategories() {
         </div>
       )}
 
-      {/* Modal de confirmación de eliminación */}
+
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">

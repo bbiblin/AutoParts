@@ -46,7 +46,6 @@ app.use(router.routes());
 describe('User Routes', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        // Mock console.error para evitar logs en tests
         jest.spyOn(console, 'error').mockImplementation(() => { });
         jest.spyOn(console, 'log').mockImplementation(() => { });
     });
@@ -455,7 +454,7 @@ describe('User Routes', () => {
 
     describe('DELETE /:id', () => {
         it('se debe borrar el usuario correctamente', async () => {
-            User.destroy.mockResolvedValue(1); // 1 row affected
+            User.destroy.mockResolvedValue(1);
 
             const res = await request(app.callback()).delete('/123');
 
@@ -465,7 +464,7 @@ describe('User Routes', () => {
         });
 
         it('sse debe devolver 404 cuando no se encuentra el usuario para borrar', async () => {
-            User.destroy.mockResolvedValue(0); // No rows affected
+            User.destroy.mockResolvedValue(0);
 
             const res = await request(app.callback()).delete('/999');
 

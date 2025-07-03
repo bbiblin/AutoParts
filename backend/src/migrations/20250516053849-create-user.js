@@ -13,7 +13,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true // Agregado para que no haya emails repetidos
+        unique: true
       },
 
       password: {
@@ -24,7 +24,7 @@ module.exports = {
       username: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true // Agregado para que no haya usernames repetidos
+        unique: true
       },
 
       name: {
@@ -35,7 +35,7 @@ module.exports = {
       admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false // Para definir valor por defecto
+        defaultValue: false
       },
 
       address: {
@@ -45,26 +45,26 @@ module.exports = {
 
       phone: {
         type: Sequelize.STRING,
-        unique: true, // Si quieres que el teléfono sea único
-        allowNull: false // Como en el modelo original
+        unique: true,
+        allowNull: false
       },
 
       isDistribuitor: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false // Definir valor por defecto
+        defaultValue: false
       },
 
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('NOW') // Para que se auto complete
+        defaultValue: Sequelize.fn('NOW')
       },
 
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('NOW') // Para que se auto complete
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },

@@ -4,7 +4,6 @@ const bodyParser = require('koa-bodyparser');
 const emailRouter = require('../src/routes/email');
 const nodemailer = require('nodemailer');
 
-// 🛠️ Definir mocks antes de usarlos
 const mockProductUpdate = jest.fn();
 const mockPedidoUpdate = jest.fn();
 
@@ -28,7 +27,6 @@ jest.mock('../src/models', () => ({
 
 const { pedidos, detalle_pedido, cart } = require('../src/models');
 
-// 🏗️ App Koa configurada con bodyParser y router
 const app = new Koa();
 app.use(bodyParser());
 app.use(emailRouter.routes());
@@ -36,8 +34,6 @@ app.use(emailRouter.routes());
 describe('POST /enviarEmail', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        //      jest.spyOn(console, 'log').mockImplementation(() => { }); // opcional para limpiar logs
-        //     jest.spyOn(console, 'error').mockImplementation(() => { });
     });
 
     it('debe enviar un correo de cotización correctamente', async () => {
@@ -59,7 +55,6 @@ describe('POST /enviarEmail', () => {
             ]
         };
 
-        // 🧪 Mock del carrito
         cart.findOne.mockResolvedValue({
             cart_items: [
                 {
@@ -75,16 +70,13 @@ describe('POST /enviarEmail', () => {
             ]
         });
 
-        // 🧪 Mocks de pedido
         pedidos.create.mockResolvedValue({ id: 1, createdAt: new Date() });
         detalle_pedido.create.mockResolvedValue({});
         pedidos.findOne.mockResolvedValue(mockPedido);
 
-        // 🧪 Mock de nodemailer
         const sendMailMock = jest.fn().mockResolvedValue({ messageId: 'mock-id' });
         nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
 
-        // 📤 Realizar petición
         const res = await request(app.callback())
             .post('/enviarEmail')
             .send({
@@ -93,7 +85,6 @@ describe('POST /enviarEmail', () => {
                 user_id: 1
             });
 
-        // ✅ Aserciones
         expect(res.status).toBe(200);
         expect(res.body.estado).toBe('aceptado');
         expect(sendMailMock).toHaveBeenCalled();

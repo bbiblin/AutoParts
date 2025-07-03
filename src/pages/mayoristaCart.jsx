@@ -1,4 +1,3 @@
-// src/pages/CartPage.jsx
 import React, { useEffect, useState } from 'react';
 import { data, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -135,7 +134,6 @@ export default function CartPage() {
         <div className="min-h-screen bg-gray-50 py-8">
             {isLoggedIn ? (
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Header */}
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">
                             Carrito de Compras
@@ -148,7 +146,6 @@ export default function CartPage() {
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Lista de productos */}
                         <div className="lg:col-span-2">
                             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                                 <div className="p-6">
@@ -170,7 +167,6 @@ export default function CartPage() {
                                                 key={item.producto_id}
                                                 className="flex items-center gap-4 p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-shadow duration-300"
                                             >
-                                                {/* Imagen del producto */}
                                                 < div className="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden" >
                                                     {
                                                         item.product?.image_url ? (
@@ -189,7 +185,6 @@ export default function CartPage() {
                                                     }
                                                 </div>
 
-                                                {/* Información del producto */}
                                                 <div className="flex-1 min-w-0">
                                                     <h3 className="text-sm font-medium text-gray-900 truncate">
                                                         {item.product?.product_name || 'Producto'}
@@ -214,7 +209,6 @@ export default function CartPage() {
 
                                                 </div>
 
-                                                {/* Controles de cantidad */}
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
@@ -241,7 +235,6 @@ export default function CartPage() {
                                                     </button>
                                                 </div>
 
-                                                {/* Subtotal */}
                                                 <div className="text-right">
                                                     <div className="text-right">
                                                         {item.product.discount_percentage > 0 ? (
@@ -262,7 +255,6 @@ export default function CartPage() {
 
                                                 </div>
 
-                                                {/* Botón eliminar */}
                                                 <button
                                                     onClick={() => removeFromCart(item.id)}
                                                     className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-300"
@@ -278,7 +270,6 @@ export default function CartPage() {
                             </div>
                         </div>
 
-                        {/* Resumen del pedido */}
                         <div className="lg:col-span-1">
                             <div className="bg-white rounded-lg shadow-sm border border-gray-200 sticky top-24">
                                 <div className="p-6">

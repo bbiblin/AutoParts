@@ -73,7 +73,6 @@ export const CartProvider = ({ children }) => {
 
         try {
             if (isLoggedIn) {
-                // Actualizar el estado local PRIMERO (actualización optimista)
                 const updatedItems = cartItems.map(item =>
                     item.id === itemId
                         ? { ...item, quantity: newQuantity }
@@ -81,7 +80,6 @@ export const CartProvider = ({ children }) => {
                 );
                 setCartItems(updatedItems);
 
-                // Luego hacer la petición al servidor
                 await axios.put(`https://autoparts-i2gt.onrender.com/cart/update/${itemId}`, {
                     quantity: newQuantity
                 }, {
@@ -94,7 +92,6 @@ export const CartProvider = ({ children }) => {
         } catch (error) {
             console.error('Error al actualizar cantidad:', error);
 
-            // Si hay error, recargar el carrito para sincronizar
             await loadCart();
 
         };

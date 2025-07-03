@@ -55,7 +55,6 @@ export default function Productos() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-white to-[#f1f5f9]">
-      {/* Header Section */}
       <div className="bg-gradient-to-r from-[#697fb3] via-[#1e3a8a] to-[#222952] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/20 to-[#9333ea]/20"></div>
         <div className="max-w-7xl mx-auto px-6 py-16 relative">
@@ -73,7 +72,6 @@ export default function Productos() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         {<SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
 
-        {/* Filter Section */}
         <div className="bg-white rounded-3xl shadow-2xl border border-[#e2e8f0] mb-12 overflow-hidden backdrop-blur-sm">
           <div className="bg-gradient-to-r from-[#f8fafc] via-[#eff6ff] to-[#faf5ff] px-8 py-6 border-b border-[#e2e8f0]">
             <h2 className="text-xl font-bold text-[#1e293b] flex items-center">
@@ -122,7 +120,6 @@ export default function Productos() {
           </form>
         </div>
 
-        {/* Results Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-bold bg-brand-darBlue bg-clip-text text-transparent flex items-center">
@@ -141,7 +138,6 @@ export default function Productos() {
           </div>
         </div>
 
-        {/* Products Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <div className="text-center">
@@ -172,7 +168,6 @@ export default function Productos() {
                 className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#f1f5f9] hover:border-[#e2e8f0] transform hover:-translate-y-2 relative"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                {/* Badge de descuento */}
                 {product.discount_percentage > 0 && (
                   <div className="absolute top-4 left-4 z-10">
                     <div className="bg-gradient-to-r from-[#ef4444] to-[#dc2626] text-[#ffff] px-3 py-1 rounded-lg text-sm font-bold shadow-lg">
@@ -181,7 +176,6 @@ export default function Productos() {
                   </div>
                 )}
 
-                {/* Product Image */}
                 <Link to={`/detalles_producto/${product.id}`} className="block relative overflow-hidden">
                   <div className="aspect-w-1 aspect-h-1 w-full">
                     <img
@@ -193,7 +187,6 @@ export default function Productos() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
 
-                {/* Product Info */}
                 <div className="p-6 flex flex-col h-auto">
                   <Link to={`/detalles_producto/${product.id}`}>
                     <h3 className="text-xl font-bold text-[#1e293b] group-hover:text-[#2563eb] transition-colors duration-300 mb-3 line-clamp-2 leading-tight">
@@ -205,7 +198,6 @@ export default function Productos() {
                     {product.description}
                   </p>
 
-                  {/* Pricing Section */}
                   <div className="mb-4">
                     <div className="space-y-1">
                       {product.discount_percentage > 0 ? (
@@ -230,7 +222,6 @@ export default function Productos() {
                     </div>
                   </div>
 
-                  {/* Stock Info */}
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-[#475569]">Stock disponible</span>
@@ -250,9 +241,7 @@ export default function Productos() {
                     </div>
                   </div>
 
-                  {/* Botones */}
                   <div className="space-y-3">
-                    {/* Botón de detalles */}
                     <Link
                       to={`/detalles_producto/${product.id}`}
                       className="w-full bg-gradient-to-r from-[#f1f5f9] to-[#e2e8f0] hover:from-[#e2e8f0] hover:to-[#cbd5e1] text-[#334155] font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg border border-[#e2e8f0] hover:border-[#cbd5e1] flex items-center justify-center group"
@@ -264,7 +253,6 @@ export default function Productos() {
                       Ver Detalles
                     </Link>
 
-                    {/* Botón de agregar al carrito o login */}
                     {isLoggedIn ? (
                       product.stock > 0 ? (
                         <AddToCartButton
@@ -296,7 +284,6 @@ export default function Productos() {
           </div>
         )}
 
-        {/* Call to action final */}
         {allProducts.length > 0 && (
           <div className="text-center mt-16">
             <div className="bg-gradient-to-r from-[#eff6ff] to-[#faf5ff] rounded-3xl p-8 border border-[#dbeafe]">

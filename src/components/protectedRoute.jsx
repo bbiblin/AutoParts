@@ -8,12 +8,10 @@ export default function ProtectedRoute({ children }) {
 
     const isCartRoute = location.pathname === "/cart" || location.pathname === "/carrito";
 
-    // Si no hay usuario, siempre redirigir al login
     if (!userId) {
         return <Navigate to="/users/login" replace />;
     }
 
-    // Si es distribuidor y accede al carrito normal, lo bloqueamos (redireccionar a home)
     if (isDistribuitor && isCartRoute) {
         return <Navigate to="/" replace />;
     }

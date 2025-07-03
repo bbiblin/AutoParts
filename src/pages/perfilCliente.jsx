@@ -5,14 +5,12 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import OrderCard from "../components/orderCard";
 
-// Modal para detalles del pedido, responsive
 const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
   if (!pedido) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
       <div className="bg-white w-full sm:w-auto sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl shadow-2xl transition-all transform animate-fadeInUp">
-        {/* Header del modal con diseño mejorado */}
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200 rounded-t-3xl sm:rounded-t-3xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
@@ -35,7 +33,6 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
           </div>
         </div>
 
-        {/* Contenido del modal */}
         <div className="p-6 space-y-4">
           <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl">
             <p className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1">Código</p>
@@ -61,7 +58,6 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
         </div>
 
 
-        {/* Lista de productos mejorada */}
         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
           <div className="flex items-center space-x-2 mb-4">
             <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +98,6 @@ const PedidoDetalleModal = ({ pedido, onClose, formatPrice }) => {
   );
 };
 
-// Spinner de carga mejorado
 const LoadingSpinner = ({ message = "Cargando..." }) => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
     <div className="text-center">
@@ -117,7 +112,6 @@ const LoadingSpinner = ({ message = "Cargando..." }) => (
   </div>
 );
 
-// Hook para obtener token válido
 const useAuthToken = () => {
   const getValidToken = useCallback(() => {
     const cookieToken = Cookies.get("authToken");
@@ -130,7 +124,6 @@ const useAuthToken = () => {
   return { getValidToken };
 };
 
-// Hook para datos del usuario
 const useUserData = (isLoggedIn, user) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -204,7 +197,6 @@ const useUserData = (isLoggedIn, user) => {
   return { formData, setFormData, loading };
 };
 
-// Hook para pedidos
 const usePedidos = (isLoggedIn, user) => {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -315,7 +307,6 @@ export default function PerfilCliente() {
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300">
       {isLoggedIn ? (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Header mejorado */}
           <div className="text-center mb-16">
             <div className="relative inline-block mb-8">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-gray-700 rounded-3xl blur-lg opacity-20 scale-110"></div>
@@ -347,7 +338,6 @@ export default function PerfilCliente() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
-            {/* Información Personal mejorada */}
             <div className="xl:col-span-2">
               <div className="bg-white backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200 overflow-hidden hover:shadow-3xl transition-all duration-300">
                 <div className="bg-gradient-to-r from-brand-darBlue to-gray-800 px-8 py-8">
@@ -491,7 +481,6 @@ export default function PerfilCliente() {
               </div>
             </div>
 
-            {/* Historial de Pedidos mejorado */}
             <div className="xl:col-span-1">
               <div className="bg-white backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200 sticky top-8 overflow-hidden hover:shadow-3xl transition-all duration-300">
                 <div className="bg-gradient-to-r from-gray-700 to-gray-800 px-8 py-8">
@@ -583,7 +572,6 @@ export default function PerfilCliente() {
             </div>
           </div>
 
-          {/* Modal de detalle pedido */}
           <PedidoDetalleModal pedido={selectedPedido} onClose={closeModal} formatPrice={formatPrice} />
         </div>
       ) : (
@@ -614,7 +602,6 @@ export default function PerfilCliente() {
   );
 }
 
-// Componente Input reutilizable mejorado para formularios
 function FormInput({ label, name, type = "text", value, onChange, placeholder, required = false, helperText, icon }) {
   const getIcon = () => {
     const iconClasses = "w-5 h-5 text-gray-400 group-focus-within:text-red-600 transition-colors";

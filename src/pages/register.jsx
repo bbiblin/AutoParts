@@ -36,7 +36,6 @@ export default function Register() {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Limpiar error del campo cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -48,7 +47,6 @@ export default function Register() {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validación de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email) {
       newErrors.email = "El email es requerido";
@@ -56,21 +54,18 @@ export default function Register() {
       newErrors.email = "Ingresa un email válido";
     }
 
-    // Validación de contraseña
     if (!formData.password) {
       newErrors.password = "La contraseña es requerida";
     } else if (formData.password.length < 8) {
       newErrors.password = "La contraseña debe tener al menos 8 caracteres";
     }
 
-    // Validación de confirmación de contraseña
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Confirma tu contraseña";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Las contraseñas no coinciden";
     }
 
-    // Validación de username
     if (!formData.username) {
       newErrors.username = "El nombre de usuario es requerido";
     } else if (formData.username.length < 3) {
@@ -78,17 +73,14 @@ export default function Register() {
         "El nombre de usuario debe tener al menos 3 caracteres";
     }
 
-    // Validación de nombre
     if (!formData.name) {
       newErrors.name = "El nombre completo es requerido";
     }
 
-    // Validación de dirección
     if (!formData.address) {
       newErrors.address = "La dirección es requerida";
     }
 
-    // Validación de teléfono
     const phoneRegex = /^[0-9+\-\s()]+$/;
     if (!formData.phone) {
       newErrors.phone = "El teléfono es requerido";
@@ -105,7 +97,6 @@ export default function Register() {
       e.preventDefault();
 
       if (validateForm()) {
-        // Preparar datos para enviar (sin confirmPassword)
         const { confirmPassword, ...userData } = formData;
         const response = await axios.post('https://autoparts-i2gt.onrender.com/users/register', userData);
 
@@ -126,7 +117,7 @@ export default function Register() {
         }`}
     >
       <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
-        {/* Header */}
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-[#1E1E1E] mb-2">
             Crear Cuenta
@@ -136,9 +127,9 @@ export default function Register() {
           </p>
         </div>
 
-        {/* Form */}
+
         <div className="space-y-6">
-          {/* Nombre completo */}
+
           <div>
             <label
               htmlFor="name"
@@ -161,7 +152,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Username */}
+
           <div>
             <label
               htmlFor="username"
@@ -184,7 +175,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Email */}
+
           <div>
             <label
               htmlFor="email"
@@ -207,7 +198,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Teléfono */}
+
           <div>
             <label
               htmlFor="phone"
@@ -230,7 +221,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Dirección */}
+
           <div>
             <label
               htmlFor="addressDetail"
@@ -253,7 +244,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Contraseña */}
+
           <div>
             <label
               htmlFor="password"
@@ -276,7 +267,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Confirmar contraseña */}
+
           <div>
             <label
               htmlFor="confirmPassword"
@@ -301,7 +292,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Checkbox distribuidor */}
+
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -319,7 +310,7 @@ export default function Register() {
             </label>
           </div>
 
-          {/* Submit Button */}
+
           <button
             type="button"
             onClick={handleSubmit}
@@ -329,14 +320,14 @@ export default function Register() {
           </button>
         </div>
 
-        {/* Division */}
+
         <div className="my-6 flex items-center">
           <div className="flex-1 border-t border-gray-300"></div>
           <span className="px-4 text-sm text-[#555555]">o</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
-        {/* Redirige a Login*/}
+
         <div className="text-center">
           <p className="text-sm text-[#555555]">
             ¿Ya tienes una cuenta?
@@ -349,7 +340,7 @@ export default function Register() {
           </p>
         </div>
 
-        {/* Volver al inicio */}
+
         <div className="mt-8 text-center">
           <Link
             to="/"

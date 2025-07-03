@@ -30,7 +30,6 @@ jest.mock('fs', () => ({
 jest.mock('koa-body', () => ({
     koaBody: jest.fn(() => {
         return async (ctx, next) => {
-            // Simular el comportamiento de koaBody
             ctx.request.body = ctx.request.body || {};
             ctx.request.files = ctx.request.files || {};
             await next();
@@ -39,7 +38,7 @@ jest.mock('koa-body', () => ({
 }));
 const { producto } = require('../src/models');
 const cloudinary = require('../src/config/configCloudinary');
-const productRouter = require('../src/routes/productos'); // Ajusta la ruta según tu estructura
+const productRouter = require('../src/routes/productos');
 
 const app = new Koa();
 const router = new Router();
@@ -184,8 +183,8 @@ describe('Product Routes', () => {
                 .send({ ...validProductData, discount_percentage: '20' });
 
             expect(productWithDiscount.update).toHaveBeenCalledWith({
-                retail_price_sale: 80, // 100 * 0.8
-                wholesale_price_sale: 64 // 80 * 0.8
+                retail_price_sale: 80,
+                wholesale_price_sale: 64
             });
         });
 

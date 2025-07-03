@@ -8,7 +8,7 @@ export default function AdminProductos() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState('add'); // 'add', 'edit', 'view'
+  const [modalMode, setModalMode] = useState('add');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -87,7 +87,6 @@ export default function AdminProductos() {
   }, []);
 
 
-  // Abrir modal
   const openModal = (mode, product = null) => {
     setModalMode(mode);
     setSelectedProduct(product);
@@ -127,7 +126,6 @@ export default function AdminProductos() {
     setShowModal(true);
   };
 
-  // Cerrar modal
   const closeModal = () => {
     setShowModal(false);
     setSelectedProduct(null);
@@ -147,7 +145,6 @@ export default function AdminProductos() {
     });
   };
 
-  // Manejar cambios en el formulario
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -166,8 +163,7 @@ export default function AdminProductos() {
     }
   };
 
-  // Guardar producto
-  // Función handleSave mejorada con mejor manejo de errores
+
   const handleSave = async () => {
 
     if (!formData.product_name || !formData.retail_price || !formData.wholesale_price || !formData.stock) {
@@ -179,7 +175,6 @@ export default function AdminProductos() {
     try {
       const data = new FormData();
 
-      // Agregar todos los campos
       data.append('product_cod', formData.product_cod);
       data.append('product_name', formData.product_name);
       data.append('description', formData.description);
@@ -196,12 +191,11 @@ export default function AdminProductos() {
         data.append('imagen', formData.imagen);
       }
 
-      // Configuración de axios mejorada
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
-        timeout: 30000, // 30 segundos
+        timeout: 30000,
         withCredentials: false
       };
 
@@ -226,17 +220,13 @@ export default function AdminProductos() {
       console.error('Error request:', error.request);
       console.error('Error config:', error.config);
 
-      // Manejo de errores más específico
       if (error.code === 'ERR_NETWORK') {
         alert('Error de conexión: No se puede conectar con el servidor. Verifica tu conexión a internet.');
       } else if (error.response) {
-        // El servidor respondió con un código de error
         alert(`Error del servidor (${error.response.status}): ${error.response.data?.error || error.response.statusText}`);
       } else if (error.request) {
-        // La petición se hizo pero no hubo respuesta
         alert('No se recibió respuesta del servidor. Verifica que el servidor esté funcionando.');
       } else {
-        // Algo más salió mal
         alert(`Error inesperado: ${error.message}`);
       }
     } finally {
@@ -244,13 +234,11 @@ export default function AdminProductos() {
     }
   };
 
-  // Confirmar eliminación
   const confirmDelete = (product) => {
     setProductToDelete(product);
     setShowDeleteConfirm(true);
   };
 
-  // Eliminar producto
   const handleDelete = async () => {
     try {
       const response = await axios.delete(`https://autoparts-i2gt.onrender.com/productos/${productToDelete.id}`);
@@ -268,7 +256,6 @@ export default function AdminProductos() {
     }
   };
 
-  // Aplicar descuento a un producto
   const applyDiscount = async (productId) => {
     try {
       const response = await axios.patch(`https://autoparts-i2gt.onrender.com/productos/${productId}/descuento`);
@@ -324,7 +311,7 @@ export default function AdminProductos() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex items-center space-x-3">
@@ -345,7 +332,7 @@ export default function AdminProductos() {
           </div>
         </div>
 
-        {/* Filtros */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="relative">
@@ -374,7 +361,6 @@ export default function AdminProductos() {
           </div>
         </div>
 
-        {/* Tabla de productos */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">

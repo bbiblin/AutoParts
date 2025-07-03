@@ -4,7 +4,6 @@ const { brand } = require('../models');
 const { where, findByPk, findAll, create, update, destroy } = require('sequelize');
 
 // GET para todas las marcas
-
 router.get('/', async (ctx) => {
   try {
     const allBrands = await brand.findAll();

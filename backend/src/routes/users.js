@@ -60,7 +60,6 @@ router.post('/register', async (ctx) => {
       updatedAt: new Date()
     });
 
-    // No retornar la contraseña en la respuesta
     const { password: _, ...userResponse } = newUser.toJSON();
 
     ctx.status = 201;
@@ -72,11 +71,11 @@ router.post('/register', async (ctx) => {
   }
 });
 
-// GET de Users - CORREGIDO
+// GET de Users
 router.get('/', async (ctx) => {
   try {
     const allUsers = await User.findAll({
-      attributes: { exclude: ['password'] } // No retornar contraseñas
+      attributes: { exclude: ['password'] }
     });
 
     ctx.status = 200;
@@ -113,7 +112,7 @@ router.post('/login', async (ctx) => {
       return;
     }
 
-    const validPass = await bcrypt.compare(password, user.password); // se compara la contraseña encriptada con la contraseña desencriptada para permitir que el usuario inicie sesión con su contraseña.
+    const validPass = await bcrypt.compare(password, user.password);
 
     if (validPass) {
       const token = jwt.sign(
@@ -147,20 +146,17 @@ router.post('/login', async (ctx) => {
 
 router.patch('/profile', authMiddleware, async (ctx) => {
   try {
-    const userId = ctx.state.user.id; // ID del usuario autenticado desde el token
+    const userId = ctx.state.user.id;
     const updateData = ctx.request.body;
 
-    // Campos que el usuario NO puede modificar desde su perfil
     const restrictedFields = ['id', 'admin', 'isDistribuitor', 'createdAt'];
 
-    // Remover campos restringidos
     restrictedFields.forEach(field => {
       if (updateData.hasOwnProperty(field)) {
         delete updateData[field];
       }
     });
 
-    // Verificar si el usuario existe (aunque debería existir por el middleware)
     const existingUser = await User.findByPk(userId);
     if (!existingUser) {
       ctx.status = 404;
@@ -168,7 +164,6 @@ router.patch('/profile', authMiddleware, async (ctx) => {
       return;
     }
 
-    // Si se quiere actualizar el email, verificar que no esté en uso
     if (updateData.email && updateData.email !== existingUser.email) {
       const emailInUse = await User.findOne({
         where: {
@@ -183,21 +178,16 @@ router.patch('/profile', authMiddleware, async (ctx) => {
       }
     }
 
-    // Si se quiere actualizar la contraseña, encriptarla
     if (updateData.password) {
-      // Opcional: Podrías requerir la contraseña actual para mayor seguridad
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    // Actualizar updatedAt
     updateData.updatedAt = new Date();
 
-    // Realizar la actualización
     await User.update(updateData, {
       where: { id: userId }
     });
 
-    // Obtener el usuario actualizado (sin la contraseña)
     const updatedUser = await User.findByPk(userId, {
       attributes: { exclude: ['password'] }
     });

@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
@@ -22,7 +21,6 @@ export const AuthProvider = ({ children }) => {
     const [time_left, setTimeLeft] = useState('');
     const navigate = useNavigate();
 
-    // Verificar si hay un usuario logueado al cargar la app
     useEffect(() => {
         const storedToken = Cookies.get('authToken');
         const userData = Cookies.get('userData');
@@ -56,14 +54,13 @@ export const AuthProvider = ({ children }) => {
         Cookies.set('authToken', token, { expires: 1, secure: true, sameSite: 'strict' });
         Cookies.set('user_id', decoded_token.id);
         Cookies.set('userData', JSON.stringify(userData));
-        Cookies.set('isDistribuitor', userData.isDistribuitor); // "true" o "false"
+        Cookies.set('isDistribuitor', userData.isDistribuitor);
 
         // Guardar estado de admin si existe
         if (userData.admin !== undefined) {
             Cookies.set('isAdmin', userData.admin);
         }
 
-        // Lógica de redirección basada en el tipo de usuario
         if (navigate) {
             if (userData.admin === true) {
                 navigate('/adminHome');

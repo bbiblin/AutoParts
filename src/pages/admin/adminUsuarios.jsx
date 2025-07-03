@@ -55,13 +55,11 @@ export default function AdminUsuarios() {
     setFilteredUsuarios(filtered);
   }, [usuarios, searchTerm, roleFilter]);
 
-  // Abrir modal de detalles
   const openModal = (user) => {
     setSelectedUser(user);
     setShowModal(true);
   };
 
-  // Cerrar modal
   const closeModal = () => {
     setShowModal(false);
     setSelectedUser(null);
@@ -119,7 +117,7 @@ export default function AdminUsuarios() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center space-x-3">
             <Users className="h-8 w-8 text-blue-600" />
@@ -130,7 +128,7 @@ export default function AdminUsuarios() {
           </div>
         </div>
 
-        {/* Filtros */}
+
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
@@ -162,7 +160,7 @@ export default function AdminUsuarios() {
           </div>
         </div>
 
-        {/* Tabla de usuarios */}
+
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -280,7 +278,7 @@ export default function AdminUsuarios() {
         )}
       </div>
 
-      {/* Modal de detalles */}
+
       {showModal && selectedUser && (
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -298,7 +296,7 @@ export default function AdminUsuarios() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Información personal */}
+
                 <div className="space-y-4">
                   <h4 className="text-sm font-medium text-gray-900 border-b pb-2">Información Personal</h4>
 
@@ -339,7 +337,7 @@ export default function AdminUsuarios() {
                   </div>
                 </div>
 
-                {/* Información del sistema */}
+
                 <div className="space-y-4">
                   <h4 className="text-sm font-medium text-gray-900 border-b pb-2">Información del Sistema</h4>
 
@@ -395,7 +393,7 @@ export default function AdminUsuarios() {
                   </div>
                 </div>
 
-                {/* Dirección completa */}
+
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Dirección
@@ -419,7 +417,7 @@ export default function AdminUsuarios() {
         </div>
       )}
 
-      {/* Modal de confirmación de eliminación */}
+
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-brand-darBlue bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-[#ffff] rounded-lg max-w-md w-full p-6">

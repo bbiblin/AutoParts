@@ -28,14 +28,13 @@ router.post('/', koaBody({
     formidable: {
         uploadDir: os.tmpdir(),
         keepExtensions: true,
-        maxFileSize: 10 * 1024 * 1024 // 10MB
+        maxFileSize: 10 * 1024 * 1024
     }
 }), async (ctx) => {
     try {
         const file = ctx.request.files?.imagen;
         let image_url = null;
 
-        // 1. Procesar imagen si viene y es válida
         if (file && file.filepath && fs.existsSync(file.filepath)) {
             try {
                 const result = await cloudinary.uploader.upload(file.filepath, {
@@ -49,7 +48,6 @@ router.post('/', koaBody({
             }
         }
 
-        // 2. Extraer y castear datos del formulario
         const {
             product_cod,
             product_name,
@@ -70,7 +68,6 @@ router.post('/', koaBody({
             return;
         }
 
-        // 3. Crear producto en DB
         const nuevoProducto = await producto.create({
             product_cod,
             product_name,
@@ -86,7 +83,6 @@ router.post('/', koaBody({
             image_url
         });
 
-        // 4. Aplicar descuento si corresponde
         if (nuevoProducto.discount_percentage && nuevoProducto.discount_percentage > 0) {
             const porcentaje_restante = (100 - nuevoProducto.discount_percentage) / 100;
             const precio_final_retail = Math.floor(nuevoProducto.retail_price * porcentaje_restante);

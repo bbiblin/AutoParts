@@ -1,7 +1,6 @@
 import { CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-//Mostrar confirmación de orden, exclusiva clientes mayoristas
 export default function ConfirmarOrden() {
 
     return (
